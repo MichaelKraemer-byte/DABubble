@@ -43,6 +43,10 @@ h3 {
             }
         }
     }
+    @include respond-to-maxWidth(small){
+        flex-direction: column;
+        @include dFlex(center, center);
+    }
 }
 
 
@@ -106,6 +110,9 @@ h3 {
             max-height: calc(1.2em * 2); 
             white-space: normal;
         }
+    }
+    @include respond-to-maxWidth(small){
+        gap: 16px;
     }
 }
 
@@ -186,9 +193,10 @@ h3 {
         background-color: var(--primary-bg-dark); 
         cursor: grab;
     }
-    // @include respond-to-minWidth(small){
-    //     padding-left: 24px;
-    // }
+    @include respond-to-maxWidth(small){
+        flex-direction: column;
+        @include dFlex(center, center);
+    }
 }
 
 .contactPictureContainer {

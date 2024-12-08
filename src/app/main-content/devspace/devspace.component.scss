@@ -19,6 +19,15 @@
     }
 }
 
+.writeMessageButton{
+    mat-icon{
+        color: var(--text-black);
+    }
+    &:hover{
+        background-color: var(--primary-bg);
+    }
+}
+
 .serverNavContent {
     background-color: var(--secundary-bg);
     @include padding(32px, 30px, 32px, 30px);

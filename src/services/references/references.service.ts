@@ -54,9 +54,13 @@ export class ReferencesService {
     return doc(this.getCollectionDirectMessages(directMessageChannelId), messageId);
   }
 
-  //Member
   getMemberDocRef(id: string) {
+    if (!id) {
+      console.error("Invalid member ID:", id); // Log hinzugefügt
+      throw new Error("Member ID must not be empty or undefined.");
+    }
     return doc(this.getReference, "member", id);
   }
+  
 
 }

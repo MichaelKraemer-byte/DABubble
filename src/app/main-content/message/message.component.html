@@ -1,5 +1,5 @@
 <div class="new-message-container" [ngClass]="thread ? 'border-none' : 'border-top'" >
-    <div class="hover" (mouseleave)="resetHoverAndMenu()"
+    <div class="hover" (mouseover)="showMenu()" (mouseleave)="resetHoverAndMenu()"
     [ngClass]="{
         'row-reverse': messageService.checkUser(message),
         'align-start': !messageService.checkUser(message)

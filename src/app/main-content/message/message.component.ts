@@ -45,10 +45,13 @@ export class MessageComponent {
       this.currentMember$ = auth.currentMember$
     }
 
+  showMenu(){
+    this.isMessageHover = true;
+  }
 
   resetHoverAndMenu() {
-    this.isMessageHover = false;
     this.isMessageEditMenuOpen = false;
+    this.isMessageHover = false;
   }
 
 

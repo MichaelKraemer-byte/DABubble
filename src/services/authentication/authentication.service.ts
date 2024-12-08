@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, verifyPasswordResetCode, confirmPasswordReset, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateEmail, updateProfile, sendPasswordResetEmail, updatePassword, User } from '@angular/fire/auth';
+import { Auth, verifyPasswordResetCode, confirmPasswordReset, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateEmail, updateProfile, sendPasswordResetEmail, updatePassword, User } from '@angular/fire/auth';
 import { doc, getFirestore, setDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Member } from '../../interface/message';

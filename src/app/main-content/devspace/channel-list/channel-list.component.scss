@@ -161,6 +161,10 @@ h3 {
         color: var(--purple-1);
       }
     }
+    @include respond-to-maxWidth(small){
+        @include dFlex(center, center);
+        text-align: center;
+    }
   }
   
 

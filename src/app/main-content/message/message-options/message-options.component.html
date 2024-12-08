@@ -1,4 +1,4 @@
-<div *ngIf="isMessageHover" class="options"   [ngClass]="{
+<div *ngIf="isMessageHover" class="options" [ngClass]="{
   'option-menu': !messageService.checkUser(message), 
   'thread-active': isThread,
 }">
@@ -15,6 +15,5 @@
 
   <div class="emojis-container" *ngIf="openEmojis"  [ngClass]="messageService.checkUser(message) ? 'emojis-container' : 'emojis-container-member'">>
       <emoji-mart [style] =" { width: 100 } " title="Pick your emoji…" emoji="point_up" (emojiClick)="addEmoji($event)"></emoji-mart>
-
   </div>
 </div>

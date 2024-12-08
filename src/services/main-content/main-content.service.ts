@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Channel } from '../../classes/channel.class';
 import { Member } from '../../interface/message';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -25,8 +26,15 @@ export class MainContentService {
     threadIsOpen = this.threadIsOpen$.asObservable();
 
 
-  constructor() {
+  constructor(private router: Router) {
   }
+
+  reloadCurrentRoute() {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate([currentUrl]);
+    });
+}
 
   toggleNavBar() {
     const currentState = this.navBarIsClosedSubject.value; // aktuellen Zustand abrufen

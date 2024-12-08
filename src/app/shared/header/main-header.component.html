@@ -2,7 +2,7 @@
     <div class="headerMainWrapper">
         <div class="headerContentWrapper">
             <div class="logo" [ngClass]="{'displayFlexOnMobile': mainContentService.devSpaceAsTopLayer$ | async}">
-                <img (click)="mainContentService.locationReload()" [src]="darkmode.isDarkMode() ? './img/main-assets/main-logo-dark.svg' : './img/main-assets/main-logo.svg'">
+                <img (click)="mainContentService.reloadCurrentRoute()" [src]="darkmode.isDarkMode() ? './img/main-assets/main-logo-dark.svg' : './img/main-assets/main-logo.svg'">
             </div>
             <div class="serverAndBackToNavContainer" (click)="backToDevSpace()" [ngClass]="{'displayNoneOnMobile': mainContentService.devSpaceAsTopLayer$ | async}">
                 <button class="backToSideNavButton">

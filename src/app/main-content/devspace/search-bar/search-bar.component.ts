@@ -81,7 +81,8 @@ export class SearchBarComponentDevSpace implements OnInit {
     public mainContentService: MainContentService,
     private authenticationService: AuthenticationService,
     private renderer: Renderer2,
-    private elRef: ElementRef
+    private elRef: ElementRef,
+    private directMessageService: DirectMessageService
   ){
     this.currentMember$ = this.authenticationService.currentMember$;
   }
@@ -142,42 +143,138 @@ export class SearchBarComponentDevSpace implements OnInit {
   
   
   async processSearchQuery(
-    query: string, 
-    members$: Observable<Member[]>, 
+    query: string,
+    members$: Observable<Member[]>,
+    channels$: Observable<Channel[]>
+  ) {
+    await this.filterMembersAndChannels(query, members$, channels$);
+    await this.processMessages(query, channels$);
+  }
+
+  async processMessages(query: string, channels$: Observable<Channel[]>) {
+    this.messages = [];
+    if (this.previousSearchChannel && query.includes(' ')) {
+      this.searchbarChannel = await this.filterChannelsForMessageSearch(query, channels$);
+      const channelTitle = this.previousSearchChannel.title;
+      const searchQuery = this.createSearchQuery(query, channelTitle);
+      this.messages = await this.filterMessagesByQuery(this.previousSearchChannel.id, searchQuery);
+      this.updateMessageService(this.messages, searchQuery);
+    }
+  }
+
+  async filterChannelsForMessageSearch(
+    query: string,
+    channels$: Observable<Channel[]>
+  ): Promise<Channel[]> {
+    const channels = await firstValueFrom(channels$);
+    return channels.filter(channel =>
+      channel.title.toLowerCase().includes(query.slice(1).toLowerCase()) &&
+      (!this.previousSearchChannel || channel.id !== this.previousSearchChannel.id)
+    );
+  }
+  
+
+  createSearchQuery(query: string, channelTitle: string): string {
+    return query.toLowerCase().replace(`#${channelTitle.toLowerCase()}`, '').trim();
+  }
+  
+  
+  async filterMessagesByQuery(
+    channelId: string,
+    searchQuery: string
+  ): Promise<Message[]> {
+    const allMessages = await this.messageService.loadInitialMessagesByChannelId(channelId);
+    return allMessages.filter((message: Message) =>
+      message.message.toLowerCase().includes(searchQuery)
+    );
+  }
+  
+
+  updateMessageService(messages: Message[], searchQuery: string): void {
+    this.messageService.isSearchForMessages = true;
+    this.messageService.messages = messages;
+    this.messageService.searchQuery = searchQuery;
+    this.messageService.messagesUpdated.next();
+  }
+  
+
+  async filterMembersAndChannels(
+    query: string,
+    members$: Observable<Member[]>,
     channels$: Observable<Channel[]>
   ) {
     this.searchbarMember = [];
     this.searchbarChannel = [];
-    this.messages = [];
     if (query.startsWith('@')) {
       const members = await firstValueFrom(members$);
-      this.searchbarMember = members.filter(member => 
-      member.name.toLowerCase().includes(query.slice(1).toLowerCase())
+      this.searchbarMember = members.filter(member =>
+        member.name.toLowerCase().includes(query.slice(1).toLowerCase())
       );
-    }  else if (query.startsWith('#')) {
+    } else if (query.startsWith('#')) {
       const channels = await firstValueFrom(channels$);
-      this.searchbarChannel = channels.filter(channel => 
-        channel.title.toLowerCase().includes(query.slice(1).toLowerCase()) 
+      this.searchbarChannel = channels.filter(channel =>
+        channel.title.toLowerCase().includes(query.slice(1).toLowerCase())
       );
-    }
-    if (this.previousSearchChannel && query.includes(' ')) {
-      const channels = await firstValueFrom(channels$);
-      this.searchbarChannel = channels.filter(channel => 
-        channel.title.toLowerCase().includes(query.slice(1).toLowerCase()) 
-        && (!this.previousSearchChannel || channel.id !== this.previousSearchChannel.id) 
-      );
-      const channelTitle = this.previousSearchChannel.title.toLowerCase(); 
-      const searchQuery = query.toLowerCase().replace(`#${channelTitle}`, '').trim(); 
-      const allMessages = await this.messageService.loadInitialMessagesByChannelId(this.previousSearchChannel.id);
-      this.messages = allMessages.filter((message: Message) => 
-        message.message.toLowerCase().includes(searchQuery)
-      );
-      this.messageService.isSearchForMessages = true;
-      this.messageService.messages = this.messages;
-      this.messageService.searchQuery = searchQuery; 
-      this.messageService.messagesUpdated.next();
     }
   }
+  
+
+  handleItemSelected(event: { item: Member | Channel | Message | string, type: string }) {
+    const { item, type } = event;
+    switch (type) {
+      case 'hint':
+        this.handleHintSelection(item as string);
+        break;
+      case 'member':
+        this.handleMemberSelection(item as Member);
+        break;
+      case 'channel':
+        this.handleChannelSelection(item as Channel);
+        break;
+      case 'message':
+        this.handleMessageSelection(item as Message);
+        break;
+      default:
+        break;
+    }
+    this.activeDropdownIndex = -1;
+  }
+  
+
+  handleHintSelection(item: string): void {
+    this.searchQuery = item;
+    this.onSearchInput(this.searchQuery);
+    this.searchbarMember = [];
+    this.searchbarChannel = [];
+    this.showDropdown = true;
+  }
+  
+
+  handleMemberSelection(item: Member): void {
+    this.searchQuery = `@${item.name}`;
+    this.memberService.openProfileUser(item.id);
+  }
+  
+
+  handleChannelSelection(item: Channel): void {
+    this.messageService.isWriteAMessage = false;
+    this.directMessageService.isDirectMessage = false;
+    this.searchQuery = `#${item.title}`;
+    this.previousSearchChannel = item;
+    this.channelService.currentChannelId = item.id;
+    this.messageService.readChannel();
+  }
+
+
+  handleMessageSelection(item: Message): void {
+    this.messageService.isWriteAMessage = false;
+    this.directMessageService.isDirectMessage = false;
+    const selectedMessage = item;
+    this.searchQuery = `#${(this.previousSearchChannel as Channel).title} ${selectedMessage.message}`;
+    this.onSearchInput(this.searchQuery);
+  }
+
+
 
 
   onSearchInput(query: string) {
@@ -193,33 +290,7 @@ export class SearchBarComponentDevSpace implements OnInit {
     this.activeDropdownIndex = (this.activeDropdownIndex + direction + totalResults) % totalResults;
     this.dropdownComponent.setActiveDropdownIndex(this.activeDropdownIndex);
   }
-
-
-  handleItemSelected(event: { item: Member | Channel | Message | string, type: string }) {
-    const { item, type } = event;
-    if (type === 'hint') {
-      this.searchQuery = item as string; // '@' oder '#'
-      this.onSearchInput(this.searchQuery); // Trigger der weiteren Logik
-      this.searchbarMember = []; 
-      this.searchbarChannel = [];
-      this.showDropdown = true; // Dropdown öffnen
-    } else if (type === 'member') {
-      this.searchQuery = `@${(item as Member).name}`;
-      this.memberService.openProfileUser((item as Member).id);
-    } else if (type === 'channel') {
-      this.searchQuery = `#${(item as Channel).title}`;
-      this.previousSearchChannel = item as Channel;
-      this.channelService.currentChannelId = (item as Channel).id;
-      this.messageService.readChannel(); 
-    } else if (type === 'message') {
-      const selectedMessage = item as Message;
-      this.searchQuery = `#${(this.previousSearchChannel as Channel).title} ${selectedMessage.message}`;
-      this.onSearchInput(this.searchQuery);
-    }
-    this.activeDropdownIndex = -1; 
-  }
   
-
   
   closeDevSpaceAndOpenChatForMobile(){
     this.mainContentService.closeNavBar();

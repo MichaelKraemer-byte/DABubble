@@ -9,6 +9,7 @@ import { Channel } from '../../../../classes/channel.class';
 import { Member, Message } from '../../../../interface/message';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, filter, firstValueFrom, Observable, of, switchMap } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { DirectMessageService } from '../../../../services/directMessage/direct-message.service';
 
 @Component({
   selector: 'app-searchbar',
@@ -46,7 +47,9 @@ export class SearchbarComponent {
     public memberService: MemberService,
     private authenticationService: AuthenticationService,
     private channelService: ChannelService,
-    private messageService: MessagesService
+    private messageService: MessagesService,
+    private directMessageService: DirectMessageService
+
   ) {
     this.currentMember$ = this.authenticationService.currentMember$;
   }
@@ -144,38 +147,52 @@ export class SearchbarComponent {
     query: string, 
     members$: Observable<Member[]>, 
     channels$: Observable<Channel[]>
-  ) {
+  ): Promise<void> {
     this.members = [];
     this.channels = [];
     this.messages = [];
-
     if (query.startsWith('@')) {
-      // Suche nach Mitgliedern
-      const members = await firstValueFrom(members$);
-      this.members = members.filter(member => 
-      member.name.toLowerCase().includes(query.slice(1).toLowerCase())
-      );
-    }  else if (query.startsWith('#')) {
-      // Suche nach Channels
-      const channels = await firstValueFrom(channels$);
-      this.channels = channels.filter(channel => 
-        channel.title.toLowerCase().includes(query.slice(1).toLowerCase()) &&
-        (!this.previousSearchChannel || channel.id !== this.previousSearchChannel.id) // Aktuellen Channel ausschließen
-      );
+      await this.searchMembers(query, members$);
+    } 
+    else if (query.startsWith('#')) {
+      await this.searchChannels(query, channels$);
     }
+    await this.searchMessages(query);
+  }
+  
+
+  async searchMessages(query: string): Promise<void> {
     if (this.previousSearchChannel && query.includes(' ')) {
       const channelTitle = this.previousSearchChannel.title.toLowerCase(); 
       const searchQuery = query.toLowerCase().replace(`#${channelTitle}`, '').trim(); 
       const allMessages = await this.messageService.loadInitialMessagesByChannelId(this.previousSearchChannel.id);
-      this.messages = allMessages.filter((message: Message) => 
+      this.messages = allMessages.filter((message: Message) =>
         message.message.toLowerCase().includes(searchQuery)
       );
       this.messageService.isSearchForMessages = true;
       this.messageService.messages = this.messages;
-      this.messageService.searchQuery = searchQuery; 
+      this.messageService.searchQuery = searchQuery;
       this.messageService.messagesUpdated.next();
     }
   }
+  
+
+  async searchChannels(query: string, channels$: Observable<Channel[]>): Promise<void> {
+    const channels = await firstValueFrom(channels$);
+    this.channels = channels.filter(channel =>
+      channel.title.toLowerCase().includes(query.slice(1).toLowerCase()) &&
+      (!this.previousSearchChannel || channel.id !== this.previousSearchChannel.id) // Aktuellen Channel ausschließen
+    );
+  }
+  
+
+  async searchMembers(query: string, members$: Observable<Member[]>): Promise<void> {
+    const members = await firstValueFrom(members$);
+    this.members = members.filter(member =>
+      member.name.toLowerCase().includes(query.slice(1).toLowerCase())
+    );
+  }
+  
 
 
   showHints() {
@@ -204,63 +221,67 @@ export class SearchbarComponent {
   }
   
 
-  selectDropdownItem() {
+  selectDropdownItem(): void {
     if (this.activeDropdownIndex < 0) return;
-    // Wenn der aktive Index in den Hinweisen liegt
-    if ((this.activeDropdownIndex < this.allHints.length) && this.displayHints) {
+    if (this.activeDropdownIndex < this.allHints.length && this.displayHints) {
       const hint = this.allHints[this.activeDropdownIndex];
       if (hint.includes('@')) {
-        this.searchQuery = '@';  // Setzt das @ im Suchfeld
-        this.onSearchInput(this.searchQuery);
-        this.members = []; // Lade Mitglieder
-        this.showDropdown = true;
-      } else if (hint.includes('#')) {
-        this.searchQuery = '#';  // Setzt das # im Suchfeld
-        this.onSearchInput(this.searchQuery);
-        this.channels = []; // Lade Kanäle
-        this.showDropdown = true;
+        this.setSearchForMembers();
+      } 
+      else if (hint.includes('#')) {
+        this.setSearchForChannels();
       }
-      this.displayHints = false;  // Blende die Hinweise aus
+      this.displayHints = false;  
     } 
-    else if ( !this.displayHints) {
-      // Wenn der aktive Index innerhalb der Mitglieder oder Kanäle ist, wähle diese aus
+    else if (!this.displayHints) {
       let selectedItem: Member | Channel | Message | null = null;
       let itemType: string = '';
       if (this.activeDropdownIndex < this.members.length) {
         selectedItem = this.members[this.activeDropdownIndex];
         itemType = 'member';
-      } else if (this.activeDropdownIndex < this.channels.length) {
+      } 
+      else if (this.activeDropdownIndex < this.channels.length) {
         selectedItem = this.channels[this.activeDropdownIndex];
         itemType = 'channel';
-      } else if (this.activeDropdownIndex < this.messages.length) {
+      } 
+      else if (this.activeDropdownIndex < this.messages.length) {
         selectedItem = this.messages[this.activeDropdownIndex];
         itemType = 'message';
       }
       if (selectedItem) {
-        this.handleSelectItem(selectedItem, itemType);
-        this.activeDropdownIndex = -1;
+        this.selectItem(selectedItem, itemType);
       }
     }
   }
   
+  private setSearchForMembers(): void {
+    this.searchQuery = '@';  
+    this.onSearchInput(this.searchQuery);
+    this.members = []; 
+    this.showDropdown = true;
+  }
 
-  handleSelectItem(selectedItem: Member | Channel | Message, itemType: string) {
+  private setSearchForChannels(): void {
+    this.searchQuery = '#';  
+    this.onSearchInput(this.searchQuery);
+    this.channels = [];  
+    this.showDropdown = true;
+  }
+  
+  private selectItem(selectedItem: Member | Channel | Message, itemType: string): void {
+    this.handleSelectItem(selectedItem, itemType);
+    this.activeDropdownIndex = -1;
+  }  
+
+
+  handleSelectItem(selectedItem: Member | Channel | Message, itemType: string): void {
     if (itemType === 'channel') {
-      // Kanal auswählen
-      this.previousSearchChannel = selectedItem as Channel;
-      this.searchQuery = `#${(selectedItem as Channel).title} `;
-      this.channelService.currentChannelId = (selectedItem as Channel).id;
-      this.messageService.readChannel(); // Lädt den ausgewählten Kanal
+      this.handleChannelSelection(selectedItem as Channel);
     } else if (itemType === 'member') {
-      // Mitglied auswählen
-      this.searchQuery = `@${(selectedItem as Member).name} `;
-      this.memberService.openProfileUser((selectedItem as Member).id); // Öffnet das Profil
-    } if (itemType === 'message') {
-      const selectedMessage = selectedItem as Message;
-      this.searchQuery = `#${(this.previousSearchChannel as Channel).title} ${selectedMessage.message}`; // Setzt die Nachricht als Suchabfrage
-      this.onSearchInput(this.searchQuery);
+      this.handleMemberSelection(selectedItem as Member);
+    } else if (itemType === 'message') {
+      this.handleMessageSelection(selectedItem as Message);
     }
-    // Dropdown und Daten zurücksetzen
     this.members = [];
     this.channels = [];
     this.messages = [];
@@ -269,6 +290,29 @@ export class SearchbarComponent {
   }
   
   
+  handleChannelSelection(selectedChannel: Channel): void {
+    this.messageService.isWriteAMessage = false;
+    this.directMessageService.isDirectMessage = false;
+    this.previousSearchChannel = selectedChannel;
+    this.searchQuery = `#${selectedChannel.title} `;
+    this.channelService.currentChannelId = selectedChannel.id;
+    this.messageService.readChannel();
+  }
+  
+  
+  handleMemberSelection(selectedMember: Member): void {
+    this.searchQuery = `@${selectedMember.name} `;
+    this.memberService.openProfileUser(selectedMember.id);
+  }
+  
+  
+  handleMessageSelection(selectedMessage: Message): void {
+    this.messageService.isWriteAMessage = false;
+    this.directMessageService.isDirectMessage = false;
+    this.searchQuery = `#${this.previousSearchChannel?.title} ${selectedMessage.message}`;
+    this.onSearchInput(this.searchQuery);
+  }
+
 
   setActiveDropdownIndex(index: number) {
     this.activeDropdownIndex = index;
@@ -280,6 +324,4 @@ export class SearchbarComponent {
     }
   }
   
-  
-
 }

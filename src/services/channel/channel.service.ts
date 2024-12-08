@@ -12,35 +12,27 @@ export class ChannelService {
 
   currentChannelId: string = 'uZaX2y9zpsBqyaOddLWh';
 
-
   constructor(
     private authenticationService: AuthenticationService,
   ){
   }
 
+
   getAllAccessableChannelsFromFirestoreObservable(currentMember: Member): Observable<Channel[]> {
     return new Observable((observer) => {
-      // Speicher für öffentliche und exklusive Channels
       let publicChannels: Channel[] = [];
       let privateChannels: Channel[] = [];
-  
-      // Lade öffentliche Channels
       this.getAllPublicChannelsFromFirestore((channels: Channel[]) => {
         publicChannels = channels;
-  
-        // Lade exklusive Channels des aktuellen Members
         this.getAllChannelsWithChannelIdsFromCurrentUser(currentMember, (channels: Channel[]) => {
           privateChannels = channels;
-  
-          // Kombiniere öffentliche und exklusive Channels
           const allChannels = [...publicChannels, ...privateChannels];
-          observer.next(allChannels); // Sende die kombinierten Channels an den Observer
+          observer.next(allChannels);
           observer.complete();
         });
       });
     });
   }
-  
   
 
   async removeMemberIdFromChannel(channelId: string, memberId: string) {

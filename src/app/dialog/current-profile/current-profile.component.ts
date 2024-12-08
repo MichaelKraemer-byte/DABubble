@@ -9,6 +9,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MemberService } from '../../../services/member/member.service';
 import { CommonModule } from '@angular/common';
 import { DirectMessageService } from '../../../services/directMessage/direct-message.service';
+import { ChannelService } from '../../../services/channel/channel.service';
 
 @Component({
   selector: 'app-current-profile',
@@ -31,7 +32,8 @@ export class CurrentProfileComponent {
 
   constructor(
     public memberService: MemberService,
-    public directMessageService: DirectMessageService
+    public directMessageService: DirectMessageService,
+    private channelService: ChannelService
   ) {
     this.currentMemberProfile = this.memberService.currentProfileMember
   }
@@ -41,6 +43,7 @@ export class CurrentProfileComponent {
   }
 
   openDirectMessage(memberId: any) {
+    this.channelService.currentChannelId = '';
     this.directMessageService.isDirectMessage = true;
     this.memberService.setCurrentMemberData();
     this.directMessageService.readDirectUserData(memberId);

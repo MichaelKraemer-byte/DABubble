@@ -120,39 +120,59 @@ export class ChatHeaderComponent implements OnInit {
   ) {
     this.members = [];
     this.channels = [];
-    // Bereits ausgewählte Objekte aus dem MessageService extrahieren
-    const selectedMemberIds = this.messageService.selectedObjects
-      .filter(obj => obj.type === 'member' || obj.type === 'email')
-      .map(obj => (obj.value as Member).id);
-    const selectedChannelIds = this.messageService.selectedObjects
-      .filter(obj => obj.type === 'channel')
-      .map(obj => (obj.value as Channel).id);
+    const selectedMemberIds = this.getSelectedMemberIds();
+    const selectedChannelIds = this.getSelectedChannelIds();
     if (query.startsWith('@')) {
-      // Suche nach Mitgliedern
       this.searchMember = true;
-      const members = await firstValueFrom(members$);
-      this.members = members.filter(member =>
-        member.name.toLowerCase().includes(query.slice(1).toLowerCase()) &&
-        !selectedMemberIds.includes(member.id) // Ausschließen, wenn bereits ausgewählt
-      );
-    } else if (query.length > 1 && query.startsWith('')) {
-      // Suche nach E-Mails
+      this.members = await this.filterMembersByName(query, members$, selectedMemberIds);
+    } 
+    else if (query.length > 1) {
       this.searchMember = false;
-      const members = await firstValueFrom(members$);
-      this.members = members.filter(member =>
-        member.email.toLowerCase().includes(query.toLowerCase()) &&
-        !selectedMemberIds.includes(member.id) // Ausschließen, wenn bereits ausgewählt
-      );
-    } else if (query.startsWith('#')) {
-      // Suche nach Channels
-      const channels = await firstValueFrom(channels$);
-      this.channels = channels.filter(channel =>
-        channel.title.toLowerCase().includes(query.slice(1).toLowerCase()) &&
-        !selectedChannelIds.includes(channel.id) // Ausschließen, wenn bereits ausgewählt
-      );
+      this.members = await this.filterMembersByEmail(query, members$, selectedMemberIds);
+    } 
+    else if (query.startsWith('#')) {
+      this.channels = await this.filterChannels(query, channels$, selectedChannelIds);
     }
   }
   
+  async filterChannels(query: string, channels$: Observable<Channel[]>, selectedChannelIds: string[]): Promise<Channel[]> {
+    const channels = await firstValueFrom(channels$);
+    return channels.filter(channel =>
+      channel.title.toLowerCase().includes(query.slice(1).toLowerCase()) &&
+      !selectedChannelIds.includes(channel.id)
+    );
+  }
+  
+  async filterMembersByEmail(query: string, members$: Observable<Member[]>, selectedMemberIds: string[]): Promise<Member[]> {
+    const members = await firstValueFrom(members$);
+    return members.filter(member =>
+      member.email.toLowerCase().includes(query.toLowerCase()) &&
+      !selectedMemberIds.includes(member.id)
+    );
+  }
+  
+  async filterMembersByName(query: string, members$: Observable<Member[]>, selectedMemberIds: string[]): Promise<Member[]> {
+    const members = await firstValueFrom(members$);
+    return members.filter(member =>
+      member.name.toLowerCase().includes(query.slice(1).toLowerCase()) &&
+      !selectedMemberIds.includes(member.id)
+    );
+  }
+  
+  
+  getSelectedMemberIds(): string[] {
+    return this.messageService.selectedObjects
+      .filter(obj => obj.type === 'member' || obj.type === 'email')
+      .map(obj => (obj.value as Member).id);
+  }
+
+
+  getSelectedChannelIds(): string[] {
+    return this.messageService.selectedObjects
+      .filter(obj => obj.type === 'channel')
+      .map(obj => (obj.value as Channel).id);
+  }  
+
 
   hideDropdown() {
     setTimeout(() => {

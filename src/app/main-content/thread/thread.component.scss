@@ -1,0 +1,50 @@
+@import '../../../mixin.scss';
+
+section {
+    @include heightWidth( $h: 100%);
+    @include dFlex($jc: space-between);
+    flex-direction: column;
+    background-color: var(--secundary-bg);
+    border-radius: 20px;
+
+    @include respond-to-maxWidth(medium) {
+        border-radius: 0px;
+    }
+}
+
+.main-message-container {
+    @include heightWidth($h: 70%);
+    box-sizing: border-box;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+app-thread-header {
+    @include heightWidth($h: 10%);
+    border-radius: 20px 20px 0 0;
+}
+
+app-thread-message-field {
+    @include heightWidth($h: 20%);
+    border-radius: 0 0 20px 20px;
+}
+
+.between-line-container {
+width: 100%;
+@include dFlex($jc: space-between);
+box-sizing: border-box;
+padding: 0 15px;
+margin-bottom: 10px;
+    p {
+        @include nunito($fw: 400, $fs: 16px, $c: var(--border-light-purple));
+        left: 0;
+        top: -10px;
+        margin-right: 10px;
+    }
+
+    .between-line {
+        width: auto;
+        flex: 1;
+        border: 1px solid var(--border-light-purple);
+    }
+}

@@ -1,0 +1,200 @@
+@import '../../../../mixin.scss';
+
+.content-inside-wrapper{
+    @include dFlex;
+    width: 100%;
+    flex-direction: column;
+}
+
+button{
+    @include figtree($fw: 400, $fs: clamp(16px,4vw,18px), $c: var(--secundary-bg));
+    min-width: clamp(125px, 4vw, 160px);
+    margin: 12px 8px 0px 8px;
+    height: calc(60px - 16px);
+    border-radius: 36px;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    background-color: var(--text-blue);
+    text-wrap: nowrap;
+    &:hover{
+        background-color: var(--purple-2);
+        cursor: pointer;
+    }
+    @include respond-to-maxWidth(smallMedium) {
+        padding: 6px 12px;
+        letter-spacing: 0px;
+    }
+}
+.specialButton{
+    position: relative;
+    background-color: transparent;
+    border-color: var(--purple-2);
+    color: var(--text-blue);
+    margin: 0px;
+    &:hover{
+        color: var(--secundary-bg);
+        background-color: var(--purple-2);
+        cursor: pointer;
+    }
+    .hideInput{
+        opacity: 0;
+        content: '';
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+
+        &:hover{
+            cursor: pointer;
+        }
+    }
+}
+.input-area{
+    @include heightWidth($w: 100%, $h: auto);
+    @include dFlex ();
+    flex-direction: column;
+}
+
+.errorPicture{
+    width: 100%;
+    height: 38px;
+    vertical-align: middle;
+    p{
+        @include figtree($fw: 400, $fs: clamp(16px,4vw,18px), $c: red);  
+    }
+}
+
+h1{
+    @include heightWidth($w: 55%, $h: auto);
+    @include figtree($fw: 600, $fs: clamp(26px,8vw,56px), $c: var(--purple-3));
+    margin-bottom: clamp(0px,4vw,18px);
+    text-align: center;
+    border: 16px solid transparent;
+    border-top: none;
+    border-bottom: none;
+    line-height: normal;
+    margin: 4px;
+}
+
+.currentName{
+    @include heightWidth($w: 75%, $h: auto);
+    @include dFlex ();
+    text-align: center;
+    vertical-align: middle;
+    @include figtree($fw: 500, $fs: clamp(26px,8vw,42px), $c: var(--text-black));
+    padding-bottom: 8px;
+}
+
+p{
+    @include heightWidth($w: auto, $h: auto);
+    @include figtree($fw: 400, $fs: clamp(16px,4vw,18px), $c: var(--text-black));
+    text-align: left;
+}
+
+.string{
+    padding: 8px 0px;
+    @include heightWidth($w: 80%, $h: auto);
+    @include figtree($fw: 400, $fs: clamp(16px,4vw,18px), $c: var(--text-black));
+    text-align: left;
+    @include respond-to-maxWidth(medium) {
+        text-align: center;
+    }
+}
+
+a{
+    @include figtree($fw: 400, $fs: clamp(16px,4vw,18px), $c: var(--purple-2));
+    margin: 0px 8px;
+    padding: 8px 16px;
+    border: 1px solid  transparent;
+    border-radius: 36px;
+    &:hover{
+        cursor: pointer;
+        border-color: var(--primary-bg);
+        background-color: var(--primary-bg);
+        color: var(--text-blue);
+        font-weight: 600;
+    }
+}
+
+.set-right{
+    width: 90%;
+    padding-bottom: 0px;
+    display: flex;
+    justify-content: flex-end;
+    @include respond-to-maxWidth(medium) {
+        justify-content: center;
+        padding-bottom: 32px;
+    }
+}
+
+.flow{
+    position: relative;
+    margin-left: -2px;
+    @include heightWidth($w: 90%, $h: 100%);
+    @include dFlex;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.set-left{
+    margin-top: 8px;
+    position: relative;
+    @include heightWidth($w: 80%, $h: 100%);
+    @include dFlex ($jc: flex-start);
+    align-items: center;
+    gap: 16px;
+    @include respond-to-maxWidth(medium) {
+        justify-content: center;
+        flex-direction: column;
+        margin-bottom: 8px;
+        p{
+            @include figtree($fw: 400, $fs: 18px, $c: var(--text-black));
+          background-color: var(--secundary-bg);  
+          border-radius: 36px;
+          z-index: 2;
+          padding: 0px 16px;
+        }
+        &::after{
+            content: "";
+            width: 100%;
+            border-top: 2px solid var(--primary-bg);
+            height: 1px;
+            position: absolute;
+            top: calc(10px);
+            left: 0px;
+            z-index: 1;
+        }
+    }
+}
+
+.step-back-button{
+    height: clamp(18px, 4vw, 24px);
+    width: clamp(18px, 4vw, 24px);
+    @include materialSymbols;
+    font-size: 24px;
+    color: var(--text-black);
+    text-align: center;
+    @include dFlex;
+    border-radius: 50%;
+    padding: 13px 13px;
+    border: 1px solid transparent;
+    position: absolute;
+    top: calc((100% - 26px - 24px) / 2);
+    left: 0px;
+    mat-icon{
+        font-size: clamp(18px, 4vw, 24px);
+    }
+    &:hover{
+        color: var(--text-blue);
+        border-color: var( --purple-3);
+        cursor: pointer;
+    }
+}
+
+.active{
+    img{
+        border-radius: 50%;
+        border: 3px solid var(--green) !important;
+    }
+}

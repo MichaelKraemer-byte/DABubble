@@ -1,0 +1,106 @@
+@import '../../../../mixin.scss';
+
+section{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 98;
+    @include heightWidth($w: 100%, $h: 100%);
+    @include dFlex;
+    animation: heigh-scaling ease-in-out forwards;
+    animation-delay: 3.0s;
+    padding: 36px 0px 0px 36px;
+
+    @include respond-to-maxWidth(medium) {
+        padding: 36px 0px 0px 0px;
+    }
+}
+
+.wrapper{
+    position: relative;
+    @include heightWidth($w: 100%, $h: 100%);
+    max-width: 1920px;
+    @include dFlex;
+}
+
+.main-wrapper{
+    z-index: 98;
+    position: absolute;
+    @include heightWidth($w:100%, $h: 100%);
+    @include dFlex;
+    align-items: self-start;
+    max-height: 100%;
+}
+
+@keyframes heigh-scaling {
+    to{
+        max-height: 100px;
+    }
+}
+
+.content-wrapper{
+    @include heightWidth($w:100%, $h: 100%);
+    position: relative;
+    transition: width 1s ease-in-out;
+    @include respond-to-maxWidth(medium) {
+        @include heightWidth($w:256px);
+        transition: width 1s ease-in-out;
+    }
+}
+
+
+.Logo-Wrapper{
+    @include heightWidth($w:33%, $h: 100%);
+    @include dFlex;
+    animation: shrink-width 0.75s ease-out forwards 2.0s;
+    animation-delay: 2.0s;
+    @include respond-to-maxWidth(smallMedium) {
+        @include heightWidth($w:100%);
+        max-width: 256px;
+    }
+
+}
+
+@keyframes shrink-width {
+    to{
+        width: 256px;
+        height: 70px;
+    }
+}
+
+.logo{
+    @include heightWidth($w: 100%, $h: auto);
+    @include dFlex($ai: center, $jc: center);
+    img{
+        width: 100%;
+    }
+}
+
+.animationContainer{
+    z-index: 80;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    @include heightWidth($w: 100%, $h: 100%);
+    @include dFlex;
+    animation: shrink 0.75s ease-out forwards;
+    animation-delay: 2.0s;
+}
+
+.animation-to-middle {
+    animation: shrink-to-middle 0.75s ease-out forwards;
+    animation-delay: 2.0s;
+}
+
+.animation-to-left {
+    animation: shrink 0.75s ease-out forwards;
+    animation-delay: 2.0s;
+}
+
+
+@keyframes shrink {
+    to{
+        height: 80px;
+        width: 256px;
+    }
+}

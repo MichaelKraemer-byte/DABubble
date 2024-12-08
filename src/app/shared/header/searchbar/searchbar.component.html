@@ -1,0 +1,53 @@
+<div class="searchbar" [ngClass]="addClass">
+  <div class="inputFrame" [ngClass]="{'align-reverse' : !align_reverse}">
+    <input 
+      [placeholder]="placeholder" 
+      [(ngModel)]="searchQuery" 
+      (input)="onSearchInput(searchQuery)" 
+      (click)="onSearchInput(searchQuery)"
+      (keydown.arrowUp)="navigateDropdown(-1)" 
+      (keydown.arrowDown)="navigateDropdown(1)" 
+      (keydown.enter)="selectDropdownItem()" 
+      (focus)="showHints()" 
+      (blur)="hideDropdown()"
+    >
+    <mat-icon>{{icon}}</mat-icon>
+  </div>
+  
+  <div class="dropdown" *ngIf="showDropdown || displayHints">
+
+    @if(this.displayHints){
+      <div class="dropDownItem" *ngFor="let hint of allHints; let i = index" 
+           [class.active]="i === activeDropdownIndex" 
+           (click)="selectDropdownItem()"
+           (mouseover)="setActiveDropdownIndex(i)">
+        <span><mat-icon>info</mat-icon>{{ hint }}</span>
+      </div>
+    } @else {
+      <div *ngIf="members.length > 0">
+        <div class="dropDownItem" *ngFor="let member of members; let i = index" [class.active]="i === activeDropdownIndex" (click)="onDropdownItemClick(i)">
+          <div class="contact">
+            <div class="contactPictureContainer">
+              <img class="contactPicture" [src]="member.imageUrl" alt="User picture" *ngIf="member.imageUrl">
+              <img class="onlineStatus" [src]="member.status ? '/img/profile-pic/online.svg' : '/img/profile-pic/offline.svg'" alt="User picture" *ngIf="member.status !== undefined">
+            </div>
+            <span>{{ member.name }} @if(member.id === (this.currentMember$ |  async )?.id) {(You)}</span>
+          </div>
+        </div>
+      </div>
+    
+      <div *ngIf="channels.length > 0">
+        <div class="dropDownItem" *ngFor="let channel of channels; let i = index" [class.active]="i === activeDropdownIndex" (click)="onDropdownItemClick(i)">
+          <span>{{ channel.title }}</span>
+        </div>
+      </div>
+    
+      <div *ngIf="messages.length > 0">
+        <div class="dropDownItem" *ngFor="let message of messages; let i = index" [class.active]="i === activeDropdownIndex" (click)="onDropdownItemClick(i)" >
+          <span>{{ message.message }}</span>
+        </div>
+      </div>
+    }
+
+  </div>
+</div>

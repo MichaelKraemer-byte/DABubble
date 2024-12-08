@@ -1,0 +1,125 @@
+@import '../../../mixin.scss';
+
+mat-icon{
+    @include materialSymbols()
+}
+
+::ng-deep .cdk-global-scrollblock{
+    @include respond-to-maxWidth(small){
+        overflow: hidden !important;
+    }
+}
+
+.dialogWindow{
+    @include padding(40px, 40px, 40px, 40px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-family: 'Nunito';
+    @include respond-to-maxWidth(small){
+        @include padding(32px, 16px, 32px, 16px);
+    }
+}
+
+h2{
+    font-size: 24px;
+    margin: 0px;
+    font-weight: 500;
+}
+
+h3,p{
+    font-size: 18px;
+    margin: 0px;
+    font-weight: 500;
+}
+
+input, textarea {
+    @include padding(18px, 20px, 18px, 20px);
+    border: 1px solid var(--border-light-purple);
+    transition: border ease-in-out 0.3s;
+    outline: none;
+    border-radius: 40px;
+    font-size: 18px;
+    box-sizing: border-box;
+    &:focus{
+        border: 1.6px solid var(--purple-1);
+    }
+}
+
+.button-default {
+    background-color: #ECEEFE !important;
+  }
+  
+  .button-error {
+    background-color: #444DF2 !important;
+  }
+
+.input-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.hash-symbol {
+    position: absolute;
+    left: 28px;
+    color: #333; 
+    pointer-events: none; 
+    font-weight: 500;
+    font-size: 24px;
+}
+
+.input-field {
+    padding-left: 56px;
+    width: 100%;
+}
+
+.text-field {
+    resize: none; 
+    scrollbar-width: none;    
+    line-height: 24px; 
+    min-height: calc(24px * 1 + 36px); 
+    max-height: calc(24px * 3 + 36px);
+    font-family: 'Nunito';
+}
+
+.buttonContainer{
+    width: 100%;
+    @include dFlex(end, center)
+}
+
+button{
+    width: fit-content;
+    background-color: #444DF2 !important;
+    font-size: 18px;
+    font-weight: 400;
+    padding: 12px 25px 12px 25px;
+}
+
+.closeIcon{
+    @include matIcon(24px, 8px 8px, black, $chover: var(--purple-1), $scale: 1.1);
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    border-radius: 50px;
+    @include dFlex(center, center);
+    transition: background-color 0.100s ease-in-out, color 0.100s ease-in-out, transform 0.100s ease-in-out;
+    &:hover {
+        background-color: var(--dg-btn-bg);
+    }
+    @include respond-to-maxWidth('smallMedium'){
+        right: 16px;
+    }
+}
+
+.validation-error{
+    @include nunito(400, 18px, rgba(255, 0, 0, 0.582));
+}
+
+
+::ng-deep .mat-mdc-dialog-surface{
+    @include respond-to-maxWidth('smallMedium'){
+        border-radius: 0 !important;  /* Entfernt die abgerundeten Ecken */
+    };
+}
+

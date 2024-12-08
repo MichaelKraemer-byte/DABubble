@@ -1,0 +1,40 @@
+<div class="content-inside-wrapper">
+
+    <div class="flow">
+        <div (click)="navigation.navToPage(0)" class="step-back-button"><mat-icon>arrow_back</mat-icon></div>
+        <h1>Create Account</h1>
+    </div>
+
+    <p>With your name and email address you have your new DABubble account.</p>
+    <div class="input-area">   
+        <form class="form" [formGroup]="myForm">
+            <app-input-field formControlName="fullName" type="text" icon="person" placeholder="Firstname & Lastname" [required]="true" minlength="3" pattern="[A-Za-zäöüÄÖÜß._\-\s]+"  ></app-input-field>
+            
+            <div class="emailSection">
+            <div class="errorBox">
+              @if(myForm.get('email')?.hasError('emailExists')){
+                <span>This E-Mail is already in use</span>
+              }
+             </div>
+            <app-input-field formControlName="email" type="email" icon="mail" placeholder="example@email.com" [required]="true" minlength="6" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"  ></app-input-field>
+            </div>
+
+             <app-input-field formControlName="password" [isPasswordfield]="true" type="password" icon="lock" placeholder="Password" [required]="true" minlength="8" ></app-input-field>
+            <div class="errorBox">
+            @if(myForm.get('dataProtection')?.touched && !myForm.get('dataProtection')?.value){
+                <span>Please check Data Protection!</span>
+            }
+            </div>
+            <div class="flowBox">
+                <div class="labelText">I've read the <a (click)="openLightbox()">privacy policy</a> and agree to the processing of my data as outlined.</div>
+                <div class="checkbox-Box" >
+                    <div class="checkbox-container">
+                        <input class="originCheckbox" formControlName="dataProtection" type="checkbox" name="dataProtect" required >
+                        <div class="customCheckBox"></div>
+                    </div>
+            </div>
+            </div>
+            <div class="set-right"> <button [disabled]="areAllInputsTouched() || areAllInputsFilled() || !myForm.valid || myForm.pristine" (click)="onSubmit()" >Go On</button> </div>
+        </form>
+
+</div>

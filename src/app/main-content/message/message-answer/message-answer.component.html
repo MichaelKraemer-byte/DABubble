@@ -1,0 +1,5 @@
+<div class="answer-container" [ngClass]="messageService.checkUser(message) ? 'flex-end' : 'flex-start'">
+    <p class="answer" (click)="openThread()">
+       {{message.answers}} Answers</p>
+    <p class="answer-time" *ngIf="message.lastAnswer">Last response {{message.lastAnswer}}</p>
+</div>

@@ -1,0 +1,204 @@
+@import '../../../../mixin.scss';
+
+
+h3 {
+    margin: 0px;
+    font-size: 20px;
+    @include respond-to-maxWidth('XL'){
+        font-size: 18px;
+    }
+}
+
+.mat-drawer-inner-container {
+    overflow: visible;
+}
+
+.dropDownArrow {
+    padding: 10px;
+    transform: rotate(-90deg);
+}
+
+.dropwDownTopRow {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    justify-content: space-between;
+    &:hover {
+        cursor: pointer;
+        .dFlex {
+            color: var(--purple-1);
+        }
+        .dropDownArrow, 
+        .userIcon,
+        .channelsIcon {
+            fill: var(--purple-1);
+            stroke: var(--purple-1);
+            color: var(--purple-1);
+
+            path {
+                fill: var(--purple-1);
+                stroke: var(--purple-1);
+                color: var(--purple-1);
+
+            }
+        }
+    }
+}
+
+
+::ng-deep .mat-icon {
+    font-size: 24px !important;
+}
+
+.folderTitle {
+    margin-left: 10px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+
+.dFlex {
+    display: flex;
+    align-items: center;
+}
+
+
+.contact {
+    margin-left: 16px;
+    margin-bottom: 8px;
+    transition: background-color 0.125s ease-in-out;
+    border-radius: 20px;
+    @include padding(4px, 20px, 4px, 20px);
+    @include dFlex(start, center);
+    flex-direction: row;
+    gap: 8px;
+    width: fit-content;
+    font-family: 'Nunito';
+    font-weight: 500;
+    font-size: 18px;
+    &:hover {
+        background-color: var(--primary-bg);
+        color: var(--purple-1);
+        cursor: pointer;
+        mat-icon{
+            color: var(--purple-1);
+        }
+    }
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 8px;
+    margin-bottom: 13px;
+    font-size: 18px;
+    border-radius: 60px;
+    .contactName {
+        max-width: 120px; 
+        display: -webkit-box; 
+        -webkit-box-orient: vertical; 
+        overflow: hidden; 
+        text-overflow: ellipsis; 
+        -webkit-line-clamp: 2; 
+        line-height: 1.2em; 
+        max-height: calc(1.2em * 2); 
+    }
+    @supports not (-webkit-line-clamp: 2) {
+        .contactName {
+            max-height: calc(1.2em * 2); 
+            white-space: normal;
+        }
+    }
+}
+
+
+.rotateArrow {
+    transform: rotate(0deg);
+}
+
+::ng-deep .mat-drawer-inner-container {
+    overflow: visible !important;
+}
+
+.contactPicture {
+    position: relative;
+    display: flex;
+    align-items: center;
+    object-fit: cover;
+}
+
+.onlineStatus {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+}
+
+.mat-icon {
+    @include materialSymbols($c: var(--text-black));
+}
+
+.userImage{
+    width: 50px;
+    height: 50px;
+    border-radius: 50px; 
+    object-fit: cover;
+}
+
+.dropdown-content {
+    flex: 1;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+
+.align-reverse{
+    flex-direction: row-reverse;
+}
+
+
+.active{
+    border-color: var(--purple-2);
+
+    .inputFrame{
+        mat-icon{  
+            color: var(--text-black);
+        }
+    }
+}
+
+
+
+.dropDownContacts{
+    overflow-y: auto;
+    max-height: 80%;    
+    transition: max-height 0.3s ease; 
+    &::-webkit-scrollbar {
+        width: 6px; 
+        height: 6px;
+    }
+    &::-webkit-scrollbar-track {
+        background-color: transparent; 
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--primary-bg);
+        border-radius: 30px; 
+        transition: background-color 0.125s ease; 
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: var(--primary-bg-dark); 
+        cursor: grab;
+    }
+    // @include respond-to-minWidth(small){
+    //     padding-left: 24px;
+    // }
+}
+
+.contactPictureContainer {
+    position: relative;
+    @include dFlex(start, center)
+}
+
+.contactPicture{
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    object-fit: cover;
+}

@@ -1,0 +1,126 @@
+@import '../../../mixin.scss';
+
+section {
+    @include heightWidth($w: 100%, $h: 100%);
+    @include dFlex($jc: space-between);
+    flex-direction: column;
+    background-color: var(--secundary-bg);
+    border-radius: 20px;
+
+    @include respond-to-maxWidth(medium) {
+        width: 100%;
+        max-width: 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 0px;
+    }
+
+    @include respond-to-maxWidth(small) {
+        border-radius: 0px;
+    }
+}
+
+.main-message-container {
+    @include heightWidth($h: 70%);
+    box-sizing: border-box;
+    padding: 50px 0px;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.loader {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.2em;
+    color: #555;
+}
+
+app-chat-header {
+    width: 100%;
+    border-radius: 20px 20px 0 0;
+}
+
+app-chat-message-field {
+    @include heightWidth($h: 20%);
+    border-radius: 0 0 20px 20px;
+
+    @media(max-height: 700px) {
+        @include heightWidth($h: 25%);
+    }
+}
+
+.direct-message-container {
+    @include heightWidth($w: 100%, $h: 100%);
+}
+
+.welcome-direct-message {
+    box-sizing: border-box;
+    padding: 0 30px;
+    @include dFlex($jc: end, $ai: start);
+    flex-direction: column;
+    @include heightWidth($w: 100%, $h: 100%);
+
+    div {
+        @include dFlex($ai: end, $jc: start);
+        margin-bottom: 10px;
+
+        img {
+            @include heightWidth($w: 90px, $h: 90px);
+            @include image($br: 50%);
+            object-fit: cover;
+            object-position: center;
+        }
+
+        h2 {
+            @include nunito($fw: 700, $fs: 24px);
+            margin: 0 15px;
+        }
+    }
+
+    p {
+        @include nunito($fw: 400, $fs: 20px, $c: var(--text-gray));
+
+        span {
+            @include nunito($fw: 400, $fs: 20px, $c: var(--purple-3));
+        }
+    }
+}
+
+.mesage-container {
+    @include heightWidth($w: 100%, $h: 100%);
+}
+
+.welcome-message {
+    box-sizing: border-box;
+    padding: 0 30px;
+    @include dFlex($jc: end, $ai: start);
+    flex-direction: column;
+    @include heightWidth($w: 100%, $h: 100%);
+
+    div {
+        @include dFlex($jc: start, $ai: center);
+
+        mat-icon {
+            @include materialSymbols($c: var(--text-black), $fs: 24px);
+        }
+
+        h2 {
+            @include nunito($fw: 400, $fs: 24px, $c: var(--text-black));
+        }
+    }
+
+    p {
+        @include nunito($fw: 400, $fs: 20px, $c: var(--text-black));
+    }
+
+    span {
+        @include nunito($fw: 400, $fs: 20px, $c: var(--purple-3));
+    }
+}
+
+.highlight {
+    background-color: yellow;
+    font-weight: bold;
+  }

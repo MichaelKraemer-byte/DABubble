@@ -1,0 +1,18 @@
+<section *ngIf="threadIsOpen" @toggleThread>
+    <app-thread-header class="thread-item" (closeThreadEvent)="toggleThread()"></app-thread-header>
+    <div class="main-message-container thread-item" #threadContainer (scroll)="onScroll()">
+
+        <app-message *ngIf="threadService.threadFirstMessage" [message]="threadService.threadFirstMessage" [thread]="isThread" 
+            [threadFirstMessage]="isThreadFirstMessage" ></app-message>
+
+            <div class="between-line-container">
+                <p>{{threadService.threadMessages.length}} Answers</p>
+            <div class="between-line"></div>
+            </div>
+
+        <app-message *ngFor="let msg of messages; index as i" [message]="msg" [index]="i" [thread]="isThread">
+        </app-message>
+
+    </div>
+    <app-thread-message-field class="thread-item" (messageSent)="scrollToBottom()"></app-thread-message-field>
+</section>

@@ -1,0 +1,356 @@
+@import '../../../../mixin.scss';
+
+section {
+    @include heightWidth($w: 100%, $h: 100%);
+    box-sizing: border-box;
+    padding: 0 30px;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 4px 4px -2px var(--primary-bg);
+
+    @media(max-width: 660px) {
+        padding: 15px;
+    }
+}
+
+.channel-header {
+    @include heightWidth($w: 100%, $h: 100%);
+    @include dFlex($ai: center, $jc: space-between);
+}
+
+.new-message-headline {
+    @include nunito($fw: 700, $fs: 24px, $c: var(--text-black));
+    margin-bottom: 10px;
+    margin-top: 24px;
+}
+
+.write-message-field {
+    @include nunito($fw: 400, $fs: 18px, $c: var(--text-gray));
+    border: none;
+    border: 1px solid var(--purple-2);
+    max-width: 100% !important;
+    min-width: 30% !important;
+    height: 50px;
+    border-radius: 25px;
+    padding-left: 10px;
+    margin-bottom: 15px;
+    outline: none;
+    background-color: transparent;
+    &::placeholder {
+        @include nunito($fw: 400, $fs: 18px, $c: var(--text-gray));
+    }
+}
+
+.direct-message-header {
+    @include heightWidth($w: 100%, $h: 100%);
+    @include dFlex($ai: center, $jc: start);
+
+    div {
+        position: relative;
+
+        img {
+            @include heightWidth($w: 50px, $h: 50px);
+            @include image($br: 50%);
+            object-fit: cover;
+        }
+
+        .online-status {
+            @include heightWidth($w: 15px, $h: 15px);
+            position: absolute;
+            border-radius: 50%;
+            background-color: greenyellow;
+            bottom: 5px;
+            right: 0px;
+        }
+    }
+
+    h2 {
+        @include nunito($fw: 700, $fs: 24px);
+        margin: 0 15px;
+    }
+}
+
+.creator-team-btn {
+    @include dFlex($ai: center, $jc: space-between);
+    border: none;
+    border-radius: 20px;
+    background-color: var(--secundary-bg);
+    cursor: pointer;
+    padding: 5px 10px;
+
+    @media(max-width: 660px) {
+        padding: 5px;
+    }
+
+    &:hover {
+        background-color: var(--primary-bg);
+    }
+
+    p {
+        @include nunito($fw: 700, $fs: 24px);
+        margin: 0 15px;
+
+        @media(max-width: 660px) {
+            @include nunito($fw: 700, $fs: 20px);
+            margin: 0 5px;
+        }
+    }
+}
+
+.add-members-container {
+    @include heightWidth($w: auto, $h: 100%);
+    @include dFlex($ai: center, $jc: space-between);
+
+    .active-members-image-container {
+        display: flex;
+
+        img {
+            @include heightWidth($w: 35px, $h: 35px);
+            @include image($br: 50%);
+            border: 3px solid white;
+            object-fit: cover;
+        }
+    }
+
+    p {
+        @include nunito($fw: 600, $fs: 20px);
+        margin: 0 15px;
+    }
+
+    button {
+        @include heightWidth($w: 40px, $h: 40px);
+        @include dFlex();
+        border: none;
+        background-color: var(--primary-bg);
+        border-radius: 100%;
+        cursor: pointer;
+        padding: 24px;
+
+        mat-icon {
+            transition: color 0.125s ease-in-out, transform 0.125s ease-in-out;
+            padding: 16px;
+
+        }
+
+        &:hover {
+            cursor: pointer;
+
+            mat-icon {
+                transform: scale(1.2);
+                color: var(--purple-1);
+            }
+        }
+
+    }
+}
+
+.chatTitle {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 360px;
+    white-space: nowrap;
+}
+
+.serverSVG {
+    width: 32px;
+    height: 32px;
+    border: 3px solid white;
+    border-radius: 50px;
+}
+
+.showMemberListButtonContainer {
+    @include dFlex($ai: center, $jc: space-between);
+    @include padding(8px, 20px, 8px, 8px);
+    border-radius: 50px;
+    @include dFlex($ai: center, $jc: space-between);
+    transition: background-color 0.125s ease-in-out;
+
+    p {
+        transition: color 0.125s ease-in-out;
+    }
+
+    &:hover {
+        background-color: var(--primary-bg);
+        cursor: pointer;
+
+        p {
+            color: var(--purple-1) !important;
+        }
+    }
+
+    @media(max-width: 660px) {
+        display: none;
+    }
+}
+
+.showMemberListButtonContainerPuplic {
+    @include dFlex($ai: center, $jc: space-between);
+    @include padding(8px, 20px, 8px, 8px);
+    border-radius: 50px;
+    @include dFlex($ai: center, $jc: space-between);
+    transition: background-color 0.125s ease-in-out;
+    @media(max-width: 660px) {
+        @include padding(8px, 8px, 8px, 8px);
+    }
+    p {
+        transition: color 0.125s ease-in-out;
+
+        @include respond-to-maxWidth(small) {
+            display: none;
+        }
+    }
+    // &:hover {
+    //     background-color: var(--primary-bg);
+    //     cursor: pointer;
+
+    //     p {
+    //         color: var(--purple-1) !important;
+    //     }
+    // }
+}
+
+mat-icon {
+    @include dFlex();
+    @include materialSymbols($fs: 24px);
+}
+
+.searchbar{
+    @include padding(12px, 12px, 12px, 12px);
+    max-width: unset !important;
+    height: unset !important;
+    min-height: 64px !important;
+    margin-bottom: 16px;
+    margin-top: 16px;
+    border: 1px solid var(--purple-2) !important;
+    transition: border 0.125s ease-in-out;
+    input {
+        height: 72px !important;
+    }
+    &:hover{
+        border: 1px solid var(--purple-3) !important;
+    }
+    @include respond-to-maxWidth(small){
+        display: flex !important;
+    }
+}
+
+.dropdown{
+    top: 60px !important;
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    max-width: 100%;
+    flex: auto;
+
+    @include respond-to-maxWidth(small){
+        max-height: 200px;
+        overflow: auto;
+    }
+        /* Custom scrollbar styling */
+        &::-webkit-scrollbar {
+            width: 8px; /* Breite des Scrollbalkens */
+            height: 8px; /* Breite des Scrollbalkens */
+        }
+        &::-webkit-scrollbar-track {
+            background-color: transparent; /* Transparenter Track */
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: var(--purple-2); /* Farbe des Thumbs */
+            border-radius: 30px; /* Rundungen für den Thumb */
+            transition: background-color 0.125s ease; /* Sanfter Übergang beim Hover */
+        }
+        &::-webkit-scrollbar-thumb:hover {
+            background-color: var(--purple-1); /* Hover-Farbe des Thumbs */
+            cursor: grab;
+        }
+  }
+  
+  .chip {
+    display: flex;
+    align-items: center;
+    background-color: var(--primary-bg);
+    padding: 2px;
+    border-radius: 20px;
+    border: 1px solid var(--purple-2);
+    font-size: 14px;
+    transition: color 0.125s ease-in-out;
+    &:hover{
+        button{
+            .closeIcon{
+                color: var(--purple-2)  !important;
+            }
+        }
+    }
+  }
+  
+  .chip button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 0px;
+  }
+
+  .closeIcon{
+    transition: color 0.125s ease-in-out;
+    padding-left: 0px !important;
+  }
+
+  span{
+    &:hover{
+        background-color: var(--primary-bg) !important;
+    }
+  }
+
+  .chipSpan{
+
+    @include padding(4px, 20px, 4px, 4px)
+  }
+
+.clearIcon{
+    margin-right: 16px;
+    @include respond-to-maxWidth(small){
+        margin-top: 16px;
+        margin-bottom: 8px;
+    }
+}
+
+.displayNoneOnMobile{
+    @include respond-to-maxWidth(small){
+        display: none !important;
+    }
+}
+
+.inputFrame{
+    @include respond-to-maxWidth(small){
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+.searchbar{
+    @include respond-to-maxWidth(small){
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+.write-message-field {
+    font-size: 1em; 
+    line-height: 2; 
+    overflow-wrap: break-word; /* Lässt lange Wörter umbrechen */
+    white-space: normal;    
+    height: auto;
+    background-color: transparent !important;
+    height: 72px !important;
+  }
+
+.write-message-field::placeholder {
+    font-size: 1em; 
+    line-height: 2; 
+    overflow-wrap: break-word; /* Lässt lange Wörter umbrechen */
+    white-space: normal;    
+    height: auto;
+  }

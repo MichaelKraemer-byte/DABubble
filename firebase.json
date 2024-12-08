@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "public": "https://dabubble-380.developerakademie.net/",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

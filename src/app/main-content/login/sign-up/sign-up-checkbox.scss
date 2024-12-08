@@ -1,0 +1,81 @@
+@import '../../../../mixin.scss';
+.checkbox-Box{
+    display: flex;
+    justify-content:flex-end;
+    align-items: center;
+
+    .checkbox-container{
+        height: 100%;
+        position: relative;
+        user-select: none;
+        display: block;
+    }
+
+    .originCheckbox {
+        z-index: 99;
+        height: 29px;
+        width: 29px;
+        position: absolute;
+        top: -12px;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    label{
+        font-size: clamp(16px, 2vw, 18px);
+    }
+
+    .customCheckBox{
+        position: absolute;
+        top: calc((100% - 29px) / 2);
+        left: 0;
+        height: 29px;
+        width: 29px;
+        border: 1px solid var(--purple-3);
+        border-radius: 6px;
+    }
+
+    &:hover .originCheckbox  ~  .customCheckBox{
+        border-color: var(--text-blue);
+        background-color: transparent;
+        &::before{
+            color: var(--text-blue);
+        }
+    }
+
+    .customCheckBox{
+        &::before{
+            padding-top: 2px;
+            padding-left: 1px;
+            @include figtree($fw: 100, $fs: 21px, $c: var(--purple-3));
+            content: "✔";
+            position: absolute;
+            display: none;
+            
+        }
+    }
+
+    .originCheckbox:checked ~ .customCheckBox:before{
+        height: 29px;
+        width: 29px;
+        margin-top: -2px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    p{
+        user-select: none;
+        padding-left: 16px;
+        font-size: 21px;
+    }
+
+    .labelText{
+        display: inline;
+        width: 60%;
+        span{
+            width: 100%;
+            display: inline;
+        }
+    }
+}

@@ -1,0 +1,24 @@
+@import '../../../../mixin.scss';
+
+.name {
+    h5 {
+        @include nunito($fw: 700, $fs: 18px);
+        cursor: pointer;
+        
+        &:hover {
+            @include nunito($fw: 700, $fs: 18px, $c: var( --purple-3));
+        }
+    }
+
+    p {
+        @include nunito($fw: 400, $fs: 14px, $c: var(--text-gray));
+    }
+}
+
+.mr {
+    margin-right: 20px;
+}
+
+.ml {
+    margin-left: 20px;
+}

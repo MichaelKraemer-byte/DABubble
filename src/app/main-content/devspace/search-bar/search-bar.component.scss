@@ -1,0 +1,60 @@
+@import '../../../../mixin.scss';
+
+.searchbar{
+    @include dFlex();  
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 989px;
+    height: 70px;
+    border-radius: 46px;
+    border: 1px solid var(--purple-2);
+    position: relative;
+    margin-bottom: 20px;
+    transition: border-color 0.125s ease-in-out;
+
+    @include respond-to-maxWidth(large) {
+        height: 45px;
+    }
+
+    @include respond-to-minWidth(small) {
+        display: none;
+    }
+
+    &:hover{
+        border-color: var(--purple-1);
+    }
+
+    .inputFrame{
+        @include dFlex; 
+        padding: 0px 24px;
+        width: 100%; 
+
+
+        @include respond-to-maxWidth(large) {
+            padding: 0px 0px 0px 12px;
+         }
+
+
+        mat-icon{
+            @include heightWidth($w: 32px, $h: 70px);
+            @include respond-to-maxWidth(large) {
+               font-size: 24px;
+               padding: 0px 12px 0px 0px;
+            }
+            @include dFlex;  
+            @include matIcon($scale: 110%);  
+            @include materialSymbols($c: var(--text-black), $fs: 24px);  
+        }
+    }
+
+    input{
+        @include heightWidth($h: 26px);
+        @include figtree($fw: 300, $fs: 24px);
+        @include respond-to-maxWidth(large) {
+        @include figtree($fw: 300, $fs: 18px);
+        }
+        @include input;
+        background-color: transparent !important;
+    }
+}

@@ -1,0 +1,50 @@
+@import '../../../../mixin.scss';
+
+.currentProfil{
+    @include heightWidth($w: 30%, $h: auto);
+    margin-bottom: 8px;
+    img{
+        object-fit: cover;
+        aspect-ratio: 1/1;
+        width: 100%;
+        border-radius: 50%;
+    }
+    @include respond-to-maxWidth(small) {
+        @include heightWidth($w: 50%, $h: auto);
+    }
+}
+
+.default-presets{
+    @include heightWidth($w: 90%, $h: auto);
+    @include dFlex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 8px;
+    div{
+        width: 100%;
+        max-width: 68px;
+        img{
+            width: 100%;
+            object-fit: cover;
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            &:hover{
+                cursor: pointer;
+                border-color: var(--purple-3);
+            }
+        }
+    }
+}
+
+.previewImage{
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    overflow: hidden;
+    img{
+        object-fit: cover;
+        aspect-ratio: 1/1;
+        width: 100%;
+    }
+}

@@ -1,0 +1,93 @@
+@import '../../../../mixin.scss';
+
+.message {
+    box-sizing: border-box;
+    border-radius: 0 20px 20px 20px;
+    margin: 10px 0;
+    width: auto;
+
+    .message-text {
+        @include nunito($fw: 400, $fs: 18px, $c: var(--text-black));
+
+        @media(max-width: 660px) {
+            @include nunito($fw: 400, $fs: 16px, $c: var(--text-black));
+        }
+    }
+    .text-hover {
+        @include nunito($fw: 400, $fs: 18px, $c: black);
+
+        @media(max-width: 660px) {
+            @include nunito($fw: 400, $fs: 16px, $c: black);
+        }
+    }
+
+    textarea {
+        @include nunito($fw: 400, $fs: 18px, $c: var(--text-black));
+        width: 100%;
+        resize: none;
+        outline: none;
+        border: none;
+        border-radius: 20px 0px 20px 20px;
+        box-sizing: border-box;
+        padding: 10px;
+        background-color: var(--purple-2);
+        word-break: unset;
+
+        @media(max-width: 660px) {
+            @include nunito($fw: 400, $fs: 16px, $c: var(--text-black));
+        }
+    }
+
+    .edit-info-text {
+        position: absolute;
+        bottom: 30px;
+        left: 15px;
+        @include nunito($fw: 400, $fs: 12px, $c: var(--text-black));
+
+        span {
+            color: var(--text-blue);
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+.edit-thread-text {
+    bottom: 0px !important;
+}
+
+
+.myMessage {
+    background-color: var(--purple-2);
+    border-radius: 20px 0px 20px 20px;
+
+    .message-bg {
+        background-color: var(--purple-2);
+        padding: 10px;
+        border-radius: 20px 0px 20px 20px;
+    }
+
+}
+
+.memberMessage {
+    background-color: var(--primary-bg);
+    border-radius: 0 20px 20px 20px;
+
+    .message-bg {
+        background-color: var(--primary-bg);
+        padding: 10px;
+        border-radius: 0 20px 20px 20px;
+    }
+
+    .bg {
+        background-color: white !important;
+    }
+}
+
+.highlight {
+    background-color: yellow !important;
+    font-weight: bold  !important;
+  }

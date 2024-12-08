@@ -1,0 +1,152 @@
+@import '../../mixin.scss';
+
+app-main-header {
+    @include padding(20px, 20px, 20px, 20px);
+    @include dFlex(space-between, center);
+    height: 120px;
+    width: 100%;
+    @include respond-to-maxWidth(large) {
+        z-index: 99;
+        width: 100%;
+        height: 80px;
+        background-color: var(--primary-bg);
+    }
+    @include respond-to-maxWidth(small) {
+        @include padding(20px, 16px, 20px, 16px);
+    }
+}
+
+.main-wrapper{
+    width: 100%;
+    @include dFlex;
+}
+
+.content-wrapper{
+    width: 100%;
+    max-width: 1920px;
+}
+
+.main-content {
+    @include dFlex($ai: center, $jc: space-between);
+    @include heightWidth($h: calc(100vh - 120px));
+    gap: 20px;
+    @include padding(0px, 20px, 20px, 20px);
+    position: relative;
+    @include respond-to-maxWidth(large) {
+        @include heightWidth($h: calc(100vh - 80px));
+        gap: 0px;
+    }
+    @include respond-to-maxWidth(medium){
+        @include padding(0px, 0px, 0px, 0px);
+        border-radius: 0px;
+    }
+} 
+
+.main-content-wrapper {
+    position: relative; 
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    gap: 20px;
+}
+
+app-devspace {
+    max-width: 20%;
+    height: 100%;
+    position: relative;
+    bottom: 0px;
+    display: flex;
+    flex-direction: column;
+    flex: auto;
+    @include respond-to-maxWidth(large) {
+        max-width: 302px;
+        position: absolute;
+        top: 0;
+        bottom: 20px;
+        left: -20px;
+        z-index: 2;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;        
+        border-radius: 30px;
+    }
+    @include respond-to-maxWidth(medium) {
+        bottom: 20px;
+    }
+    @include respond-to-minWidth(small) {
+        z-index: 5;
+    }
+    @include respond-to-maxWidth(small) {
+        width: 100%;
+        max-width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 3;
+        box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px !important;
+    }
+}
+
+app-chat {
+    @include heightWidth($w: 42%, $h: 100%);
+    flex: auto;
+}
+
+app-thread {
+    max-width: 35%;
+    height: 100%;
+    flex: auto;
+    display: none;
+}
+
+.focus-app{
+    @include respond-to-maxWidth(large) {
+        width: 100%;
+        max-width: 100%;
+        position: relative;
+    }
+    @include respond-to-maxWidth('smallMedium') {
+        width: 100%;
+        max-width: 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 4;
+    }
+}
+
+
+.focus-app-thread{
+    @include respond-to-maxWidth('XL') {
+        position: relative;
+    }
+    @include respond-to-maxWidth(large) {
+        width: 100%;
+        max-width: 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 4;
+    }
+}
+
+.visible{
+    display: flex;
+}
+
+.focus-app-devSpace{
+    @include respond-to-maxWidth(small) {
+        max-width: 100%;
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 5;
+    }
+}

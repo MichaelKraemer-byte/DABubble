@@ -1,0 +1,28 @@
+<section>
+<div class="title-container">
+    <h2>Profil</h2>
+    <button class="close-btn" (click)="onNoClick()">X</button>
+</div>
+
+    <div class="profile-image-container">
+        <img class="profile-img" src="{{currentMemberProfile.imageUrl}}" alt="">
+    </div>
+    <h3>{{currentMemberProfile.name}}</h3>
+    <div class="active-container">
+        <div class="active-point" [ngStyle]="currentMemberProfile.status ? {'background-color': '#92C83E'} : {'background-color': 'gray'}"></div>
+        <p class="active-text" [ngClass]="currentMemberProfile.status ? 'active-text' : 'offline-text'">{{ currentMemberProfile.status ? 'Active' : 'Offline' }}</p>
+    </div>
+    <div class="email-container">
+        <mat-icon>mail</mat-icon>
+        <p>Email Adresse</p>
+    </div>
+    <p class="email-adress">{{currentMemberProfile.email}}</p>
+
+
+<div class="message-btn-container">
+    <button class="message-btn" (click)="openDirectMessage(currentMemberProfile.id)">
+        <mat-icon>mode_comment</mat-icon>
+        <p>Naricht</p>
+    </button>
+</div>
+</section>

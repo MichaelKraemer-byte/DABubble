@@ -1,0 +1,31 @@
+<div class="new-message-container" [ngClass]="thread ? 'border-none' : 'border-top'" >
+    <div class="hover" (mouseleave)="resetHoverAndMenu()"
+    [ngClass]="{
+        'row-reverse': messageService.checkUser(message),
+        'align-start': !messageService.checkUser(message)
+      }">
+
+        <img class="profile-image" src="{{message.profileImage}}" alt=""
+            [ngStyle]="messageService.checkUser(message) ? { 'margin-left' : '30px' } : { 'margin-right' : '30px' }">
+
+        <div class="message-container" [ngStyle]="isEdit ? {'width': '100%'} : {'width': 'auto'}">
+            <app-message-name [message]="message"></app-message-name>
+            <app-message-text [isMessageHover]="isMessageHover" [isThread]="thread" [message]="message" [isEdit]="isEdit" [editMessageText]="editMessageText" (cancelEdit)="cancelEdit()" (saveText)="saveText()"></app-message-text>
+            <app-message-images [isThread]="thread" [message]="message" [isEdit]="isEdit"></app-message-images>
+            <app-message-answer *ngIf="thread == false && directMessageService.isDirectMessage == false" [message]="message"></app-message-answer>
+            <app-message-reation [isThread]="thread" *ngIf="threadFirstMessage == false" [message]="message"></app-message-reation>
+        </div>
+
+        <div *ngIf="thread == false" class="answer-date-time-container">
+            <p>{{parseDate(message.createdAt)}}</p>
+        </div>
+        <app-message-options
+        *ngIf="threadFirstMessage == false"
+        [isThread]="thread"
+        [message]="message" 
+        [isMessageHover]="isMessageHover" 
+        [isMessageEditMenuOpen]="isMessageEditMenuOpen"
+        (toggleEdit)="toggleEditMode()">
+        </app-message-options>
+    </div>
+</div>

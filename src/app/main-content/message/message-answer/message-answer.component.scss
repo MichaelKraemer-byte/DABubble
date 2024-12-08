@@ -1,0 +1,24 @@
+@import '../../../../mixin.scss';
+
+.answer-container {
+    @include dFlex($jc: start);
+
+
+    .answer {
+        @include nunito($fw: 400, $fs: 18px, $c: var(--purple-3));
+        margin-right: 20px;
+        cursor: pointer;
+    }
+
+    .answer-time {
+        @include nunito($fw: 400, $fs: 14px, $c: var(--text-gray));
+    }
+}
+
+.flex-end {
+    @include dFlex($jc: end);
+}
+
+.flex-start {
+    @include dFlex($jc: start);
+}

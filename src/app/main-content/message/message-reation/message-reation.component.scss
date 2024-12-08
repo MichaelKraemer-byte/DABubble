@@ -1,0 +1,72 @@
+@import '../../../../mixin.scss';
+
+.reaction-container {
+    width: 100%;
+    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+
+    button {
+        @include dFlex();
+        position: relative;
+        border: none;
+        border: 1px solid var(--purple-2);
+        border-radius: 20px;
+        padding: 3px 7px;
+        background-color: var(--secundary-bg);
+        margin-top: 10px;
+        cursor: pointer;
+
+        img {
+            height: 100%;
+        }
+
+        .reaction-number-text {
+            @include nunito($fw: 400, $fs: 18px, $c: var(--text-black));
+            margin-left: 10px;
+        }
+
+        span {
+            @include nunito($fw: 400, $fs: 18px, $c: var(--text-black));
+        }
+
+        .show-members {
+            @include dFlex();
+            flex-direction: column;
+            width: 120px;
+            min-height: 60px;
+            background-color: var(--purple-1);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            border-radius: 20px 20px 20px 0px;
+            visibility: hidden;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.2s ease;
+            padding: 10px;
+
+            @media(max-width: 660px) {
+              display: none;
+            }
+
+            img {
+                margin-bottom: 5px;
+            }
+
+            .reaction-names {
+                @include nunito($fw: 800, $fs: 16px, $c: var(--text-black));
+            }
+
+            .reaction-text {
+                @include nunito($fw: 400, $fs: 16px, $c: var(--text-black));
+            }
+        }
+
+        &:hover .show-members {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}

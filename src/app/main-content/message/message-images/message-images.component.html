@@ -1,0 +1,6 @@
+<div class="postet-image-container" [ngClass]="messageService.checkUser(message) ? 'flex-end' : 'flex-start'">
+    <div class="image-container" *ngFor="let attachment of message.attachment; let i = index">
+        <img class="image" [src]="attachment">
+        <button *ngIf="isEdit" (click)="deleteImage(attachment, message)" class="edit-images"><mat-icon>delete</mat-icon></button>
+    </div>
+</div>

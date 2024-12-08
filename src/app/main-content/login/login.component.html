@@ -1,0 +1,28 @@
+@if(lightbox.lightboxIsOpen){<app-lightbox></app-lightbox>}
+<app-headmenu-login></app-headmenu-login>
+@if(auth.enableAnimation){<app-login-animation></app-login-animation>}
+@if(auth.enableAnimation){<app-login-animation-inside></app-login-animation-inside>}
+@if(!auth.enableAnimation){
+    <div class="logo-mainWrapper">
+        <div class="max-wrapper">
+            <div class="logo"><img [src]="darkmode.isDarkMode() ? './img/main-assets/main-logo-dark.svg' : './img/main-assets/main-logo.svg'"></div>
+        </div>
+    </div>}
+
+
+<section class="MainWrapper">
+
+    <div class='whiteBox'> 
+
+        <app-sign-in [ngClass]='setNavigationAnimationClass(0)'></app-sign-in>
+        <app-sign-up [ngClass]='setNavigationAnimationClass(1)'></app-sign-up>
+        <app-choose-avatar [ngClass]='setNavigationAnimationClass(2)' ></app-choose-avatar>
+        <app-lost-password [ngClass]='setNavigationAnimationClass(3)'></app-lost-password>
+
+        @if(auth.infoBannerIsSubmit){<app-info-banner [text]=auth.infoBannertext [icon]=auth.infoBannerIcon></app-info-banner>}
+    </div>
+
+    <app-submenu-login></app-submenu-login>
+
+</section>
+

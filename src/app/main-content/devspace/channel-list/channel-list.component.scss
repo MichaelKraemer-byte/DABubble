@@ -1,0 +1,269 @@
+@import '../../../../mixin.scss';
+
+h3 {
+    margin: 0px;
+    font-size: 20px;
+    @include respond-to-maxWidth('XL'){
+        font-size: 18px;
+    }
+}
+
+.addChannelPlus {
+    outline: none;
+    border: 0px;
+    background-color: transparent;
+    border-radius: 30px;
+    @include dFlex(center, center);
+
+    svg {
+        stroke: var(--text-light-black);
+        stroke-width: 0.1px;
+    }
+
+    transition: background-color 0.125s ease-in-out;
+
+    path {
+        fill: var(--text-light-black);
+        stroke-width: 0.1px;
+    }
+
+    &:hover {
+        cursor: pointer;
+        background-color: var(--primary-bg);
+
+        svg,
+        path {
+            stroke: var(--purple-3);
+
+            path {
+                fill: var(--purple-3);
+            }
+        }
+    }
+
+    &:active {
+        background-color: var(--purple-2);
+    }
+}
+
+.addChannelPlus {
+    padding: 10px;
+    box-sizing: border-box;
+
+    path {
+        stroke-width: 0.1px;
+    }
+}
+
+.dropDownArrow {
+    padding: 10px;
+    transform: rotate(-90deg);
+}
+
+.dropwDownTopRow {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    justify-content: space-between;
+
+    &:hover {
+        cursor: pointer;
+        
+        .dFlex {
+            color: var(--purple-1);
+        }
+        .dropDownArrow, 
+        .userIcon,
+        .channelsIcon {
+            fill: var(--purple-1);
+            stroke: var(--purple-1);
+            color: var(--purple-1);
+
+            path {
+                fill: var(--purple-1);
+                stroke: var(--purple-1);
+                color: var(--purple-1);
+
+            }
+        }
+    }
+}
+
+::ng-deep .mat-icon {
+    font-size: 24px !important;
+}
+
+.folderTitle {
+    margin-left: 10px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.dFlex {
+    display: flex;
+    align-items: center;
+}
+
+.addChannelButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+    margin-top: 16px;
+}
+
+.channel {
+    margin-bottom: 8px;
+    margin-left: 25px;
+    transition: background-color 0.125s ease-in-out;
+    border-radius: 20px;
+    @include padding(4px, 20px, 4px, 20px);
+    @include dFlex(start, center);
+    flex-direction: row;
+    gap: 8px;
+    width: fit-content;
+    font-family: 'Nunito';
+    font-weight: 500;
+    font-size: 18px;
+    &:hover {
+        background-color: var(--primary-bg);
+        color: var(--purple-1);
+        cursor: pointer;
+        mat-icon{
+            color: var(--purple-1);
+        }
+    }
+}
+
+
+.channel {
+    margin-left: 0;
+    transition: background-color 0.125s ease-in-out;
+    border-radius: 50px; 
+    padding: 8px 15px;
+    display: flex;
+    align-items: center; 
+    gap: 8px;
+    width: 100%; 
+    font-family: 'Nunito';
+    font-weight: 500;
+    font-size: 16px; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap;
+  
+    &:hover {
+      background-color: var(--primary-bg);
+      color: var(--purple-1);
+      cursor: pointer;
+  
+      mat-icon {
+        color: var(--purple-1);
+      }
+    }
+  }
+  
+
+  .channel-text {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    flex: 1; 
+    max-width: 180px;
+    width: 100%;
+  }  
+
+
+.addChannelButton {
+    color: var(--text-black);
+    display: flex;
+    gap: 10px;
+    transition: transform 0.125s ease-in-out, color 0.125s ease-in-out;
+    .material-icons {
+        transition: transform 0.125s ease-in-out, color 0.125s ease-in-out;
+    }
+    &:hover {
+        color: var(--purple-1);
+        cursor: pointer;
+        .material-icons {
+            transform: scale(1.1);
+            color: var(--purple-1);
+
+        }
+    }
+}
+
+.rotateArrow {
+    transform: rotate(0deg);
+}
+
+::ng-deep .mat-drawer-inner-container {
+    overflow: visible !important;
+}
+
+.onlineStatus {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+}
+
+.mat-icon {
+    @include materialSymbols($c: var(--text-black));
+}
+
+.userImage{
+    width: 50px;
+    height: 50px;
+    border-radius: 50px; 
+    object-fit: cover;
+}
+
+.dropdown-content {
+    flex: 1;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.dropDownChannelSection{
+    &::-webkit-scrollbar {
+        width: 6px; 
+        height: 6px;
+    }
+    &::-webkit-scrollbar-track {
+        background-color: transparent; 
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--primary-bg);
+        border-radius: 30px; 
+        transition: background-color 0.125s ease; 
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: var(--primary-bg-dark); 
+        cursor: grab;
+    }
+}
+
+
+.align-reverse{
+    flex-direction: row-reverse;
+}
+
+.active{
+    border-color: var(--purple-2);
+    .inputFrame{
+        mat-icon{  
+            color: var(--text-black);
+        }
+    }
+}
+
+
+.dropDownChannelSection {
+    overflow-y: auto;
+    max-height: 40%;
+    transition: max-height 0.3s ease; 
+    @include respond-to-minWidth(small){
+        padding-left: 16px;
+    }
+}
+

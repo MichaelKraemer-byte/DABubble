@@ -1,0 +1,102 @@
+@import '../../../mixin.scss';
+
+.deactive-forwards{
+    width: 100%;
+    @include dFlex;
+    position: absolute;
+    position: 0px;
+    left: 0px;
+    animation: fade-out-forwards 0.35s ease-in forwards;
+}
+
+.active-forwards{
+    width: 100%;
+    @include dFlex;
+    position: absolute;
+    position: 0px;
+    left: 0px;
+    animation: fade-in-forwards 0.35s ease-in forwards;
+}
+
+
+.deactive-backwards{
+    width: 100%;
+    @include dFlex;
+    position: absolute;
+    position: 0px;
+    left: 0px;
+    animation: fade-out-backwards 0.35s ease-in forwards;
+}
+
+.active-backwards{
+    width: 100%;
+    @include dFlex;
+    position: absolute;
+    position: 0px;
+    left: 0px;
+    animation: fade-in-backwards 0.35s ease-in forwards;
+}
+
+.still-deactive{
+    display: none;
+}
+
+.still-active{
+    width: 100%;
+    @include dFlex;
+}
+
+
+
+@keyframes fade-out-forwards{
+    from{
+    opacity: 1;
+    transform: translateX(0px);
+    }
+
+    to{
+    opacity: 0;
+    display: none;
+    transform: translateX(-500px);
+    }
+}
+
+
+@keyframes fade-in-forwards{
+    from{
+    opacity: 0;
+    transform: translateX(500px);
+    display: flex;
+    }
+
+    to{
+    opacity: 1;
+    transform: translateX(0px);
+    }
+}
+
+@keyframes fade-out-backwards{
+    from{
+    opacity: 1;
+    transform: translateX(0px);
+    }
+
+    to{
+    opacity: 0;
+    display: none;
+    transform: translateX(500px);
+    }
+}
+
+@keyframes fade-in-backwards{
+    from{
+    opacity: 0;
+    transform: translateX(-500px);
+    display: flex;
+    }
+
+    to{
+    opacity: 1;
+    transform: translateX(0px);
+    }
+}

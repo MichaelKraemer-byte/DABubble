@@ -1,0 +1,70 @@
+@import '../../../mixin.scss';
+
+.privacy-policy{
+    width: 100%;
+    padding: 48px 0px 48px 0x;
+    @include figtree($fw: 500, $fs: 18px, $c: var(--text-black));
+    @include respond-to-maxWidth(medium) {
+        text-align: center;
+        padding: 48px 0px 48px 0px;
+    }
+}
+
+h1{
+    @include figtree($fw: 500, $fs: clamp(46px, 4vw, 62px), $c: var(--text-blue));
+    padding-bottom: 12px;
+    @include respond-to-maxWidth(medium) {
+        text-align: center;
+    }
+}
+
+h2{
+    @include figtree($fw: 400, $fs: clamp(32px, 4vw, 56px), $c: var(--text-blue));
+    padding-bottom: 12px;
+    @include respond-to-maxWidth(medium) {
+        text-align: center;
+    }
+}
+
+h3{
+    @include figtree($fw: 400, $fs: clamp(28px, 4vw, 32px), $c: var(--text-blue));
+    padding-bottom: 12px;
+    @include respond-to-maxWidth(medium) {
+        text-align: center;
+    }
+}
+
+h4{
+    @include figtree($fw: 400, $fs: clamp(21px, 4vw, 28px), $c: var(--text-blue));
+    padding-bottom: 12px;
+    @include respond-to-maxWidth(medium) {
+        text-align: center;
+    }
+}
+
+
+
+ul{
+    list-style: none;
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+    padding-inline-start: 0px;
+
+    li{
+        @include figtree($fw: 500, $fs: 18px, $c: var(--text-black));
+    }
+}
+
+a{
+    @include figtree($fw: 400, $fs: clamp(16px,4vw,18px), $c: var(--text-blue)) ;
+    color:var(--text-blue) !important;
+    text-wrap: nowrap;
+    &:hover {
+        cursor: pointer;
+        color: var(--purple-2) !important;
+    }
+}
+
+strong{
+    @include figtree($fw:400, $fs: 18px, $c: var(--text-blue));
+}

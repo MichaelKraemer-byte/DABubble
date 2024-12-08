@@ -1,0 +1,42 @@
+<section>
+    <div *ngIf="showUserList" class="user-list" #userListContainer>
+      <ul>
+        <li *ngIf="filteredUsers.length === 0">Kein Nutzer gefunden</li>
+        <li
+          *ngFor="let user of filteredUsers; let i = index"
+          (click)="selectUser(user)"
+          [class.active]="i === selectedIndex">
+          {{ user }}
+        </li>
+      </ul>
+    </div>
+  
+    <app-thread-images-preview></app-thread-images-preview>
+  
+    <div class="message-field-container">
+      <textarea placeholder="Message to #{{auth.currentChannelData.title}}" [(ngModel)]="messageField" (input)="onInput($event)" (keydown)="checkEnterKey($event)"></textarea>
+  
+      <div class="message-options-container">
+  
+        <div class="options-btn">
+          <label for="file-upload-thread" class="flie-label">
+            <mat-icon class="open-file">add</mat-icon>
+          </label>
+          <input id="file-upload-thread" type="file" (change)="onFileSelected($event)" multiple>
+  
+  
+          <div class="between-line"></div>
+          <button (click)="toggleEmojis($event)"><mat-icon>sentiment_satisfied</mat-icon></button>
+          <button (click)="addTag()"><mat-icon>alternate_email</mat-icon></button>
+        </div>
+  
+        <button [disabled]="!(imagePreviewsThread.length > 0 || messageField.length > 0)" class="send-btn"
+          (click)="sendMessage()"><mat-icon>send</mat-icon></button>
+      </div>
+  
+      <div class="emojis-container" *ngIf="openEmojis">
+        <emoji-mart title="Pick your emoji…" emoji="point_up" (emojiClick)="addEmoji($event)"></emoji-mart>
+      </div>
+    </div>
+  
+  </section>

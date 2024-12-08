@@ -1,0 +1,49 @@
+<div class="card">
+    <div class="titleAndCloseContainer">
+        <h2>Add people</h2>
+        <mat-icon (click)="dialogRef.close()" class="closeIcon">close</mat-icon>
+    </div>
+    <h3># {{ channel.title }}</h3>
+  <mat-form-field>
+    <mat-chip-grid #chipGrid>
+        <mat-chip-row
+            *ngFor="let member of selectedMembers; let i = index"
+            (removed)="remove(member)"
+            [editable]="true"
+            (edited)="edit(member, $event)">
+            <div class="contactAsChip">
+                <img class="contactPictureInChip" src="{{ member.imageUrl }}" alt="User picture">
+                <span>{{ member.name }}</span>
+                <button class="matChipRemove" matChipRemove>
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </mat-chip-row>
+        <input
+            placeholder="New Member..."
+            [matChipInputFor]="chipGrid"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event)"
+            [formControl]="myControl"
+            [matAutocomplete]="auto" />
+    </mat-chip-grid>
+
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+        <mat-option *ngFor="let member of filteredMembers$ | async" [value]="member">
+            <div class="contact">
+                <div class="contactPictureContainer">
+                    <img class="contactPicture" src="{{ member.imageUrl }}" alt="User picture">
+                    <img class="onlineStatus" [src]="member.status ? '/img/profile-pic/online.svg' : '/img/profile-pic/offline.svg'" alt="User picture">
+                </div>
+                <span>{{ member.name }} </span>
+            </div>
+        </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <div class="addButtonContainer">
+    <button class="addButton" mat-flat-button (click)="addSelectedMembers()">Add</button>
+  </div>
+</div>
+
+

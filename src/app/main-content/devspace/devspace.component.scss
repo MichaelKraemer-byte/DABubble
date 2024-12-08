@@ -1,0 +1,187 @@
+@import '../../../mixin.scss';
+
+.serverNav {
+    @include heightWidth($w: 100%, $h: 100%);
+    background-color: var(--secundary-bg);
+    border-radius: 30px;
+    font-family: 'Nunito';
+    flex: auto;
+    display: flex;
+    flex-direction: column;
+    @include respond-to-maxWidth(large){
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+    @include respond-to-maxWidth(small) {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 0px;
+    }
+}
+
+.serverNavContent {
+    background-color: var(--secundary-bg);
+    @include padding(32px, 30px, 32px, 30px);
+    overflow: hidden;
+    border-radius: 30px;
+    color: var(--text-black);
+    display: flex;
+    flex-direction: column;
+    @include respond-to-maxWidth('XL') {
+        @include padding(32px, 20px, 32px, 20px);
+    }
+    @include respond-to-minWidth(large) {
+        min-width: unset ;
+    }
+    @include respond-to-maxWidth(large) {
+        max-height: 100%;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        bottom: 20px;
+        z-index: 2;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;        border-radius: 30px;
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        padding-left: 56px;
+    }
+    @include respond-to-maxWidth(medium) {
+        bottom: 20px;
+    }
+    @include respond-to-minWidth(small) {
+        z-index: 5;
+        min-width: 327px;
+    }
+    @include respond-to-minWidth(large) {
+        min-width: unset ;
+    }
+    @include respond-to-maxWidth(small) {
+        @include padding(24px, 16px, 24px, 16px);
+        width: 100%;
+        max-width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 3;
+        border-radius: 0px;
+        box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px !important;        
+    }
+}
+
+.toggleNavBarButton {
+    position: fixed;
+    transform: translateY(-30%);
+    left: 0px;
+    bottom: 14vh;
+    z-index: 5;
+    transform: rotate(90deg) scaleX(-1) scaleY(-1);
+    transform-origin: left top;
+    padding: 18px 26px 18px 26px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    font-family: 'Nunito';
+    font-size: 20px;
+    background-color: var(--secundary-bg);
+    box-shadow: -4px 4px 7px 0px #00000033;
+    border: 0px;
+    outline: none;
+    color: var(--text-black);
+    font-weight: 500;
+    display: flex;
+    gap: 10px;
+    transition: color 0.125s ease-in-out;
+    align-items: center;
+    box-sizing: border-box;
+    svg {
+        transition: color 0.125s ease-in-out, stroke  0.125s ease-in-out;
+
+        path,
+        rect {
+            stroke: var(--text-black);
+            transition: color 0.125s ease-in-out, stroke  0.125s ease-in-out;
+        }
+    }
+    &:hover {
+        cursor: pointer;
+        color: var(--purple-2);
+
+        svg {
+
+            path,
+            rect {
+                stroke: var(--purple-2);
+            }
+        }
+    }
+    @include respond-to-maxWidth('smallMedium'){
+        padding: 8px 26px 8px 26px;
+        bottom: 25vh;
+    }
+    @include respond-to-maxWidth(small){
+        display: none;
+    }
+}
+
+.titleRow {
+    display: none;
+    @include respond-to-minWidth(small){
+        @include dFlex($jc: space-between);
+        margin-bottom: 25px;
+    }
+}
+
+.titleAndServerSvg {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+h2 {
+    @include nunito(700, 24px, var(--text-black));
+    margin: 0px;
+    @include respond-to-maxWidth('XL'){
+        font-size: 20px;
+    }
+}
+
+  .mobileWriteAMessageButton{
+    position: absolute;
+    right: 16px;
+    bottom: 32px;
+    outline: none;
+    border: 0px solid ;
+    z-index: 10;
+    background-color: #444DF2;
+    @include padding(18px, 20px, 18px, 20px);
+    @include dFlex(center, center);
+    box-sizing: border-box;
+    border-radius: 100px;
+    transition: background-color 0.125s ease-in-out;
+    &:hover {
+        background-color: #535AF1;
+        cursor: pointer;
+    }
+    @include respond-to-minWidth(small){
+        display: none;
+    }
+    mat-icon{
+        color: white;
+    }
+  }
+
+
+app-channel-list{
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    max-height: 100%;
+}
+
+app-contact-list{
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    overflow: hidden;
+}

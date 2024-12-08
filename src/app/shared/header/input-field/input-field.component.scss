@@ -1,0 +1,119 @@
+@import '../../../../mixin.scss';
+
+.custom-input{
+    position: relative;
+    margin: 16px;
+    @include dFlex;  
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--primary-bg);
+    width: 100%;
+    height: 60px;
+    border-radius: 46px;
+    border: 1px solid transparent;
+
+    &:hover{
+        border-color: var(--purple-2);
+    }
+
+    .inputFrame{
+        @include dFlex; 
+        padding: 0px 24px;
+        width: 100%; 
+
+        @include respond-to-maxWidth(large) {
+            padding: 0px 0px 0px 12px;
+         }
+
+        .icon{
+            @include materialSymbols($fs: clamp(18px, 4vw, 24px));
+            @include heightWidth($w: 32px, $h: 70px);
+            @include respond-to-maxWidth(large) {
+               font-size: 21px;
+               padding: 0px 12px 0px 0px;
+
+            }
+            @include dFlex;  
+            color: var(--btn-gray);
+            margin: 0px 16px;
+            @include respond-to-maxWidth(smallMedium) {
+                margin: 0px 0px 0px 4px;
+                padding: 0px 12px 0px 12px;
+            }
+        }
+    }
+
+    input{
+
+        @include heightWidth($h: 36px);
+        @include figtree($fw: 300, $fs: 18px);
+        @include respond-to-maxWidth(large) {
+            @include figtree($fw: 300, $fs: 18px);
+        }
+        @include respond-to-maxWidth(smallMedium) {
+            font-size: clamp(16px, 4vw, 18px);
+        }
+        @include input;
+        background-color: transparent;
+        border-radius: 16px;
+    }
+}
+
+.align-reverse{
+    flex-direction: row-reverse;
+
+    .inputFrame{
+        .icon{  
+            padding: 0px 12px 0px 0px;
+            margin: 0px 0px;
+        }
+    }
+}
+
+.error-messages {
+    position: absolute;
+    @include figtree($fw: 400, $fs: 18px);
+    color: red;
+    vertical-align: middle;
+    @include dFlex ($jc: start);  
+    width: 100%;
+    top: -44px;
+    left: 16px;
+    height: 39px;
+    @include respond-to-maxWidth(smallMedium) {
+        font-size: clamp(16px, 4vw, 18px);
+    }
+  }
+
+.visibility-button{
+    @include dFlex;
+    padding-block: 0px;
+    padding-inline:0px;
+    border: none;
+    font-size: 32px;
+    background-color: transparent;
+    padding-left: 8px;
+
+    .icon-search{
+        @include heightWidth($w: 32px, $h: 70px);
+        @include dFlex ($jc: start);  
+        @include materialSymbols($c: var(--text-gray), $fs: clamp(18px, 4vw, 24px));
+        @include respond-to-maxWidth(large) {
+            margin-right: 16px;
+         }
+
+        &:hover{
+            cursor: pointer;
+            scale: 1.1;
+        }
+    }
+ }
+
+ .active{
+    border-color: var(--purple-2);
+    background-color: var(--secundary-bg);
+    .icon, .icon-search{
+        color: var(--text-black) !important; 
+    }
+}
+

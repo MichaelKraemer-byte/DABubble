@@ -1,0 +1,59 @@
+    <form class="dialogWindow" #channelForm="ngForm">
+        <div class="width-100">
+            <mat-icon (click)="dialogRef.close()" class="closeIcon">close</mat-icon>
+            <h3>Adding People</h3>
+
+            <!-- Radio Group Selection -->
+            <mat-radio-group [(ngModel)]="selectAllPeople" name="selectAllPeople" class="optionContainer">
+                <mat-radio-button [value]="true" checked="true">Add all members of Devspace</mat-radio-button>
+                <mat-radio-button [value]="false">Add certain people</mat-radio-button>
+            </mat-radio-group>
+
+            <!-- Eingabefeld für bestimmte Mitglieder, nur wenn nötig angezeigt -->
+            <mat-form-field *ngIf="!selectAllPeople">
+                <mat-chip-grid #chipGrid>
+                    <mat-chip-row
+                        *ngFor="let member of selectedMembers; let i = index"
+                        (removed)="remove(member)"
+                        [editable]="true"
+                        (edited)="edit(member, $event)">
+                        <div class="contactAsChip">
+                            <img class="contactPictureInChip" src="{{ member.imageUrl }}" alt="User picture">
+                            <span>{{ member.name }}</span>
+                            <button class="matChipRemove" matChipRemove>
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                    </mat-chip-row>
+                    <input
+                        placeholder="New Member..."
+                        [matChipInputFor]="chipGrid"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                        [matChipInputAddOnBlur]="addOnBlur"
+                        (matChipInputTokenEnd)="add($event)"
+                        [formControl]="myControl"
+                        [matAutocomplete]="auto" />
+                </mat-chip-grid>
+
+                <!-- Autocomplete für Mitglieder hinzufügen -->
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                    <mat-option *ngFor="let member of filteredMembers$ | async" [value]="member">
+                        <div class="contact">
+                            <div class="contactPictureContainer">
+                                <img class="contactPicture" src="{{ member.imageUrl }}" alt="User picture">
+                                <img class="onlineStatus" [src]="member.status ? '/img/profile-pic/online.svg' : '/img/profile-pic/offline.svg'" alt="User picture">
+                            </div>
+                            <span>{{ member.name }}</span>
+                        </div>
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>            
+        </div>
+
+        <div class="buttonAndProgressBarContainer">
+            <div class="buttonContainer">
+                <button class="button" mat-flat-button [disabled]="processCreatingChannel" (click)="createChannel()">Create</button>
+            </div>
+            <mat-progress-bar *ngIf="processCreatingChannel" mode="indeterminate"></mat-progress-bar>
+        </div>
+    </form>

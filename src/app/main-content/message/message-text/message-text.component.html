@@ -1,0 +1,18 @@
+<div class="message" (keydown)="handleKeydown($event)" *ngIf="message.message"
+    [ngClass]="messageService.checkUser(message) ? 'myMessage' : 'memberMessage'">
+        <div class="message-bg" [ngClass]="isMessageHover ? 'bg' : ''">
+
+            <p class="message-text" *ngIf="!isEdit"
+            [ngClass]="{
+                'text-light': messageService.checkUser(message),
+                'text-dark': !messageService.checkUser(message),
+                'text-hover': isMessageHover && !messageService.checkUser(message)
+            }" [innerHTML]="highlightAtTags(message.message)"></p>
+
+    <textarea [(ngModel)]="editMessageText" *ngIf="isEdit" #textArea (input)="autoGrow()"></textarea>
+
+    <p *ngIf="isEdit" class="edit-info-text" [ngClass]="isThread ? 'edit-thread-text' : ''">Esc to <span (click)="cancel()">Cancel</span> • Enter to <span
+            (click)="save()">Speichern</span></p>
+        </div>
+</div>
+

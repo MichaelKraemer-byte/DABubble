@@ -1,0 +1,25 @@
+<div class="custom-input" [ngClass]="addClass">
+
+    @if (!inputControl.valid && inputControl.touched){
+        <div class="error-messages">
+        @if(inputControl.errors?.['required']){
+            <span>Field is required!</span>
+        }
+        @else if(inputControl.errors?.['minlength']){
+            <span>Must be at least {{minlength}} characters long!</span>
+        }
+        @else if(inputControl.errors?.['pattern'] && type != 'email'){
+            <span>This character is not allowed!</span>
+        }
+        @else if(type === 'email'){
+            <span>E-Mail should look like this: email&#64;mail.de</span>
+        }
+        </div>
+    }
+
+    <div class="inputFrame" [ngClass]="{'align-reverse' : !align_reverse}">
+        @if(isPasswordfield){<button class="visibility-button" tabindex="-1" (click)="tooglePasswordVisibility()"><mat-icon class="icon-search" [innerHTML]="type === 'text' ? 'visibility' : 'visibility_off'"></mat-icon></button>}
+        <input name="inputName" [formControl]="inputControl" [required]="required ? true: false" [type]="type" [minlength]="minlength" [placeholder]="placeholder" [pattern]="pattern"/>
+        <mat-icon class="icon">{{icon}}</mat-icon>
+    </div>
+</div>

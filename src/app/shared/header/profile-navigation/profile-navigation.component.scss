@@ -1,0 +1,94 @@
+@import '../../../../mixin.scss';
+
+.profile{
+    @include dFlex;
+    flex-wrap: nowrap;
+    .name{
+        @include figtree($fw: 500, $fs: 24px, $c: var(--text-black));
+        text-wrap: nowrap;
+        padding-right: 24px;
+
+        @include respond-to-maxWidth(large) {
+            display: none;
+        }
+    }
+    .profileButton{
+        width: 100%;
+        padding: 0px 16px;
+        @include respond-to-maxWidth(large) {
+            padding: 0px 0px;
+        }
+        img{
+            display: flex;
+            align-items: center;
+            @include  image($br: 0);
+            @include  heightWidth($w: 70px, $h: 70px);
+            border-radius: 50%;
+            border: 5px solid transparent;
+
+            @include respond-to-maxWidth(large) {
+                @include  heightWidth($w: 50px, $h: 50px);
+            }
+
+            &:hover{
+                cursor: pointer;
+                border: 5px solid var(--green);
+            }
+        }
+    }
+    mat-icon{
+        @include materialSymbols($c: var(--text-black), $fs: 24px);
+    }
+    &:hover{
+        cursor: pointer;
+        .profilePicture{
+            border: 4px solid #92C83E;
+            box-sizing: border-box;
+            border-radius: 100px;
+        }
+    }
+}
+
+.profilePicture{
+    transition: border 0.125s ease-in-out;
+   @include heightWidth($w: 70px, $h: 70px);
+    position: relative;
+    @include respond-to-maxWidth(large) {
+        display: none;
+    }
+
+
+    img{
+        @include image($br: 50%);
+        height: 100%;
+    }
+
+    .statusSymbol{
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        height: 16px;
+        width: 16px;
+    }
+}
+
+
+.card{
+    border-top-right-radius: 0px;
+    @include padding(45px, 40px, 45px, 40px);
+    @include dFlex(start, center);
+   gap: 38px; 
+   flex-direction: column;
+
+
+   border-top-right-radius: 0px !important;
+}
+
+
+::ng-deep .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text{
+    color: var(--text-black) !important;
+    transition: color 0.1s ease-in-out;
+    &:hover{
+        color: var(--purple-1) !important;
+    }
+}

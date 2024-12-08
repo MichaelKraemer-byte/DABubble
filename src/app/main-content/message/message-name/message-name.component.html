@@ -1,0 +1,4 @@
+<div class="name" [ngClass]="messageService.checkUser(message) ? 'row-reverse flex-end' : 'flex-start'">
+    <h5 (click)="memberService.openProfileUser(message.user)" [ngClass]="messageService.checkUser(message) ? 'ml' : 'mr'">{{message.name}}</h5>
+    <p>{{message.time}}</p>
+</div>

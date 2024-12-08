@@ -1,0 +1,20 @@
+<div *ngIf="isMessageHover" class="options"   [ngClass]="{
+  'option-menu': !messageService.checkUser(message), 
+  'thread-active': isThread,
+}">
+  <div class="option-btn-container" (click)="reactionMessage('rocket')"><img src="/img/reactions/rocket.svg" alt=""></div>
+  <div class="option-btn-container" (click)="reactionMessage('like')"><img src="/img/reactions/like.svg" alt=""></div>
+  <div class="option-btn-container" (click)="toggleEmojis($event)"><mat-icon class="icon">sentiment_satisfied</mat-icon></div>
+  <div class="option-btn-container" (click)="openThread()"><mat-icon class="icon">comment</mat-icon></div>
+  <div class="option-btn-container" *ngIf="messageService.checkUser(message)" (click)="openEditMenu()"><mat-icon class="icon">more_vert</mat-icon></div>
+
+  <div class="edit-message-menu" *ngIf="isMessageEditMenuOpen">
+    <button (click)="toggleEditMode()">Edit</button>
+    <button (click)="handleOnDelete()">Delete</button>
+  </div>
+
+  <div class="emojis-container" *ngIf="openEmojis"  [ngClass]="messageService.checkUser(message) ? 'emojis-container' : 'emojis-container-member'">>
+      <emoji-mart [style] =" { width: 100 } " title="Pick your emoji…" emoji="point_up" (emojiClick)="addEmoji($event)"></emoji-mart>
+
+  </div>
+</div>

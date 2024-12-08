@@ -1,0 +1,137 @@
+@import '../../../mixin.scss';
+::ng-deep .cdk-overlay-container {
+    background-color: rgba(7, 4, 29, 0.65);
+    @include heightWidth;
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+}
+
+::ng-deep .mat-elevation-z2, .mat-mdc-elevation-specific.mat-elevation-z2 {
+    box-shadow: none !important;
+}
+
+::ng-deep .mat-mdc-menu-panel {
+    margin-top: 36px;
+    width: 275px;
+    background-color: transparent !important;
+    filter: drop-shadow(0 -16px 12px rgba(3, 0, 34, 0.15));
+
+    @include  respond-to-maxWidth(large){   
+        margin-top: 0x;
+        width: 100% !important;
+        position: fixed;
+        bottom: 0px;
+        top: auto;
+        left: 0px;
+        right: auto;
+        max-width: 1440px !important; 
+        transform: translateY(200px);
+        animation: slied-in 0.525s ease-in-out forwards;
+    }
+
+    @keyframes slied-in {
+        from {
+            transform: translateY(300px);
+        }
+
+        to{
+            transform: translateY(0px);
+        }
+    }
+
+    .mat-mdc-menu-content {
+
+        border-radius: 36px 0px 36px 36px;
+        background-color: var( --secundary-bg);
+        @include dFlex;
+        flex-direction: column;
+
+        @include  respond-to-maxWidth(large){  
+            opacity: 0;
+            padding-bottom: 36px;
+            border-radius: 36px 36px 0px 0px;
+            padding-top: 56px;
+            animation: fade-in 0.25s linear forwards;
+        }
+    }
+
+    @keyframes fade-in {
+        75%{
+            opacity: 0;
+        }
+        100%{
+            opacity: 1;
+        }
+    }
+
+    .mat-mdc-menu-item-text{
+        padding: 4px 0px;
+        font-size: 21px !important;
+    }
+
+    .matMenu-item {
+        @include dFlex;
+        width: 100%;
+        mat-icon {
+          display: none;
+          transition: color 0.125s ease-in-out;
+      
+          @include respond-to-maxWidth(large) {
+            display: flex;
+          }
+        }
+        .outline {
+          @include materialSymbols;
+        }
+        &:hover {
+          mat-icon {
+            color: var(--purple-1);
+          }
+          button {
+            .mat-mdc-menu-item-text {
+              color: var(--purple-1);
+            }
+          }
+        }
+      }
+      
+
+    .mobilDekor{
+        display: none;
+        @include respond-to-maxWidth(large){     
+            display: flex;   
+            background-color: var(--border-light-purple);
+            width: 75%;
+            height: 6px;
+            max-width: 124px;
+            border-radius: 36px;
+            margin-bottom: 56px;
+        }
+    }
+
+    .mat-mdc-menu-item{
+        margin: 4px 0px;
+        width: 75%;
+        border-radius: 36px;
+        color: var(--text-black) ;
+
+        &:hover{
+            background-color: var(--primary-bg) !important;
+            color: var(--text-blue) ;
+        }
+
+        @include  respond-to-maxWidth(large){  
+            &:hover{
+                background-color: transparent !important;
+                color: var(--text-blue) ;
+            }
+        }
+
+        span{
+            @include dFlex;
+            @include  respond-to-maxWidth(large){  
+                justify-content: flex-start;
+            }
+        }
+    }
+}

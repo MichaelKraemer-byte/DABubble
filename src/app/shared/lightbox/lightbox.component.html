@@ -1,0 +1,13 @@
+<div class="lightbox-main-wrapper" [class.fade-out]="lightbox.setAnimationOff" (click)="lightbox.closeLightBox()">
+    <div class="lightbox-content-wrapper">
+        <div class="lightbox-whitebox-wrapper"  (click)="lightbox.stopPropagation($event)" [class.slide-out]="lightbox.setAnimationOff" >
+            <div class="whitebox-menu-wrapper">
+                <div class="step-back-button" (click)="lightbox.closeLightBox()"><mat-icon>arrow_back</mat-icon></div>
+            </div>
+            <div class="whitebox-content-wrapper">
+                <!-- Content Here -->
+                 <app-privacy-policy></app-privacy-policy>
+            </div>
+        </div>
+    </div>
+</div>

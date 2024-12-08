@@ -1,0 +1,30 @@
+<div class="card">
+    <div class="titleAndCloseContainer">
+        <h2>Member</h2>
+        <mat-icon (click)="dialogRef.close()" class="closeButton">close</mat-icon>
+    </div>
+
+    <form>
+          <input type="text"
+                 placeholder="Search Members..."
+                 matInput
+                 [formControl]="myControl"
+          >
+          <div class="memberListContainer">
+            <div class="contact" (click)="this.dialogRef.close(); memberService.openProfileUser(member.id)" *ngFor="let member of (filteredMembers$ | async)">
+              <div class="contactPictureContainer">
+                <img class="contactPicture" [src]="member.imageUrl" alt="User picture">
+                <img class="onlineStatus" [src]="member.status ? '/img/profile-pic/online.svg' : '/img/profile-pic/offline.svg'" alt="User status">
+              </div>
+              <span>{{ member.name }}</span>
+            </div>
+          </div>            
+    </form>
+
+    <div class="add-members-container" (click)="openAddMembersToChannelDialog()">
+      <button>
+        <mat-icon class="add-members">person_add</mat-icon>
+      </button>
+      <p>Add members</p>
+    </div>
+</div>

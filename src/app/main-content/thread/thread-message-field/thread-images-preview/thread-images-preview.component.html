@@ -1,0 +1,6 @@
+<div class="imgaes-preview-container">
+    <div class="image-container" *ngFor="let attachment of storageService.messageImagesThread; let i = index">
+        <img [src]="attachment" alt="Bildvorschau">
+        <button (click)="deleteImage(attachment, i)" class="edite-images"><mat-icon>delete</mat-icon></button>
+    </div>
+  </div>

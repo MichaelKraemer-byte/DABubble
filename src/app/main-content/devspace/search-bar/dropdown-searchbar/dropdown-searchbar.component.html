@@ -1,0 +1,49 @@
+  <div class="dropdown" *ngIf="showDropdown || displayHints" >
+    <div *ngIf="displayHints">
+      <div class="dropDownItem" *ngFor="let hint of allHints; let i = index" 
+           [class.active]="i === activeDropdownIndex" 
+           (click)="selectDropdownItem()"
+           (mouseover)="setActiveDropdownIndex(i)"
+          >
+        <span class="basicSearchSpan"><mat-icon>info</mat-icon>{{ hint }}</span>
+      </div>
+    </div>
+    
+    <div *ngIf="!displayHints">
+      <div *ngIf="searchbarMember.length > 0">
+        <div class="dropDownItem" *ngFor="let member of searchbarMember; let i = index" 
+             [class.active]="i === activeDropdownIndex" 
+             (click)="selectDropdownItem()"
+             (mouseover)="setActiveDropdownIndex(i)"
+             >
+          <div class="searchBarContact">
+            <div class="contactPictureContainer">
+              <img class="contactPicture" [src]="member.imageUrl" alt="User picture" *ngIf="member.imageUrl">
+              <img class="onlineStatus" [src]="member.status ? '/img/profile-pic/online.svg' : '/img/profile-pic/offline.svg'" alt="User picture" *ngIf="member.status !== undefined">
+            </div>
+            <span class="searchBarSpan">{{ member.name }} @if(member.id === (this.currentMember$ | async )?.id) {(You)}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div *ngIf="searchbarChannel.length > 0">
+        <div class="dropDownItem" *ngFor="let channel of searchbarChannel; let i = index" 
+             [class.active]="i === activeDropdownIndex" 
+             (click)="selectDropdownItem()"
+             (mouseover)="setActiveDropdownIndex(i)"
+             >
+          <span class="basicSearchSpan">{{ channel.title }}</span>
+        </div>
+      </div>
+      
+      <div *ngIf="messages.length > 0">
+        <div class="dropDownItem" *ngFor="let message of messages; let i = index" 
+             [class.active]="i === activeDropdownIndex" 
+             (click)="selectDropdownItem()"
+             (mouseover)="setActiveDropdownIndex(i)"
+             >
+          <span class="basicSearchSpan">{{ message.message }}</span>
+        </div>
+      </div>
+    </div>
+  </div>

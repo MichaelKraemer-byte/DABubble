@@ -1,0 +1,42 @@
+<div class="content-inside-wrapper">
+    <div class="flow">
+        <div (click)="navigation.navToPage(1)" class="step-back-button"><mat-icon>arrow_back</mat-icon></div>
+        <h1>Choose Your Avatar</h1>
+    </div>
+
+    <div class="currentProfil"><img [src]="defaultImage ? defaultImage : './img/profile-pic/001.svg'"></div>
+    <div class="currentName" [innerHTML]="signUp.fullName"></div>
+    <p class="string">Choose your avatar....</p>
+    <div class="default-presets">
+        <div [ngClass]="{'active': indexNumber === 1}" (click)="selectPicture('./img/profile-pic/001.svg', 1)"><img src="./img/profile-pic/001.svg"></div>
+        <div [ngClass]="{'active': indexNumber === 2}" (click)="selectPicture('./img/profile-pic/002.svg', 2)"><img src="./img/profile-pic/002.svg"></div>
+        <div [ngClass]="{'active': indexNumber === 3}" (click)="selectPicture('./img/profile-pic/003.svg', 3)"><img src="./img/profile-pic/003.svg"></div>
+        <div [ngClass]="{'active': indexNumber === 4}" (click)="selectPicture('./img/profile-pic/004.svg', 4)"><img src="./img/profile-pic/004.svg"></div>
+        <div [ngClass]="{'active': indexNumber === 5}" (click)="selectPicture('./img/profile-pic/005.svg', 5)"><img src="./img/profile-pic/005.svg"></div>
+        <div [ngClass]="{'active': indexNumber === 6}" (click)="selectPicture('./img/profile-pic/006.svg', 6)"><img src="./img/profile-pic/006.svg"></div>
+    </div>
+
+    <div class="errorPicture">
+        @if(fileError){
+           <p>{{ fileError}}</p>
+            }
+    </div>
+
+    <div class="set-left">
+        <p>Or you can</p>
+
+        <button class="specialButton">Upload Pic
+            <input class="hideInput" (change)="onFileSelected($event)" accept="image/*" type="file" id="myfile" name="myfile">
+        </button>
+
+        <div class="previewImage">        
+            @if(previewUrl){
+            <img [src]="previewUrl" alt="Vorschau">
+            }
+         </div>
+      
+    </div>
+        <div class="set-right"> <button [disabled]="!selectedImage" (click)="onSubmit()">Create Account</button> </div>
+
+</div>
+

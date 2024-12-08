@@ -1,0 +1,167 @@
+@import '../../../mixin.scss';
+
+
+.card{
+    @include padding(45px, 48px, 45px, 48px);
+    @include dFlex(center, start);
+   gap: 16px; 
+   flex-direction: column;
+   border-top-right-radius: 0px !important;
+   @include respond-to-maxWidth(small){
+    @include padding(32px, 20px, 32px, 20px);
+   }
+}
+
+.closeButton {
+    border-radius: 50px;
+    padding: 4px;
+    &:hover{
+    cursor: pointer;
+    background-color: #DEE1F0;
+    }
+}
+
+.contactPicture{
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    object-fit: cover;
+}
+
+.contactPictureContainer {
+    position: relative;
+    @include dFlex(start, center)
+}
+
+.onlineStatus {
+    position: absolute;
+    right: 0px;
+    bottom: 6px;
+}
+
+.contact{
+    transition: background-color 0.125s ease-in-out;
+    border-radius: 50px;
+    @include dFlex(start, center);
+    gap: 16px;
+    @include padding (4px, 24px, 4px, 24px);
+    width: fit-content;
+    @include nunito (400, 18px, black);
+    margin-top: 12px;
+    span{
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 180px;
+        @include respond-to-maxWidth(small){
+            max-width: 148px;
+        }
+    }
+    &:hover {
+        background-color: #ECEEFE;
+        cursor: pointer;
+    }
+    @include respond-to-maxWidth(small){
+        @include padding (4px, 8px, 4px, 8px);
+    }
+}
+
+input {
+    outline: none;
+    @include padding(16px 20px 16px 20px);
+    padding: 16px 20px;
+    border-radius: 50px;
+    @include nunito(400, 18px, black);
+    border: 1px solid var(--border-light-purple);
+    transition: border 0.125s ease-in-out;
+    margin-bottom: 8px;
+    &:hover,
+    &:focus {
+        border: 1px solid var(--purple-1);
+    }
+}
+
+.titleAndCloseContainer{
+    @include dFlex(space-between, center);
+    @include nunito(700, 24px, black);
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+h2{
+    margin: 0px;
+    @include nunito(700, 32px, black);
+}
+
+::ng-deep .mat-mdc-dialog-surface {
+    overflow-y: unset;
+}
+
+.add-members-container {
+    @include heightWidth($w: auto, $h: 100%);
+    @include dFlex($ai: center, $jc: center);
+    transition: background-color 0.125s ease-in-out;
+    @include padding(12px, 24px, 12px, 24px);
+    border-radius: 50px;
+    margin-top: 16px;
+    button{
+        @include heightWidth($w: 40px, $h: 40px);
+        @include dFlex();
+        border: none;
+        background-color: var(--dg-btn-bg);
+        border-radius: 50px;
+        cursor: pointer;
+    }
+    mat-icon{
+        transition: color 0.125s ease-in-out, transform 0.125s ease-in-out;
+    }
+    p {
+        transition: color 0.125s ease-in-out;
+        @include nunito(600, 20px, black);
+        margin: 0px 0px 0px 16px;
+    }
+    &:hover{
+        color: var(--purple-1);
+        background-color: var(--dg-btn-bg);
+        cursor: pointer;
+        button {
+            color: var(--purple-1);
+            mat-icon{
+                transform: scale(1.2);
+                color: var(--purple-1);
+            }
+        }
+        p{
+            color: var(--purple-1)  !important;
+        }
+    }
+
+}
+
+.memberListContainer{
+    @include dFlex(center, start);
+    flex-direction: column;
+    max-height: 320px !important;
+    overflow: auto;
+    max-width: 260px;
+    scrollbar-width: none;
+    @include respond-to-maxWidth(small){
+        @include padding(8px, 8px, 8px, 8px);
+        left: 8px;
+        width: 280px;
+    }
+}
+
+.closeButton {
+    border-radius: 50px;
+    padding: 4px;
+    transition: background-color 0.125s ease-in-out;
+    &:hover{
+    cursor: pointer;
+    background-color: var(--dg-btn-bg);
+    mat-icon {
+        transform: scale(1.1);
+        color: var(--purple-1);
+    }
+    }
+}

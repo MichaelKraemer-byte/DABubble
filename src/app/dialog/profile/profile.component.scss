@@ -1,0 +1,232 @@
+@import '../../../mixin.scss';
+
+:ng-deep .mat-mdc-dialog-surface,
+:ng-deep mat-dialog-container,
+:ng-deep .mdc-dialog--open .mat-mdc-dialog-surface,
+:ng-deep .mdc-dialog--closing, :ng-deep .mat-mdc-dialog-surface
+{
+    width: auto !important;
+    height: auto !important;
+    position: absolute !important;
+    border-top-right-radius: 0px !important;
+}
+
+.custom-dialog .mat-mdc-dialog-surface {
+    width: auto !important;
+    height: auto !important;
+    position: absolute !important;
+    border-top-right-radius: 0px !important;
+}
+
+.card{
+    @include padding(45px, 40px, 45px, 40px);
+    @include dFlex(start, center);
+   gap: 38px; 
+   flex-direction: column;
+   border-top-right-radius: 0px !important;
+   @include respond-to-maxWidth(small){
+    @include padding(24px, 20px, 24px, 20px);
+    gap: 16px; 
+   }
+}
+
+.custom-dialog .mat-mdc-dialog-surface{
+        /* Custom scrollbar styling */
+        &::-webkit-scrollbar {
+            width: none;
+        }
+}
+
+.closeButton {
+    border-radius: 50px;
+    padding: 4px;
+    &:hover{
+    cursor: pointer;
+    background-color: #DEE1F0;
+    }
+}
+
+.row{
+    width: 100%;
+    @include dFlex(space-between, center);
+}
+
+.startRow{
+    width: 100%;
+    @include dFlex(start, center);
+}
+
+h3{
+    margin: 0px !important;
+    @include nunito(700, 24px, black);
+}
+
+h4{
+    margin: 0px !important;
+    @include nunito(700, 20px, black);
+}
+
+h2 {
+    margin: 0 !important; 
+    font-family: 'Nunito', sans-serif; 
+    font-weight: 700; 
+    font-size: 32px !important; 
+    color: black; 
+    max-width: 300px;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+
+    button {
+        font-family: 'Nunito', sans-serif;
+        font-weight: 600;
+        font-size: 18px;
+        color: var(--purple-3);
+    }
+}
+
+.mat-mdc-button{
+    transition: background-color 0.125s ease-in-out;
+}
+
+.mdc-button{
+    padding: 8px !important;
+    min-width: 0px !important;
+    @include dFlex(center, center);
+}
+
+.mdc-button__label{
+    transition: color 0.125s ease-in-out;
+}
+
+.mat-mdc-button .mdc-button__label{
+    color: var(--purple-3);
+}
+
+.mdc-button:hover{
+    background-color:  var(--purple-2);
+    .mdc-button__label{
+        color: white !important;
+    }
+    .edit-pen{
+        color: white;
+    }
+}
+
+.m-t-16{
+    margin-top: 16px;
+}
+
+.icon{
+    width: 30px;
+    height: 30px;
+    margin-right: 8px;
+}
+
+
+a{
+    margin-left: 38px;
+    text-decoration: none;
+    @include nunito(500, 18px, #1381FF);
+}
+
+.profileImage{
+    width: 200px;
+    height: 200px;
+    border-radius: 500px;
+    object-fit: cover;
+}
+
+.textInput {
+    @include padding(15px, 20px, 15px, 20px);
+    @include nunito(500, 18px, black);
+    border: 1px solid #ADB0D9;
+    border-radius: 50px;
+    &:hover{
+        border: 1px solid var(--purple-1);
+    }
+    &:focus{
+        outline: 0px;
+    }
+}
+
+.editRow{
+    width: 100%;
+    @include dFlex(start, center);
+}
+
+.status,
+.emailTitle
+{ 
+    font-family: 'Nunito';
+    font-size: 20px;
+    font-weight: 600;
+    margin-left: 8px;
+}
+
+.buttonRow{ 
+    @include dFlex(center, center);
+    gap: 24px;
+    width: 100%;
+    button{
+        font-size: 18px !important;
+        box-sizing: border-box !important;
+        padding: 12px 25px 12px 25px !important;
+        transform: border 0.3s ease-in-out, background-color  0.3s ease-in-out, color 0.3s ease-in-out;
+    }
+    .cancelButton{
+        background-color: white !important;
+        border: 1px solid #444DF2;
+        color: var(--purple-1) !important;
+        &:hover{
+            border: 1px solid #444DF2;
+            background-color: #444DF2 !important;
+            color: white !important; 
+        }
+    }
+    .saveButton{
+        background-color: #444DF2 !important;
+        transition: background-color 0.125s ease-in-out;
+        &:hover{
+            background-color: var(--purple-2);
+        }
+    }
+}
+
+.fileInput {
+    position: absolute;    
+  }
+  
+  .fileInput input[type="file"] {
+    display: none;
+  }
+  
+  .fileInput button {
+    padding: 0; 
+  }
+  
+  .fileInput mat-icon {
+    font-size: 24px; 
+    color: #3f51b5; 
+    cursor: pointer; 
+  }
+  
+  .fileInput button:hover mat-icon {
+    color: #1a73e8; 
+  }
+
+  .edit-pen{
+    color: #3f51b5;
+  }
+
+  .mat-mdc-button>.mat-icon {
+    margin: 0px !important;
+  }
+  
+  .mat-typography h2{
+    @include nunito(600, 28px, black);
+  }
+  
+  .custom-dialog .mat-mdc-dialog-surface{
+    scrollbar-width: none;
+  }

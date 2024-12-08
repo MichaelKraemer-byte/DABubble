@@ -1,0 +1,160 @@
+@import '../../../mixin.scss';
+
+::ng-deep .mat-mdc-dialog-surface {
+    flex-direction: row;
+    overflow-x: none;
+  }
+
+section {
+    height: auto;
+    width: 500px;
+    box-sizing: border-box;
+    padding: 40px;
+
+
+    @media(max-width: 550px) {
+    width: 100vw;
+    padding: 20px;
+    }
+    @media(max-width: 350px) {
+    width: 100vw;
+    padding: 10px;
+    }
+
+
+}
+
+.title-container {
+    @include dFlex($jc: space-between);
+    width: 100%;
+
+    h2 {
+        @include nunito($fw: 700, $fs: 24px, $c: black);
+    }
+
+    .close-btn {
+        @include dFlex();
+        border: none;
+        width: 30px;
+        height: 30px;
+        background-color: transparent;
+        outline: none;
+        @include nunito($fw: 700, $fs: 20px, $c: black);
+        cursor: pointer;
+
+
+        &:hover {
+            border-radius: 50%;
+            background-color: #ECEEFE;
+        }
+    }
+}
+
+.profile-image-container {
+    width: 100%;
+    @include dFlex($jc: center);
+    margin-bottom: 30px;
+}
+
+.profile-img {
+    object-fit: cover;
+    object-position: center;
+    width: 50%;
+    border-radius: 50%;
+}
+
+h3 {
+    @include nunito($fw: 700, $fs: 34px, $c: black);
+    margin-bottom: 20px;
+
+    @media(max-width: 420px) {
+        @include nunito($fw: 700, $fs: 28px, $c: black);
+        margin-bottom: 20px;
+    }
+}
+
+.active-container {
+    @include dFlex($jc: start);
+    margin-bottom: 45px;
+
+    .active-text {
+        @include nunito($fw: 400, $fs: 20px, $c: #92C83E);
+    }
+
+    .offline-text {
+        @include nunito($fw: 400, $fs: 20px, $c: gray);
+    }
+}
+
+.active-point {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.email-container {
+    @include dFlex($jc: start);
+    margin-bottom: 20px;
+
+    mat-icon {
+        @include materialSymbols($c: black, $fs: 20px);
+    }
+
+    p {
+        @include nunito($fw: 700, $fs: 20px, $c: black);
+        margin-left: 10px;
+    }
+}
+
+.email-adress {
+    @include nunito($fw: 400, $fs: 20px, $c: blue);
+    margin-left: 35px;
+
+    @media(max-width: 420px) {
+        @include nunito($fw: 400, $fs: 18px, $c: blue);
+        margin-left: 0px;
+    }
+}
+
+.message-btn-container {
+    width: 100%;
+    @include dFlex();
+    margin-top: 30px;
+
+    .message-btn {
+        @include dFlex();
+        border: none;
+        background-color: #444DF2;
+        border-radius: 30px;
+        padding: 10px 25px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #797EF3;
+        }
+
+        @media(max-width: 420px) {
+            padding: 5px 20px;
+        }
+
+
+        mat-icon {
+            @include materialSymbols($c: white, $fs: 24px);
+            margin-right: 10px;
+
+            @media(max-width: 420px) {
+                @include materialSymbols($c: white, $fs: 20px);
+                margin-right: 10px;
+            }
+        }
+
+        p {
+            @include nunito($fw: 700, $fs: 24px, $c: white);
+
+            @media(max-width: 420px) {
+                @include nunito($fw: 700, $fs: 20px, $c: white);
+            }
+        }
+    }
+}

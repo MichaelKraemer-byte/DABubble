@@ -1,0 +1,49 @@
+@import '../../../../mixin.scss';
+
+.postet-image-container {
+    width: 100%;
+    @include dFlex($jc: start);
+    margin-bottom: 10px;
+    gap: 10px;
+    flex-wrap: wrap;
+    position: relative;
+
+    .image-container {
+        position: relative;
+    }
+
+    .image {
+        height: 200px;
+        width: 200px;
+        border-radius: 5px;
+        object-fit: cover;
+        object-position: center;
+
+        @media(max-width: 440px) {
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    .edit-images {
+        position: absolute;
+        top: 0;
+        right: 0;
+        border: none;
+        color: rgba(255, 0, 0, 0.753);
+        background-color: var(--btn-gray);
+        cursor: pointer;
+    }
+}
+
+.flex-end {
+    @include dFlex($jc: end);
+}
+
+.flex-start {
+    @include dFlex($jc: start);
+}
+
+mat-icon {
+    @include materialSymbols($c: red, $fs: 24px);
+    }

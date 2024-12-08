@@ -1,0 +1,135 @@
+@import '../../../mixin.scss';
+
+.lightbox-main-wrapper{
+    z-index: 999;
+    @include heightWidth($w: 100%, $h: 100%);
+    position: fixed;
+    top:0px;
+    left: 0px;
+    background-color: rgba(0, 3, 22, 0.8);
+    backdrop-filter: blur(3px);
+    @include dFlex($jc: center, $ai: center);
+    animation: fade-in 0.7s ease-in-out forwards;
+}
+
+.lightbox-content-wrapper{
+    @include dFlex($jc: center, $ai: center);
+    @include heightWidth($w: 100%, $h: 100%);
+    max-width: 1920px;
+    height: 100%; 
+    flex-direction: column;
+}
+
+.whitebox-content-wrapper::-webkit-scrollbar{
+    display: none;
+}
+
+.whitebox-content-wrapper{
+    overflow-y: auto; 
+    height: calc(100%); 
+    padding: 45px 12px;
+    box-sizing: border-box; 
+}
+
+.lightbox-whitebox-wrapper{
+    @include heightWidth($w: 100%, $h: 100%);
+    max-width: 800px;
+    max-height: 85vh;
+    background-color: var(--secundary-bg);
+    border-radius: 32px;
+    border: 24px solid var(--secundary-bg);
+    transform: translateX(300px);
+    opacity: 0;
+    animation: slide-in 0.5s ease-in-out forwards;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0px 2px 15px rgba(0, 1, 31, 0.7);
+
+    @include respond-to-maxWidth(medium) {
+        width: 80%;
+        border: 8px solid var(--secundary-bg);
+        padding: 8px;
+    }
+}
+
+.slide-out{
+    animation: slide-out 0.5s ease-in-out forwards;
+}
+
+.fade-out{
+    animation: fade-out 0.7s ease-in-out forwards;
+}
+
+.whitebox-menu-wrapper{
+    @include dFlex ($jc: start, $ai: start);
+    width: 100%;
+    padding: 12px 0px;
+    margin-top: -12px;
+    position: relative;
+
+    &::after{
+        opacity: 0.2;
+        content: '';
+        width: 100%;
+        height: 4px;
+        position: absolute;
+        bottom: -4px;
+        background: linear-gradient(180deg, var(--text-black) 0%, rgba(0,0,0,0) 80%);
+    }
+}
+
+
+.step-back-button{
+    height: clamp(18px, 4vw, 24px);
+    width: clamp(18px, 4vw, 24px);
+    @include materialSymbols;
+    font-size: 24px;
+    color: var(--text-black);
+    text-align: center;
+    @include dFlex;
+    border-radius: 50%;
+    padding: 13px 13px;
+    border: 1px solid transparent;
+
+    mat-icon{
+        font-size: clamp(18px, 4vw, 24px);
+    }
+
+    &:hover{
+        color: var(--text-blue);
+        border-color: var( --purple-3);
+        cursor: pointer;
+    }
+}
+
+@keyframes slide-in {
+    to{
+        opacity: 1;
+        transform: translateX(0px);  
+    }
+}
+
+@keyframes fade-in {
+    to{
+        opacity: 1;  
+    }
+}
+
+@keyframes slide-out {
+    from{
+        opacity: 1;
+        transform: translateX(0px);   
+    }
+    to{
+        opacity: 0;
+        transform: translateX(-300px);  
+    }
+}
+
+@keyframes fade-out {
+    to{
+        opacity: 0; 
+    }
+}

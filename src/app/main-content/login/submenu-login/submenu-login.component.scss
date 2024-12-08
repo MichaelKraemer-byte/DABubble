@@ -1,0 +1,72 @@
+@import '../../../../mixin.scss';
+.submenu{
+    @include heightWidth($w: 100%, $h: auto);
+    @include dFlex;
+    margin-top: 12px;
+    padding-bottom: 24px;
+
+    @include respond-to-maxWidth(medium) {
+        margin-top: 18px;
+    }
+
+    .mobil{
+        @include respond-to-maxWidth(medium) {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+            margin-block-start: 0px;
+            margin-block-end: 0px;
+            padding-inline-start: 0px;
+            text-align: center;
+
+            li{
+                @include figtree($fw: 400, $fs: clamp(16px,4vw,18px), $c: var(--text-light-black));
+                margin-bottom: 16px;
+                font-weight: 400;
+            }
+
+            a{
+                @include figtree($fw: 400, $fs: clamp(16px,4vw,18px), $c: var(--text-blue));
+                padding: 8px 16px;
+                border: 1px solid transparent;
+                border-radius: 36px;
+                text-wrap: nowrap;
+                &:hover{
+                    cursor: pointer;
+                    border-color: var(--purple-3);
+                    color: var(--text-blue);
+                }
+            }
+        }
+        display: none
+
+    }
+
+    .nonMobil{
+        @include dFlex;
+        list-style: none;
+        margin-block-start: 0px;
+        margin-block-end: 0px;
+        padding-inline-start: 0px;
+
+        @include respond-to-maxWidth(medium) {
+            display: none
+        }
+
+        a{          
+            @include figtree($fw: 400, $fs: clamp(16px,4vw,18px), $c: var(--purple-2));
+            margin: 0px 16px;
+            padding: 8px 16px;
+            border: 1px solid  transparent;
+            border-radius: 36px;
+            text-wrap: nowrap;
+
+            &:hover{
+                cursor: pointer;
+                border-color: var(--purple-3);
+                color: var(--text-blue);
+            }
+        }
+    }
+}

@@ -1,0 +1,47 @@
+<div  *ngIf="mainContentService.navBarIsClosed$ | async" @toggleNavBar class="serverNav nav-Bar">
+    <div class="serverNavContent nav-item" mode="side">
+        <app-search-bar-for-devspace></app-search-bar-for-devspace>
+        <div class="titleRow">
+            <div class="titleAndServerSvg">
+                <img src="/img/devspace/titleAndServerSvg.svg">
+                <h2>Devspace</h2>
+            </div>
+            <button class="writeMessageButton" mat-icon-button (click)="openWriteAMessage()">
+                <mat-icon>edit_square</mat-icon>
+            </button>
+        </div>
+        <app-channel-list
+        [channels]="channels"
+        [channelsAreVisible]="channelsAreVisible"
+        (toggleChannels)="dropChannels()"
+        (createChannel)="openCreateChannelDialog()"
+        (selectChannel)="messageService.checkWindowAndOpenChannel($event)"
+        ></app-channel-list>
+        <app-contact-list
+        [contactsAreVisible]="contactsAreVisible"
+        [members]="members"
+        [currentMember]="currentMember"
+        (toggleContacts)="dropContacts()"
+        (selectContact)="openDirectMessage($event)">
+        </app-contact-list>
+    </div>
+</div>
+
+
+<button type="button" class="toggleNavBarButton" (click)="mainContentService.toggleNavBar()">
+    @if (mainContentService.navBarIsClosed$ | async) {
+    <span>Workspace Menü öffnen</span>
+    } @else {
+    <span>Workspace Menü schließen</span>
+    }
+    <svg [ngStyle]="{'transform': (mainContentService.navBarIsClosed$ | async) ? 'rotate(90deg)' : 'rotate(-90deg)'}" xmlns="http://www.w3.org/2000/svg" width="18" height="19" viewBox="0 0 18 19" fill="none">
+        <rect x="1" y="1.5" width="16" height="16" rx="1" stroke="black" stroke-width="2" />
+        <path d="M6.71436 1.49997V17.5" stroke="black" stroke-width="2" />
+        <path d="M10.143 11.7857L12.0752 9.85354C12.2704 9.65828 12.2704 9.3417 12.0752 9.14644L10.143 7.21428"
+            stroke="black" stroke-width="2" stroke-linecap="round" />
+    </svg>
+</button>
+
+<button *ngIf="mainContentService.navBarIsClosed$ | async" class="mobileWriteAMessageButton" (click)="openWriteAMessage()">
+  <mat-icon class="editSquareIconAtMobileWriteAMessageButton">edit_square</mat-icon>
+</button>

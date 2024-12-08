@@ -1,0 +1,33 @@
+<form class="dialogWindow" #channelForm="ngForm">
+    <mat-icon (click)="dialogRef.close()" class="closeIcon">close</mat-icon>
+    <h2>Create Channel</h2>
+    <p>Channels are for your team’s communication. Ideally, they should be topic-based — for example, #marketing.</p>
+    
+    <!-- Channel Name Field with Validation -->
+    <h3>Channel Name</h3>
+    <div class="input-container">
+        <span class="hash-symbol">#</span>
+        <input [(ngModel)]="channel.title" 
+               name="title" 
+               #channelTitle="ngModel" 
+               required 
+               placeholder="Office-Team" 
+               type="text" 
+               class="input-field">
+    </div>
+    <!-- Validation Message -->
+    <div *ngIf="channelTitle.invalid && showError" class="validation-error">
+        Channel Name is required.
+    </div>
+
+    <h3>Description <span> (optional)</span></h3>
+    <textarea placeholder="Your description here" type="text" class="text-field" [(ngModel)]="channel.description" name="description"></textarea>
+    
+    <!-- Disable Button if Form is Invalid -->
+    <div class="buttonContainer">
+        <button mat-flat-button (click)="handleButtonClick()" 
+        [ngClass]="channelForm.invalid ? 'button-default' : 'button-error'">
+        Create</button>
+    </div>
+</form>
+

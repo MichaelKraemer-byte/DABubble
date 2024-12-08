@@ -1,0 +1,30 @@
+
+<div class="main-wrapper">
+    <div class="content-wrapper">
+    <app-main-header (backToDevSpaceEvent)="mainContentService.makeDevSpaceAsTopLayer(); this.mainContentService.openNavBar()"></app-main-header>
+    <div class="main-content">
+        <app-devspace 
+            #devSpace
+            [ngClass]="{
+            'focus-app-devSpace': devSpaceAsTopLayer
+            }">
+        </app-devspace>
+        <div class="main-content-wrapper">
+            <app-chat [ngClass]="{
+                'flexUnset': threadIsOpen,
+                'focus-app': chatAsTopLayer, 
+                'hidden': threadAsTopLayer
+                }"
+                (click)="this.mainContentService.closeNavBarForTabletOrMobile()">
+            </app-chat>
+            <app-thread  [ngClass]="{
+                'focus-app-thread': threadAsTopLayer, 
+                'visible': threadIsOpen,
+                }"
+                (click)="this.mainContentService.closeNavBarForTabletOrMobile()">
+            </app-thread>
+        </div>
+    </div>
+    </div>
+</div>
+

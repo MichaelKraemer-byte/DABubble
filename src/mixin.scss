@@ -1,0 +1,121 @@
+$breakpoints: (
+  small: 450px,
+  smallMedium: 600px,
+  semiMedium: 725px,
+  medium: 900px,
+  large: 1285px,
+  XL: 1440px,
+  XXL: 1800px,
+);
+
+@mixin respond-to-maxWidth($breakpoint) {
+    $max-width: map-get($breakpoints, $breakpoint); 
+
+    @if $max-width {
+      @media (max-width: $max-width) {
+        @content; 
+      }
+    }
+}
+
+@mixin respond-to-minWidth($breakpoint) {
+    $min-width: map-get($breakpoints, $breakpoint); 
+
+    @if $min-width {
+      @media (min-width: $min-width) {
+        @content;
+      }
+    }
+}
+
+@mixin dFlex($jc: center, $ai: center) {
+    display: flex;
+    justify-content: $jc;
+    align-items: $ai;
+}
+
+@mixin aLinks() {}
+
+@mixin btn() {}
+
+@mixin input() {
+    border: none;
+    background-color: var(--secundary-bg);
+    border: none;
+    &:active,
+    &:focus,
+    &:hover {
+        border: none;
+        background-color: none;
+        outline: none;
+    }
+    &::placeholder {
+        color: var(--btn-gray);
+    }
+}
+
+@mixin nunito($fw: 400, $fs: 16px, $c: var(--text-black)) {
+    font-family: 'Nunito' !important;
+    font-weight: $fw !important;
+    font-size: $fs !important;
+    color: $c !important;
+    margin-block-end: 0;
+    margin-block-start: 0;
+}
+
+@mixin figtree($fw: 400, $fs: 16px, $c: var(--text-black)) {
+    font-family: 'Figtree';
+    font-weight: $fw;
+    font-size: $fs;
+    color: $c;
+    margin-block-end: 0;
+    margin-block-start: 0;
+}
+
+@mixin heightWidth($w: 100%, $h: 100%) {
+    height: $h;
+    width: $w;
+}
+
+@mixin image($br: 0) {
+    border-radius: $br;
+    object-fit: contain;
+    object-position: center;
+    position: relative;
+}
+
+@mixin statusSymbol($bot: -2px, $rig: -2px, $w: 14px, $h: 14px) {
+    bottom: $bot;
+    right: $rig;
+    height: $w;
+    width: $h;
+    border-radius: 50px;
+    position: absolute;
+    background-color: var(--green);
+    border: 2px solid white;
+}
+
+@mixin matIcon($fs: 32px, $p: 0px 12px, $c: var(--btn-gray), $chover: var(--purple-2), $scale: 100%) {
+    color: $c;
+    font-size: $fs;
+    padding: $p;
+    &:hover {
+        cursor: pointer;
+        color: $chover;
+        transform: scale($scale);
+    }
+}
+
+@mixin padding($pt: 20px, $pl: 20px, $pb: 20px, $pr: 20px) {
+    box-sizing: border-box;
+    padding-top: $pt;
+    padding-right: $pr;
+    padding-bottom: $pb;
+    padding-left: $pl;
+}
+
+@mixin materialSymbols($c: var(--text-black), $fs: 16px) {
+    font-family: 'Material Symbols Outlined';
+    color: $c;
+    font-size: $fs;
+}

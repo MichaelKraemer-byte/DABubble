@@ -1,0 +1,76 @@
+@import '../../../mixin.scss';
+
+
+.banner{
+    z-index: 999;
+    position: fixed;
+    right: 0px;
+    bottom: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(74,50,230);
+    background: linear-gradient(-15deg, rgba(74,50,230,1) 0%, rgba(85,191,251,1) 100%);
+    padding: 12px 24px 12px 24px;
+    border-radius: 0px 32px 0px 32px;
+    @include figtree($fw: 400, $fs: clamp(18px, 2vw, 32px), $c: var(--secundary-bg));
+    margin-bottom: 32px;
+    margin-right: 32px;
+    animation: fading 1.75s ease-in-out forwards;
+    transform: translateX(300px);
+}
+
+.content{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    p{
+        margin-top: auto;
+        margin-bottom: auto;
+        color: white;
+        height: 100%;
+        text-wrap: nowrap;
+    }
+}
+
+mat-icon{
+    width: clamp(18px, 2vw, 32px);
+    padding-right: 16px;
+    @include materialSymbols($c: var(--text-black), $fs: clamp(18px, 2vw, 32px));
+}
+
+@keyframes fading {
+    0%{
+        transform: translateX(300px);
+        opacity: 0;
+    }
+
+    15%{
+        opacity: 1;
+    }
+
+    25%{
+        transform: translateX(0px);
+    }
+    
+    75%{
+        transform: translateX(0px);
+        opacity: 1;
+        scale: 1;
+    }
+
+   85%{
+        transform: translateX(-100px);
+        scale: 0.75 ;
+        opacity: 0.5;
+    }
+
+    100%{
+        transform: translateX(500px);
+        opacity: 0;
+        scale: 0.35 ;
+    }
+
+}

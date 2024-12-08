@@ -1,0 +1,47 @@
+@import '../../../../mixin.scss';
+
+section {
+    @include dFlex($jc: space-between);
+    @include heightWidth();
+    box-sizing: border-box;
+    padding: 20px;
+    box-shadow: 0 4px 4px -2px var(--primary-bg);
+}
+
+.thread-header-container {
+    @include dFlex($jc: start);
+
+    h3 {
+        @include nunito($fw: 700, $fs: 25px);
+
+        @media(max-width: 660px) {
+            @include nunito($fw: 700, $fs: 20px);
+        }
+    }
+
+    .hashtag {
+        @include materialSymbols($c: var(--purple-2), $fs: 14px);
+        margin: 0 5px;
+    }
+
+    .thread-channel-name {
+        @include nunito($fw: 400, $fs: 14px, $c: var(--purple-2));
+    }
+}
+
+button {
+    @include dFlex();
+    @include heightWidth($w: 35px, $h: 35px);
+    border: none;
+    border-radius: 50%;
+    background-color: var(--secundary-bg);
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--primary-bg);
+    }
+}
+
+mat-icon {
+    @include materialSymbols($c: var(--text-black), $fs: 16px);
+}

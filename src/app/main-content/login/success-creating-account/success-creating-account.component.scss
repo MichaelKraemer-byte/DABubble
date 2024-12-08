@@ -1,0 +1,121 @@
+@import '../../../../mixin.scss';
+
+.content-inside-wrapper{
+    @include dFlex;
+    width: 100%;
+    flex-direction: column;
+}
+
+app-input-field{
+    @include heightWidth($w: 75%, $h: auto);
+    margin-top: 16px;
+}
+
+button{
+    @include figtree($fw: 400, $fs: clamp(16px,4vw,18px), $c: var(--secundary-bg));
+    min-width: clamp(125px, 4vw, 160px);
+    margin: 18px 8px 0px 8px;
+    height: calc(60px - 16px);
+    border-radius: 36px;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    background-color: var(--text-blue);
+    text-wrap: nowrap;
+
+    &:hover{
+        background-color: var(--purple-2);
+        cursor: pointer;
+    }
+
+    @include respond-to-maxWidth(smallMedium) {
+        padding: 6px 12px;
+        letter-spacing: 0px;
+    }
+}
+
+.specialButton{
+    background-color: transparent;
+    border-color: var(--purple-2);
+    color: var(--text-blue);
+    &:hover{
+        color: var(--secundary-bg);
+        background-color: var(--purple-2);
+        cursor: pointer;
+    }
+}
+
+.input-area{
+    @include heightWidth($w: 100%, $h: auto);
+    @include dFlex ();
+    flex-direction: column;
+}
+
+
+h1{
+    @include heightWidth($w: 55%, $h: auto);
+    @include figtree($fw: 600, $fs: clamp(32px,8vw,56px), $c: var(--purple-3));
+    margin-bottom: clamp(0px,4vw,18px);
+    text-align: center;
+    border: 16px solid transparent;
+    border-top: none;
+    border-bottom: none;
+    line-height: normal;
+}
+
+p{
+    @include heightWidth($w: 75%, $h: auto);
+    @include figtree($fw: 400, $fs: clamp(16px,4vw,18px), $c: var(--text-black));
+    text-align: center;
+}
+
+a{
+    @include figtree($fw: 400, $fs: clamp(16px,4vw,18px), $c: var(--purple-2));
+    margin: 0px 8px;
+    padding: 8px 16px;
+    border: 1px solid  transparent;
+    border-radius: 36px;
+
+    &:hover{
+        cursor: pointer;
+        border-color: var(--primary-bg);
+        background-color: var(--primary-bg);
+        color: var(--text-blue);
+        font-weight: 600;
+    }
+}
+
+.set-right{
+    width: 75%;
+    display: flex;
+    justify-content: flex-end;
+
+    @include respond-to-maxWidth(medium) {
+        justify-content: center;
+    }
+}
+
+.flow{
+    position: relative;
+    margin-left: -2px;
+    @include heightWidth($w: 90%, $h: 100%);
+    @include dFlex;
+    align-items: center;
+}
+
+.step-back-button{
+    color: var(--text-black);
+    text-align: center;
+    @include dFlex;
+    border-radius: 50%;
+    padding: 13px 13px;
+    border: 1px solid transparent;
+    position: absolute;
+    top: calc((100% - 26px - 24px) / 2);
+    left: 0px;
+
+    &:hover{
+        color: var(--text-blue);
+        border-color: var( --purple-3);
+        cursor: pointer;
+    }
+}

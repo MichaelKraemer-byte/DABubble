@@ -1,0 +1,89 @@
+<section>
+    @if (!messageService.isWriteAMessage) {
+    <div class="channel-header" *ngIf="directMessageService.isDirectMessage == false">
+        <button class="creator-team-btn" (click)="openEditChannel()">
+            <mat-icon class="hashtag">tag</mat-icon>
+            <p class="chatTitle">{{auth.currentChannelData.title}}</p>
+            <mat-icon>keyboard_arrow_down</mat-icon>
+        </button>
+
+        <div class="add-members-container">
+            @if (auth.currentChannelData.isPublic) {
+            <div class="showMemberListButtonContainerPuplic">
+                <img class="serverSVG" src="/img/devspace/titleAndServerSvg.svg">
+                <p class="publicButton">Public</p>
+            </div>
+            }
+            @else {
+            <div class="showMemberListButtonContainer" (click)="showMembersOfChannel()">
+                <div class="active-members-image-container" *ngFor="let member of this.memberService.allChannelMembers">
+                    <img style="margin-left: -10px;" src="{{member.imageUrl}}" alt="">
+                </div>
+                <p>{{auth.currentChannelData?.membersId?.length}}</p>
+            </div>
+            <button>
+                <mat-icon (click)="handleClickToShowOrAddMembers()" class="add-members">person_add</mat-icon>
+            </button>
+            }
+        </div>
+    </div>
+    <div class="direct-message-header" *ngIf="directMessageService.isDirectMessage">
+        <div>
+            <img src="{{directMessageService.directMessageUserData.imageUrl}}">
+            <div class="online-status" [ngStyle]="directMessageService.directMessageUserData.status ? {'background-color': '#92C83E'} : {'background-color': 'gray'}"></div>
+        </div>
+        <h2>{{directMessageService.directMessageUserData.name}}</h2>
+    </div>
+
+    } @else {
+        <h3 class="new-message-headline">Neue Naricht</h3>
+        <div class="searchbar">
+            <div class="inputFrame">
+            <input 
+                class="write-message-field"
+                placeholder="To #channel or @someone or email address" 
+                [(ngModel)]="searchQuery" 
+                (input)="onSearchInput(searchQuery)" 
+                (click)="onSearchInput(searchQuery)"
+                (keydown.arrowUp)="navigateDropdown(-1)" 
+                (keydown.arrowDown)="navigateDropdown(1)" 
+                (keydown.enter)="selectDropdownItem()" 
+                (blur)="hideDropdown()"
+            >
+                
+                <div class="chips">
+                    <div *ngFor="let item of messageService.selectedObjects; let i = index" class="chip">
+                        <span class="chipSpan" (click)="removeChip(i)">{{ item.label }}</span>
+                        <button (click)="removeChip(i)" class="remove-chip"><mat-icon class="closeIcon">close</mat-icon></button>
+                    </div>
+                </div>
+                <mat-icon (click)="messageService.clearSelectedObjects()" *ngIf="messageService.selectedObjects.length > 0" class="clearIcon">delete_forever</mat-icon>
+
+                <mat-icon class="displayNoneOnMobile">search</mat-icon>
+            </div>
+
+            <div class="dropdown" *ngIf="showDropdown">
+                <div *ngIf="members.length > 0">
+                <div class="dropDownItem" *ngFor="let member of members; let i = index" [class.active]="i === activeDropdownIndex" (click)="selectDropdownItem()" (mouseover)="setActiveDropdownIndex(i)">
+                    <div class="contact">
+                    <div class="contactPictureContainer">
+                        <img class="contactPicture" [src]="member.imageUrl" alt="User picture" *ngIf="member.imageUrl">
+                        <img class="onlineStatus" [src]="member.status ? '/img/profile-pic/online.svg' : '/img/profile-pic/offline.svg'" alt="User picture" *ngIf="member.status !== undefined">
+                    </div>
+                    @if (searchMember) {<span>{{ member.name }}</span>}
+                    @else  {<span>{{ member.email }}</span>}
+                    </div>
+                </div>
+                </div>
+            
+                <div *ngIf="channels.length > 0">
+                <div class="dropDownItem" *ngFor="let channel of channels; let i = index" [class.active]="i === activeDropdownIndex" (click)="selectDropdownItem()" (mouseover)="setActiveDropdownIndex(i)">
+                    <span>{{ channel.title }}</span>
+                </div>
+                </div>
+        
+            </div>
+        </div>
+    }
+    
+</section>

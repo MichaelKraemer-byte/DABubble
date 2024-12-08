@@ -1,0 +1,94 @@
+<section>
+    <app-chat-header
+        [ngStyle]="messageService.isWriteAMessage ? {'height':'auto'} : {'height':'10%'}"></app-chat-header>
+
+    <div class="main-message-container" #messageContainer (scroll)="onScroll()">
+
+        @if (!messageService.isWriteAMessage && !messageService.isSearchForMessages) {
+        <div *ngIf="!directMessageService.isDirectMessage" class="mesage-container">
+            <ng-container *ngIf="isLoading; else messageList">
+                <div class="loader">Load ...</div>
+            </ng-container>
+
+            <ng-template #messageList>
+                <app-message *ngFor="let msg of message; index as i" [message]="msg" [index]="i">
+                </app-message>
+            </ng-template>
+
+            <div class="welcome-message" *ngIf="!isLoading && messageService.messages.length == 0">
+                <div>
+                    <mat-icon class="hashtag">tag</mat-icon>
+                    <h2>{{auth.currentChannelData.title}}</h2>
+                </div>
+                <p>{{ checkUserAdmin(auth.currentChannelData.admin)
+                    ? 'You created this channel  ' + parseTime(auth.currentChannelData.createdAt) + '.'
+                    : auth.currentChannelData.adminName + ' created this channel. ' +
+                    parseTime(auth.currentChannelData.createdAt) + ' created .' }} This is the beginning of the channel.
+                    <span># {{auth.currentChannelData.title}}</span>
+                </p>
+            </div>
+
+        </div>
+
+        <div *ngIf="directMessageService.isDirectMessage" class="direct-message-container">
+            <ng-container *ngIf="isLoading; else messageList">
+                <div class="loader">Load...</div>
+            </ng-container>
+
+            <ng-template #messageList>
+                <app-message *ngFor="let msg of directMessageService.allDirectMessages; index as i" [message]="msg"
+                    [index]="i">
+                </app-message>
+            </ng-template>
+
+            <div class="welcome-direct-message"
+                *ngIf="!isLoading && directMessageService.allDirectMessages.length == 0">
+                <div>
+                    <img src="{{directMessageService.directMessageUserData.imageUrl}}">
+                    <h2>{{directMessageService.directMessageUserData.name}}</h2>
+                </div>
+                <div *ngIf="isUserDirectMessage()">
+                    <p><b>This room is just for you.</b> Take notes, list your to-dos, or keep links and files handy.
+                        You can also feel free to discuss things with yourself here.
+                    </p>
+                </div>
+                <div *ngIf="isUserDirectMessage() == false">
+                    <p>This conversation takes place only between
+                        <span>&#64;{{directMessageService.directMessageUserData.name}}</span> and yourself.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        } @else if (messageService.isWriteAMessage && !messageService.isSearchForMessages){
+        @if(auth.infoBannerIsSubmit){
+        <app-info-banner class="info-banner" [text]=auth.infoBannertext [icon]=auth.infoBannerIcon></app-info-banner>
+        }
+        } @else if (messageService.isSearchForMessages){
+        <div *ngIf="!directMessageService.isDirectMessage" class="mesage-container">
+            <ng-container *ngIf="isLoading; else messageList">
+                <div class="loader">Load...</div>
+            </ng-container>
+            <ng-template #messageList>
+                <app-message *ngFor="let msg of message; index as i" [message]="msg" [index]="i">
+                </app-message>
+            </ng-template>
+        </div>
+
+        <div *ngIf="directMessageService.isDirectMessage" class="direct-message-container">
+            <ng-container *ngIf="isLoading; else messageList">
+                <div class="loader">Load ...</div>
+            </ng-container>
+            <ng-template #messageList>
+                <app-message *ngFor="let msg of directMessageService.allDirectMessages; index as i" [message]="msg"
+                    [index]="i">
+                </app-message>
+            </ng-template>
+        </div>
+        }
+    </div>
+
+
+    <app-chat-message-field (messagesUpdated)="onMessagesUpdated()"
+        (messageSent)="scrollToBottom()"></app-chat-message-field>
+</section>

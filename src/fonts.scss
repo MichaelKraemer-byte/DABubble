@@ -1,0 +1,32 @@
+@font-face {
+  font-family: 'Nunito';
+  font-weight: 100 1000;
+  src: url('../public/fonts/Nunito-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Nunito-italic';
+  font-weight: 100 1000;
+  src: url('../public/fonts/Nunito-Italic-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Figtree';
+  font-weight: 100 1000;
+  src: url('../public/fonts/Figtree-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Figtree-italic';
+  font-weight: 100 1000;
+  src: url('../public/fonts/Figtree-Italic-VariableFont_wght.ttf') format('truetype');
+}
+
+/* material-symbols-outlined-regular - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Material Symbols Outlined';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../public/fonts/material-symbols-outlined-v213-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}

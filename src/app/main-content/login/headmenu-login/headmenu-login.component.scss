@@ -1,0 +1,63 @@
+@import '../../../../mixin.scss';
+
+section{
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    z-index: 99;
+    @include heightWidth($w: 100%, $h: auto);
+    @include dFlex;
+}
+
+.wrapper{
+    @include heightWidth($w: 100%, $h: auto);
+    max-width: 1920px;
+    @include dFlex;
+}
+
+nav{
+    @include heightWidth($w: 100%, $h: auto);
+    @include figtree($fw: 400, $fs: clamp(16px,4vw,18px), $c: var(--secundary-bg));
+    @include dFlex ($jc: space-between);
+    text-align: right;
+
+    ul{
+        padding-top: 48px;
+        padding-right: 36px;
+        @include dFlex;
+        @include heightWidth($w: 100%, $h: auto);
+        flex-direction: column;
+        list-style: none;
+        margin-block-start: 0px;
+        margin-block-end: 0px;
+        padding-inline-start: 0px;
+        text-align: right;
+
+        @include respond-to-maxWidth(medium) {
+            display: none;
+        }
+
+        li{
+            @include heightWidth($w: 100%, $h: auto);
+            text-align: right;
+            @include dFlex ($jc: flex-end);
+            @include figtree($fw: 400, $fs: clamp(16px,4vw,18px), $c: var(--text-black));
+            margin: 4px 16px;
+        }
+    }
+
+    a{
+        @include figtree($fw: 400, $fs: clamp(16px,4vw,18px), $c: var(--text-blue)) ;
+        color:var(--text-blue) !important;
+        padding: 8px 16px;
+        border: 1px solid  transparent;
+        border-radius: 36px;
+        text-wrap: nowrap;
+        margin-right: -16px;
+        &:hover {
+            cursor: pointer;
+            border-color: var(--purple-3);
+            color: var(--text-blue);
+        }
+    }
+}

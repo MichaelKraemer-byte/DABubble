@@ -1,0 +1,38 @@
+<div class="reaction-container" [ngClass]="messageService.checkUser(message) ? 'flex-end' : 'flex-start'">
+  <button *ngIf="message.reactions.like.length" (click)="reactionMessage('like')">
+    <img src="/img/reactions/like.svg" alt="">
+    <p class="reaction-number-text">{{message.reactions.like.length}}</p>
+    <div class="show-members">
+      <img src="/img/reactions/like.svg" alt="">
+      <p class="reaction-names">{{checkReactionName(message.reactions.like)}}</p>
+      <p class="reaction-text">has responded</p>
+    </div>
+  </button>
+  <button *ngIf="message.reactions.rocket.length" (click)="reactionMessage('rocket')">
+    <img src="/img/reactions/rocket.svg" alt="">
+    <p class="reaction-number-text">{{message.reactions.rocket.length}}</p>
+
+    <div class="show-members">
+      <img src="/img/reactions/rocket.svg" alt="">
+      <p class="reaction-names">{{checkReactionName(message.reactions.rocket)}}</p>
+      <p class="reaction-text">has responded</p>
+    </div>
+  </button>
+
+  <ng-container *ngFor="let reaction of cachedReactions">
+    <div *ngIf="reaction.count > 0">
+      <button (click)="reactionMessage(reaction.name)">
+        <span>{{ reaction.name }}</span>
+        <p class="reaction-number-text">{{ reaction.count }}</p>
+
+        <div class="show-members">
+          <span>{{ reaction.name }}</span>
+          <p class="reaction-names">{{ checkReactionNameEm(message.reactions, reaction.name) }}</p>
+          <p class="reaction-text">has responded</p>
+        </div>
+      </button>
+    </div>
+  </ng-container>
+
+
+</div>

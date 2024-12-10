@@ -45,7 +45,8 @@ h3 {
     }
     @include respond-to-maxWidth(small){
         flex-direction: column;
-        @include dFlex(center, center);
+        @include dFlex(center, start);
+        width: 100%;
     }
 }
 

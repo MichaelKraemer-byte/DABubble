@@ -29,7 +29,7 @@
           <div class="contact">
             <div class="contactPictureContainer">
               <img class="contactPicture" [src]="member.imageUrl" alt="User picture" *ngIf="member.imageUrl">
-              <img class="onlineStatus" [src]="member.status ? '/img/profile-pic/online.svg' : '/img/profile-pic/offline.svg'" alt="User picture" *ngIf="member.status !== undefined">
+              <img class="onlineStatus" [src]="member.status ? './img/profile-pic/online.svg' : './img/profile-pic/offline.svg'" alt="User picture" *ngIf="member.status !== undefined">
             </div>
             <span>{{ member.name }} @if(member.id === (this.currentMember$ |  async )?.id) {(You)}</span>
           </div>

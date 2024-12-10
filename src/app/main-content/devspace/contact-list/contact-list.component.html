@@ -10,7 +10,7 @@
         <div class="contact" *ngFor="let member of members" (click)="selectContact.emit(member.id)">
             <div class="contactPicture">
                 <img class="userImage" [src]="member.imageUrl" alt="Member image">
-                <img class="onlineStatus" [src]="member.status ? '/img/profile-pic/online.svg' : '/img/profile-pic/offline.svg'" alt="Online status">
+                <img class="onlineStatus" [src]="member.status ? './img/profile-pic/online.svg' : './img/profile-pic/offline.svg'" alt="Online status">
             </div>
             <span class="contactName">{{ member.name }} <span *ngIf="member.id === currentMember?.id">(You)</span></span>
         </div>

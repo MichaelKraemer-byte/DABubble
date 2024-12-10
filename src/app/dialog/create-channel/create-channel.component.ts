@@ -9,6 +9,10 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Channel } from '../../../classes/channel.class';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
+import { ChannelService } from '../../../services/channel/channel.service';
+import { Member } from '../../../interface/message';
+import { AuthenticationService } from '../../../services/authentication/authentication.service';
+import { catchError, filter, firstValueFrom, map, Observable, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-create-channel',
@@ -31,6 +35,33 @@ export class CreateChannelComponent {
   @ViewChild('channelForm') channelForm!: NgForm; 
 
   channel = new Channel();
+  currentMember$: Observable<Member | null>;
+  channelAlreadyExists: boolean = false;
+
+  constructor(
+    private authenticationService: AuthenticationService,
+    private channelService: ChannelService
+  ) {
+    this.currentMember$ = this.authenticationService.currentMember$;
+  }
+  
+  async validateChannelBeforeSubmit() {
+    const currentMember = await firstValueFrom(this.currentMember$);
+    if (currentMember) {
+      const accessableChannels = await firstValueFrom(
+        this.channelService.getAllAccessableChannelsFromFirestoreObservable(currentMember)
+      );  
+      const currentChannelTitle = this.channel?.title;
+      const channelDoesAlreadyExist = accessableChannels.some((channel) => channel.title.trim() === currentChannelTitle?.trim());
+      if (channelDoesAlreadyExist) {
+        this.channelAlreadyExists = true;
+      } else {
+        this.channelAlreadyExists = false;
+      }
+    } 
+  }
+  
+
   
   onNoClick(): void {
     this.dialogRef.close();
@@ -59,11 +90,13 @@ export class CreateChannelComponent {
     this.dialogRef.close();
   }
 
-  handleButtonClick() {
+  async handleButtonClick() {
     this.showError = true;
-    
-    if (this.channelForm.valid) {
-        this.openChooseMembers();
+    await this.validateChannelBeforeSubmit();
+    if (this.channelForm.valid && !this.channelAlreadyExists) {
+      this.openChooseMembers();
+    } else {
+      return;
     }
   }
 }

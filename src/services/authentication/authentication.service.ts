@@ -115,10 +115,7 @@ export class AuthenticationService {
         this.memberId = user.uid;
         const memberDoc = doc(this.getReference(), 'member', user.uid);
         const docSnap = await getDoc(memberDoc);
-        
-        // Falls der aktuelle Benutzer nicht existiert, hole die Daten neu.
         if (!docSnap.exists()) {
-          console.error('Benutzerdaten nicht gefunden. Starte Initialisierung...');
           this.initializeCurrentMember();
           return;
         }
@@ -134,16 +131,10 @@ export class AuthenticationService {
               channelIds: data['channelIds'] || [],
               ignoreList: data['ignoreList'] || [],
             };
-            this.currentMemberSubject.next(member); // Hier wird der aktuelle Member gesetzt
-          } else {
-            console.error('Mitgliedsdaten nicht gefunden!');
-            this.currentMemberSubject.next(null);
-          }
+            this.currentMemberSubject.next(member);
+          } 
         });
-      } else {
-        console.warn('Kein Benutzer angemeldet.');
-        this.currentMemberSubject.next(null);
-      }
+      } 
     });
   }
   
@@ -152,7 +143,6 @@ export class AuthenticationService {
     try {
       const user = this.auth.currentUser;
       if (user) {
-        await updateEmail(user, currentMember.email);
         await updateProfile(user, {
           displayName: currentMember.name,
         });

@@ -34,7 +34,7 @@
             <div class="contact">
                 <div class="contactPictureContainer">
                     <img class="contactPicture" src="{{ member.imageUrl }}" alt="User picture">
-                    <img class="onlineStatus" [src]="member.status ? '/img/profile-pic/online.svg' : '/img/profile-pic/offline.svg'" alt="User picture">
+                    <img class="onlineStatus" [src]="member.status ? './img/profile-pic/online.svg' : './img/profile-pic/offline.svg'" alt="User picture">
                 </div>
                 <span>{{ member.name }} </span>
             </div>

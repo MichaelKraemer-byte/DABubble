@@ -5,27 +5,34 @@ import { MessagesService } from '../../../../services/messages/messages.service'
 import { AuthenticationService } from '../../../../services/authentication/authentication.service';
 import { DirectMessageService } from '../../../../services/directMessage/direct-message.service';
 import { ThreadService } from '../../../../services/thread/thread.service';
+import { MainContentService } from '../../../../services/main-content/main-content.service';
 
 @Component({
-  selector: 'app-message-reation',
+  selector: 'app-message-reaction',
   standalone: true,
   imports: [
     CommonModule,
     FormsModule,
 
   ],
-  templateUrl: './message-reation.component.html',
-  styleUrl: './message-reation.component.scss'
+  templateUrl: './message-reaction.component.html',
+  styleUrl: './message-reaction.component.scss'
 })
-export class MessageReationComponent {
+export class MessageReactionComponent {
   @Input() message: any;
   @Input() isThread: boolean = false;
+  cachedReactions: { name: string; count: number }[] = [];
 
   constructor(
     public messageService: MessagesService,
     public auth: AuthenticationService,
     public directMessage: DirectMessageService,
-    private threadService: ThreadService) { }
+    private threadService: ThreadService,
+    private mainContentService: MainContentService) { }
+
+  ngOnInit() {
+    this.updateReactions(); 
+  }
 
   reactionMessage(reaction: string) {
     if (this.isThread) {
@@ -33,14 +40,15 @@ export class MessageReationComponent {
     } else if (this.directMessage.isDirectMessage) {
       this.directMessage.reaction(reaction, this.message.messageId)
     } else {
-      this.messageService.reaction(reaction, this.message.messageId)
+      this.messageService.reaction(reaction, this.message.messageId);
+      this.mainContentService.hideThread();
     }
   }
 
-  check() {
+  updateReactions() {
     const re = this.message.reactions;
-    return Object.keys(re)
-      .filter(key => key !== "rocket" && key !== "like")
+    this.cachedReactions = Object.keys(re)
+      .filter(key => key !== 'rocket' && key !== 'like')
       .map(key => ({ name: key, count: re[key].length }));
   }
 

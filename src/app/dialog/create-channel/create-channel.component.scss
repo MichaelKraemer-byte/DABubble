@@ -5,7 +5,7 @@ mat-icon{
 }
 
 ::ng-deep .cdk-global-scrollblock{
-    @include respond-to-maxWidth(small){
+    @include respond-to-maxWidth('smallMedium'){
         overflow: hidden !important;
     }
 }
@@ -16,8 +16,11 @@ mat-icon{
     flex-direction: column;
     gap: 20px;
     font-family: 'Nunito';
-    @include respond-to-maxWidth(small){
+    @include respond-to-maxWidth('smallMedium'){
         @include padding(32px, 16px, 32px, 16px);
+        gap: 8px;
+        justify-content: space-between;
+        height: 100%;
     }
 }
 

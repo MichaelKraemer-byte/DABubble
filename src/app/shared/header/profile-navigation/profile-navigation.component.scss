@@ -8,7 +8,7 @@
         text-wrap: nowrap;
         padding-right: 24px;
 
-        @include respond-to-maxWidth(large) {
+        @include respond-to-maxWidth(medium){
             display: none;
         }
     }
@@ -52,23 +52,24 @@
 .profilePicture{
     transition: border 0.125s ease-in-out;
    @include heightWidth($w: 70px, $h: 70px);
+   @include heightWidth($w: 50px, $h: 50px);
     position: relative;
     @include respond-to-maxWidth(large) {
         display: none;
     }
-
-
     img{
         @include image($br: 50%);
         height: 100%;
     }
-
     .statusSymbol{
         position: absolute;
         right: 0;
         bottom: 0;
         height: 16px;
         width: 16px;
+    }
+    @include respond-to-minWidth(large){
+        @include heightWidth($w: 70px, $h: 70px);
     }
 }
 

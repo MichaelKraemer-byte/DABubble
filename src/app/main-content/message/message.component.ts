@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { MessageOptionsComponent } from './message-options/message-options.component';
-import { MessageReationComponent } from './message-reation/message-reation.component';
+import { MessageReactionComponent } from './message-reaction/message-reaction.component';
 import { MessageAnswerComponent } from './message-answer/message-answer.component';
 import { MessageImagesComponent } from './message-images/message-images.component';
 import { MessageTextComponent } from './message-text/message-text.component';
@@ -16,7 +16,7 @@ import { DirectMessageService } from '../../../services/directMessage/direct-mes
   imports: [
     CommonModule,
     MessageOptionsComponent,
-    MessageReationComponent,
+    MessageReactionComponent,
     MessageAnswerComponent,
     MessageImagesComponent,
     MessageTextComponent,

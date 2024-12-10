@@ -22,8 +22,8 @@
                 </div>
                 <p>{{ checkUserAdmin(auth.currentChannelData.admin)
                     ? 'You created this channel  ' + parseTime(auth.currentChannelData.createdAt) + '.'
-                    : auth.currentChannelData.adminName + ' created this channel. ' +
-                    parseTime(auth.currentChannelData.createdAt) + ' created .' }} This is the beginning of the channel.
+                    : auth.currentChannelData.adminName + ' created this channel ' +
+                    parseTime(auth.currentChannelData.createdAt) + '.' }} This is the beginning of the channel.
                     <span># {{auth.currentChannelData.title}}</span>
                 </p>
             </div>

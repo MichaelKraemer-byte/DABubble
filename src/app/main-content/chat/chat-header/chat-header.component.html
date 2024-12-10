@@ -10,7 +10,7 @@
         <div class="add-members-container">
             @if (auth.currentChannelData.isPublic) {
             <div class="showMemberListButtonContainerPuplic">
-                <img class="serverSVG" src="/img/devspace/titleAndServerSvg.svg">
+                <img class="serverSVG" src="./img/devspace/titleAndServerSvg.svg">
                 <p class="publicButton">Public</p>
             </div>
             }
@@ -68,7 +68,7 @@
                     <div class="contact">
                     <div class="contactPictureContainer">
                         <img class="contactPicture" [src]="member.imageUrl" alt="User picture" *ngIf="member.imageUrl">
-                        <img class="onlineStatus" [src]="member.status ? '/img/profile-pic/online.svg' : '/img/profile-pic/offline.svg'" alt="User picture" *ngIf="member.status !== undefined">
+                        <img class="onlineStatus" [src]="member.status ? './img/profile-pic/online.svg' : './img/profile-pic/offline.svg'" alt="User picture" *ngIf="member.status !== undefined">
                     </div>
                     @if (searchMember) {<span>{{ member.name }}</span>}
                     @else  {<span>{{ member.email }}</span>}

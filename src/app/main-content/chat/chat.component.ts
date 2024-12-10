@@ -125,9 +125,9 @@ export class ChatComponent {
       hour: "2-digit",
       minute: "2-digit",
     };
-    const formatter = new Intl.DateTimeFormat("de-DE", options).format(date);
+    const formatter = new Intl.DateTimeFormat("en-US", options).format(date);
     const [datePart, timePart] = formatter.split(", ");
-    return `am ${datePart} um ${timePart}`;
+    return `on ${datePart} at ${timePart}`;
   }
   
    parseTime(time: { toDate: () => Date }): string {

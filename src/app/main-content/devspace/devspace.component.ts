@@ -95,13 +95,13 @@ export class DevspaceComponent implements OnInit {
 
 
   async ngOnInit() {
-    this.initializeMemberAndChannels(); 
+    this.initializeMembers(); 
     this.initializePublicChannels(); 
     this.authenticationService.observerUser();
   }
   
 
-  initializeMemberAndChannels(): void {
+  initializeMembers(): void {
     const members$ = this.memberService.getAllMembersFromFirestoreObservable();
     const currentMember$ = this.authenticationService.currentMember$;
   

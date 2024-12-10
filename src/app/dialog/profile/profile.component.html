@@ -1,65 +1,74 @@
-<div class="card" appearance="outlined">
-        @if (!editDialog) {
-            <div class="row">
-                <h3>Profile</h3>
-                <mat-icon class="closeButton" (click)="this.dialogRef.close()">close</mat-icon>
-            </div>
+<div class="card" [ngClass]="{'cardOnEdit': editDialog}" appearance="outlined">
+    @if (!editDialog) {
+        <div class="row">
+            <h3>Profile</h3>
+            <mat-icon class="closeButton" (click)="this.dialogRef.close()">close</mat-icon>
+        </div>
 
-            <img class="profileImage" [src]="currentMember.imageUrl || '/img/profile-pic/001.svg'">
+        <img class="profileImage" [src]="currentMember.imageUrl || './img/profile-pic/006.svg'">
 
-            <div class="row">
-                <h2>{{currentMember.name}}</h2>
-                <button mat-button tabindex="-1" (click)="editDialog = true"><mat-icon class="edit-pen">edit</mat-icon></button>
-            </div>
+        <div class="row">
+            <h2>{{currentMember.name}}</h2>
+            <button mat-button tabindex="-1" (click)="editDialog = true"><mat-icon class="edit-pen">edit</mat-icon></button>
+        </div>
 
-            <div class="startRow">
-                <img [src]="(currentMember$ | async)?.status == true ? '/img/profile-pic/online.svg' : '/img/profile-pic/offline.svg'" alt="Online status">
-                <span class="status" [ngStyle]="{'color': (currentMember$ | async)?.status ? '#92C83E' : '#A1A1A1'}" >
-                    {{(currentMember$ | async)?.status == true ? 'Online' : 'Offline'}}
-                </span>
-            </div>    
+        <div class="startRow">
+            <img [src]="(currentMember$ | async)?.status == true ? './img/profile-pic/online.svg' : './img/profile-pic/offline.svg'" alt="Online status">
+            <span class="status" [ngStyle]="{'color': (currentMember$ | async)?.status ? '#92C83E' : '#A1A1A1'}" >
+                {{(currentMember$ | async)?.status == true ? 'Online' : 'Offline'}}
+            </span>
+        </div>
 
-            <div class="startRow">
-                <mat-icon class="mailIcon">mail</mat-icon>
-                <span class="emailTitle">E-Mail-Adress</span>
-            </div>
-            
-            <a href="mailto:email.adress@example.com"  tabindex="-1">{{currentMember.email}}</a>
-        } @else {
-            <div class="row">
-                <h3>Edit your profile</h3>
-                <mat-icon class="closeButton" (click)="this.dialogRef.close()">close</mat-icon>
-            </div>
+        <div class="startRow">
+            <mat-icon class="mailIcon">mail</mat-icon>
+            <span class="emailTitle">E-Mail-Adress</span>
+        </div>
+        
+        <a href="mailto:email.adress@example.com"  tabindex="-1">{{currentMember.email}}</a>
+    } @else {
+        <div class="row">
+            <h3>Edit your profile</h3>
+            <mat-icon class="closeButton" (click)="this.dialogRef.close()">close</mat-icon>
+        </div>
 
-            <div class="imgContainer">
-                <img class="profileImage" [src]="currentMember.imageUrl || '/img/profile-pic/001.svg'">
-                <button class="fileInput" mat-icon-button (click)="openFileDialog()">
-                    <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*"/>
-                    <mat-icon>attach_file</mat-icon>
-                </button>
-            </div>
+        <div class="imgContainer">
+            <img class="profileImage" [src]="currentMember.imageUrl || './img/profile-pic/006.svg'">
+            <button class="fileInput" mat-icon-button (click)="openFileDialog()">
+                <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*"/>
+                <mat-icon>attach_file</mat-icon>
+            </button>
+        </div>
 
+        <div>
             <div>
-                <div>
-                    <div class="editRow">
-                        <mat-icon class="icon">account_circle</mat-icon>
-                        <h4>Full name</h4>
-                    </div>
-                    <input class="textInput" [(ngModel)]="currentMember.name" placeholder="{{currentMember.name}}" >                 
+                <div class="editRow">
+                    <mat-icon class="icon">account_circle</mat-icon>
+                    <h4>Full name</h4>
                 </div>
-                <div>
-                    <div class="editRow m-t-16">
-                        <mat-icon class="icon">mail</mat-icon>
-                        <h4>Email</h4>
-                    </div>
-                    <input class="textInput" [(ngModel)]="currentMember.email" placeholder="{{currentMember.email}}">                
-                </div>                
+                <input class="textInput" [(ngModel)]="currentMember.name" placeholder="{{currentMember.name}}" >                 
+            </div>
+            <!-- <div>
+                <div class="editRow m-t-16">
+                    <mat-icon class="icon">mail</mat-icon>
+                    <h4>Email</h4>
+                </div>
+                <input class="textInput" [(ngModel)]="currentMember.email" placeholder="{{currentMember.email}}">                
+            </div>                 -->
+            <div class="emailEditWindowSection">
+                <div class="startRow">
+                    <mat-icon class="mailIcon">mail</mat-icon>
+                    <span class="emailTitle">E-Mail-Adress</span>
+                </div>
+                
+                <a href="mailto:email.adress@example.com"  tabindex="-1">{{currentMember.email}}</a>
             </div>
 
+        </div>
 
-            <div class="buttonRow">
-                <button class="cancelButton" mat-button (click)="editDialog = false">Cancel</button>
-                <button class="saveButton" mat-flat-button (click)="save(currentMember)">Save</button>
-            </div>
-        }
+
+        <div class="buttonRow">
+            <button class="cancelButton" mat-button (click)="editDialog = false">Cancel</button>
+            <button class="saveButton" mat-flat-button (click)="save(currentMember)">Save</button>
+        </div>
+    }
 </div>

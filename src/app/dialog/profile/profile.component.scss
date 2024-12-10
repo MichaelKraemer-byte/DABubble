@@ -24,10 +24,24 @@
    gap: 38px; 
    flex-direction: column;
    border-top-right-radius: 0px !important;
-   @include respond-to-maxWidth(small){
+   @include respond-to-maxWidth('smallMedium'){
     @include padding(24px, 20px, 24px, 20px);
     gap: 16px; 
    }
+}
+
+.emailEditWindowSection{
+    margin-top: 16px;
+    text-align: start;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.cardOnEdit{
+    @include respond-to-maxWidth('smallMedium'){
+        gap: 0px !important;
+    }
 }
 
 .custom-dialog .mat-mdc-dialog-surface{
@@ -190,6 +204,9 @@ a{
         &:hover{
             background-color: var(--purple-2);
         }
+    }
+    @include respond-to-maxWidth('smallMedium'){
+        margin-top: 16px;
     }
 }
 

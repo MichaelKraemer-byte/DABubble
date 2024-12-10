@@ -3,7 +3,8 @@ import { Channel } from '../../classes/channel.class';
 import { arrayRemove, arrayUnion, collection, doc, DocumentData, getDoc, onSnapshot, QuerySnapshot, serverTimestamp, setDoc, updateDoc, writeBatch } from '@angular/fire/firestore';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { Member } from '../../interface/message';
-import { Observable } from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -19,19 +20,42 @@ export class ChannelService {
 
 
   getAllAccessableChannelsFromFirestoreObservable(currentMember: Member): Observable<Channel[]> {
-    return new Observable((observer) => {
-      let publicChannels: Channel[] = [];
-      let privateChannels: Channel[] = [];
-      this.getAllPublicChannelsFromFirestore((channels: Channel[]) => {
-        publicChannels = channels;
-        this.getAllChannelsWithChannelIdsFromCurrentUser(currentMember, (channels: Channel[]) => {
-          privateChannels = channels;
-          const allChannels = [...publicChannels, ...privateChannels];
-          observer.next(allChannels);
-          observer.complete();
-        });
+    const publicChannels$ = new Observable<Channel[]>((observer) => {
+      this.getAllPublicChannelsFromFirestore((channels) => {
+        observer.next(channels);
+        observer.complete();
       });
     });
+    const privateChannels$ = new Observable<Channel[]>((observer) => {
+      this.getAllChannelsWithChannelIdsFromCurrentUser(currentMember, (channels) => {
+        observer.next(channels);
+        observer.complete();
+      });
+    });
+    return combineLatest([publicChannels$, privateChannels$]).pipe(
+      map(([publicChannels, privateChannels]) => [...publicChannels, ...privateChannels])
+    );
+  }
+
+  
+  getAllChannelsFromFirestore(): void {
+    const channelsCollection = collection(this.authenticationService.getReference(), 'channels');
+    onSnapshot(channelsCollection, (snapshot: QuerySnapshot<DocumentData>) => {
+      const channels: Channel[] = snapshot.docs
+        .map((doc) => {
+          const data = doc.data();
+          return {
+            id: data['id'],
+            title: data['title'],
+            messages: data['messages'],
+            membersId: data['membersId'],
+            admin: data['admin'],
+            description: data['description'],
+            isPublic: data['isPublic'],
+            createdAt: data['createdAt'] || '',
+          };
+        })
+      })
   }
   
 

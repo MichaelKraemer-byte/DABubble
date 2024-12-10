@@ -5,7 +5,7 @@
   <div class="option-btn-container" (click)="reactionMessage('rocket')"><img src="/img/reactions/rocket.svg" alt=""></div>
   <div class="option-btn-container" (click)="reactionMessage('like')"><img src="/img/reactions/like.svg" alt=""></div>
   <div class="option-btn-container" (click)="toggleEmojis($event)"><mat-icon class="icon">sentiment_satisfied</mat-icon></div>
-  <div class="option-btn-container" (click)="openThread()"><mat-icon class="icon">comment</mat-icon></div>
+  <div class="option-btn-container" *ngIf="directMessage.isDirectMessage == false" (click)="openThread()"><mat-icon class="icon">comment</mat-icon></div>
   <div class="option-btn-container" *ngIf="messageService.checkUser(message)" (click)="openEditMenu()"><mat-icon class="icon">more_vert</mat-icon></div>
 
   <div class="edit-message-menu" *ngIf="isMessageEditMenuOpen">

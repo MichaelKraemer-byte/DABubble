@@ -4,7 +4,7 @@
     <div class="profilePicture">
         <img [src]="(currentMember$ | async)?.imageUrl || './img/profile-pic/006.svg'" alt="Profile Picture">
         <div class="statusSymbol">
-            <img [src]="(currentMember$ | async)?.status == true ? '/img/profile-pic/online.svg' : '/img/profile-pic/offline.svg'" alt="Profile Picture">
+            <img [src]="(currentMember$ | async)?.status == true ? './img/profile-pic/online.svg' : './img/profile-pic/offline.svg'" alt="Profile Picture">
         </div> 
     </div>
      

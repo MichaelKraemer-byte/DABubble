@@ -8,10 +8,12 @@
     <mat-icon (click)="dialogRef.close()" class="closeIcon">close</mat-icon>
   </div>
 
-  <div [ngClass]="{'box': !editIsOpen, 'box-edit': editIsOpen}" class="width100">
+  <form  #channelForm="ngForm" [ngClass]="{'box': !editIsOpen, 'box-edit': editIsOpen}" class="width100">
     <div class="titleContainer">
       <h3>Channel-Name</h3>
       <button 
+        type="submit"
+        [disabled]="channelForm.invalid"
         *ngIf="authenticationService.getCurrentUserId() === previousChannel.admin" 
         class="editButton" 
         (click)="editIsOpen ? saveNewChannel() : openEditChannel()">
@@ -19,18 +21,18 @@
       </button>
     </div>  
     <h3 *ngIf="!editIsOpen" class="channelTitle"><mat-icon class="tagIcon">tag</mat-icon>{{previousChannel.title}}</h3>
-    <input *ngIf="editIsOpen" [(ngModel)]="newChannel.title" class="channelInput"/>
-  </div>
+    <input *ngIf="editIsOpen" [(ngModel)]="newChannel.title" class="channelInput" name="channelTitle" required  #titleInput="ngModel" />
+  </form>
 
   <div [ngClass]="{'box': !editIsOpen, 'box-edit': editIsOpen}" class="width100">
     <div class="titleContainer">
       <h3>Description</h3>
-      <button 
+      <!-- <button 
         *ngIf="authenticationService.getCurrentUserId() === previousChannel.admin" 
         class="editButton" 
         (click)="editIsOpen ? saveNewChannel() : openEditChannel()">
         {{ editIsOpen ? 'Save' : 'Edit' }}
-      </button>
+      </button> -->
     </div>  
     <p class="description" *ngIf="!editIsOpen">{{previousChannel.description}}</p>
     <textarea *ngIf="editIsOpen" [(ngModel)]="newChannel.description" class="descriptionInput"></textarea>

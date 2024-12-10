@@ -104,6 +104,9 @@
         background-color: var(--purple-1); /* Hover-Farbe des Thumbs */
         cursor: grab;
     }
+    @include respond-to-maxWidth(large){
+        top: 46px;
+    }
     @include respond-to-maxWidth(small){
         @include padding(8px, 8px, 8px, 8px);
         left: 8px;

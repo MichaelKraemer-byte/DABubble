@@ -1,4 +1,4 @@
-<div class="card" [ngClass]="{'cardOnEdit': editDialog}" appearance="outlined">
+<form #currentMemberForm="ngForm" class="card" [ngClass]="{'cardOnEdit': editDialog}" appearance="outlined">
     @if (!editDialog) {
         <div class="row">
             <h3>Profile</h3>
@@ -45,7 +45,14 @@
                     <mat-icon class="icon">account_circle</mat-icon>
                     <h4>Full name</h4>
                 </div>
-                <input class="textInput" [(ngModel)]="currentMember.name" placeholder="{{currentMember.name}}" >                 
+                <input 
+                class="textInput" 
+                [(ngModel)]="currentMember.name" 
+                placeholder="{{currentMember.name}}" 
+                required
+                name="currentMemberName"
+                #nameInput="ngModel"
+                >    
             </div>
             <!-- <div>
                 <div class="editRow m-t-16">
@@ -68,7 +75,7 @@
 
         <div class="buttonRow">
             <button class="cancelButton" mat-button (click)="editDialog = false">Cancel</button>
-            <button class="saveButton" mat-flat-button (click)="save(currentMember)">Save</button>
+            <button class="saveButton" [disabled]="currentMemberForm.invalid" mat-flat-button (click)="save(currentMember)">Save</button>
         </div>
     }
-</div>
+</form>

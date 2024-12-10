@@ -148,10 +148,32 @@ export class SearchBarComponentDevSpace implements OnInit {
     channels$: Observable<Channel[]>
   ) {
     await this.filterMembersAndChannels(query, members$, channels$);
-    await this.processMessages(query, channels$);
+    await this.processMessagesForChosenChannels(query, channels$);
+    await this.processMessagesInCurrentChannel(query);
   }
 
-  async processMessages(query: string, channels$: Observable<Channel[]>) {
+  async processMessagesInCurrentChannel(query: string): Promise<void> {
+    try {
+      const currentChannelId = this.channelService.currentChannelId;
+      if (!currentChannelId) {
+        console.warn('Kein aktueller Channel verfügbar.');
+        return;
+      }
+      const allMessages = await this.messageService.loadInitialMessagesByChannelId(currentChannelId);
+      const searchQuery = query.toLowerCase().trim();
+      this.messages = allMessages.filter((message: Message) =>
+        message.message.toLowerCase().includes(searchQuery)
+      );
+      this.messageService.isSearchForMessages = true;
+      this.messageService.messages = this.messages;
+      this.messageService.searchQuery = searchQuery;
+      this.messageService.messagesUpdated.next();
+    } catch (error) {
+      console.error('Error while searching for messages in the current channel:', error);
+    }
+  }
+
+  async processMessagesForChosenChannels(query: string, channels$: Observable<Channel[]>) {
     this.messages = [];
     if (this.previousSearchChannel && query.includes(' ')) {
       this.searchbarChannel = await this.filterChannelsForMessageSearch(query, channels$);
@@ -270,7 +292,11 @@ export class SearchBarComponentDevSpace implements OnInit {
     this.messageService.isWriteAMessage = false;
     this.directMessageService.isDirectMessage = false;
     const selectedMessage = item;
-    this.searchQuery = `#${(this.previousSearchChannel as Channel).title} ${selectedMessage.message}`;
+    if (!this.searchQuery.includes('@')) {
+      this.searchQuery = `${selectedMessage.message}`;
+    } else {
+      this.searchQuery = `#${(this.previousSearchChannel as Channel).title} ${selectedMessage.message}`;
+    }    
     this.onSearchInput(this.searchQuery);
   }
 

@@ -1,19 +1,19 @@
 <div class="reaction-container" [ngClass]="messageService.checkUser(message) ? 'flex-end' : 'flex-start'">
   <button *ngIf="message.reactions.like.length" (click)="reactionMessage('like')">
-    <img src="/img/reactions/like.svg" alt="">
+    <img src="./img/reactions/like.svg" alt="">
     <p class="reaction-number-text">{{message.reactions.like.length}}</p>
     <div class="show-members">
-      <img src="/img/reactions/like.svg" alt="">
+      <img src="./img/reactions/like.svg" alt="">
       <p class="reaction-names">{{checkReactionName(message.reactions.like)}}</p>
       <p class="reaction-text">has responded</p>
     </div>
   </button>
   <button *ngIf="message.reactions.rocket.length" (click)="reactionMessage('rocket')">
-    <img src="/img/reactions/rocket.svg" alt="">
+    <img src="./img/reactions/rocket.svg" alt="">
     <p class="reaction-number-text">{{message.reactions.rocket.length}}</p>
 
     <div class="show-members">
-      <img src="/img/reactions/rocket.svg" alt="">
+      <img src="./img/reactions/rocket.svg" alt="">
       <p class="reaction-names">{{checkReactionName(message.reactions.rocket)}}</p>
       <p class="reaction-text">has responded</p>
     </div>

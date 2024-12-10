@@ -147,24 +147,47 @@ export class SearchbarComponent {
     query: string, 
     members$: Observable<Member[]>, 
     channels$: Observable<Channel[]>
-  ): Promise<void> {
+  ) {
     this.members = [];
     this.channels = [];
     this.messages = [];
     if (query.startsWith('@')) {
-      await this.searchMembers(query, members$);
+      this.members = await this.searchMembers(query, members$);
     } 
     else if (query.startsWith('#')) {
-      await this.searchChannels(query, channels$);
+      this.channels = await this.searchChannels(query, channels$);
+    } 
+    else {
+      await this.processMessagesForCurrentChannel(query);
     }
-    await this.searchMessages(query);
+    await this.processMessagesForChannel(query);
   }
-  
 
-  async searchMessages(query: string): Promise<void> {
+  async processMessagesForCurrentChannel(query: string): Promise<void> {
+    try {
+      const currentChannelId = this.channelService.currentChannelId;
+      if (!currentChannelId) {
+        console.warn('Kein aktueller Channel verfügbar.');
+        return;
+      }
+      const allMessages = await this.messageService.loadInitialMessagesByChannelId(currentChannelId);
+      const searchQuery = query.toLowerCase().trim();
+      this.messages = allMessages.filter((message: Message) =>
+        message.message.toLowerCase().includes(searchQuery)
+      );
+      this.messageService.isSearchForMessages = true;
+      this.messageService.messages = this.messages;
+      this.messageService.searchQuery = searchQuery;
+      this.messageService.messagesUpdated.next();
+    } catch (error) {
+      console.error('Error while searching for messages in the current channel:', error);
+    }
+  }
+
+  async processMessagesForChannel(query: string): Promise<void> {
     if (this.previousSearchChannel && query.includes(' ')) {
       const channelTitle = this.previousSearchChannel.title.toLowerCase(); 
-      const searchQuery = query.toLowerCase().replace(`#${channelTitle}`, '').trim(); 
+      const searchQuery = query.toLowerCase().replace(`#${channelTitle}`, '').trim();
       const allMessages = await this.messageService.loadInitialMessagesByChannelId(this.previousSearchChannel.id);
       this.messages = allMessages.filter((message: Message) =>
         message.message.toLowerCase().includes(searchQuery)
@@ -176,24 +199,21 @@ export class SearchbarComponent {
     }
   }
   
-
-  async searchChannels(query: string, channels$: Observable<Channel[]>): Promise<void> {
+  async searchChannels(query: string, channels$: Observable<Channel[]>): Promise<Channel[]> {
     const channels = await firstValueFrom(channels$);
-    this.channels = channels.filter(channel =>
+    return channels.filter(channel =>
       channel.title.toLowerCase().includes(query.slice(1).toLowerCase()) &&
-      (!this.previousSearchChannel || channel.id !== this.previousSearchChannel.id) // Aktuellen Channel ausschließen
+      (!this.previousSearchChannel || channel.id !== this.previousSearchChannel.id) 
     );
   }
-  
 
-  async searchMembers(query: string, members$: Observable<Member[]>): Promise<void> {
+  async searchMembers(query: string, members$: Observable<Member[]>): Promise<Member[]> {
     const members = await firstValueFrom(members$);
-    this.members = members.filter(member =>
+    return members.filter(member =>
       member.name.toLowerCase().includes(query.slice(1).toLowerCase())
     );
   }
   
-
 
   showHints() {
     if (!this.searchQuery.trim()) {
@@ -254,25 +274,28 @@ export class SearchbarComponent {
     }
   }
   
-  private setSearchForMembers(): void {
+  
+  setSearchForMembers(): void {
     this.searchQuery = '@';  
     this.onSearchInput(this.searchQuery);
     this.members = []; 
     this.showDropdown = true;
   }
 
-  private setSearchForChannels(): void {
+  
+  setSearchForChannels(): void {
     this.searchQuery = '#';  
     this.onSearchInput(this.searchQuery);
     this.channels = [];  
     this.showDropdown = true;
   }
   
-  private selectItem(selectedItem: Member | Channel | Message, itemType: string): void {
+  
+  selectItem(selectedItem: Member | Channel | Message, itemType: string): void {
     this.handleSelectItem(selectedItem, itemType);
     this.activeDropdownIndex = -1;
   }  
-
+  
 
   handleSelectItem(selectedItem: Member | Channel | Message, itemType: string): void {
     if (itemType === 'channel') {
@@ -292,7 +315,7 @@ export class SearchbarComponent {
   
   handleChannelSelection(selectedChannel: Channel): void {
     this.messageService.isWriteAMessage = false;
-    this.directMessageService.isDirectMessage = false;
+    this.directMessageService.isDirectMessage = false;    
     this.previousSearchChannel = selectedChannel;
     this.searchQuery = `#${selectedChannel.title} `;
     this.channelService.currentChannelId = selectedChannel.id;
@@ -308,11 +331,15 @@ export class SearchbarComponent {
   
   handleMessageSelection(selectedMessage: Message): void {
     this.messageService.isWriteAMessage = false;
-    this.directMessageService.isDirectMessage = false;
-    this.searchQuery = `#${this.previousSearchChannel?.title} ${selectedMessage.message}`;
+    this.directMessageService.isDirectMessage = false;    
+    if (!this.searchQuery.includes('@')) {
+      this.searchQuery = `${selectedMessage.message}`;
+    } else {
+      this.searchQuery = `#${this.previousSearchChannel?.title} ${selectedMessage.message}`;
+    }
     this.onSearchInput(this.searchQuery);
   }
-
+  
 
   setActiveDropdownIndex(index: number) {
     this.activeDropdownIndex = index;
@@ -324,4 +351,6 @@ export class SearchbarComponent {
     }
   }
   
+  
+
 }

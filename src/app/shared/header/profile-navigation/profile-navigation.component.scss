@@ -7,7 +7,6 @@
         @include figtree($fw: 500, $fs: 24px, $c: var(--text-black));
         text-wrap: nowrap;
         padding-right: 24px;
-
         @include respond-to-maxWidth(medium){
             display: none;
         }
@@ -51,15 +50,13 @@
 
 .profilePicture{
     transition: border 0.125s ease-in-out;
-   @include heightWidth($w: 70px, $h: 70px);
    @include heightWidth($w: 50px, $h: 50px);
     position: relative;
-    @include respond-to-maxWidth(large) {
-        display: none;
-    }
     img{
         @include image($br: 50%);
         height: 100%;
+        object-fit: cover !important;
+        width: 100%;
     }
     .statusSymbol{
         position: absolute;

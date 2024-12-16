@@ -1,5 +1,15 @@
 @import '../../../mixin.scss';
 
+.lockscreen{
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 998;
+    background-color: rgba(1, 12, 44, 0.92);
+    backdrop-filter: blur(3px);
+}
 
 .banner{
     z-index: 999;
@@ -26,9 +36,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
     mat-icon{
         color: white;
     }
+    
     p{
         margin-top: auto;
         margin-bottom: auto;
@@ -76,4 +88,53 @@ mat-icon{
         scale: 0.35 ;
     }
 
+}
+
+.animation-box{
+    //!! Customise your Loading-Circle here !!//
+    --circle-color: #29a6ff;
+    --boarder-thickness: 4px;
+    --box-size: 100px;
+    --animtion-duration: 0.75s;
+    ////////////////////////////////////////////
+    position: absolute;
+    top: calc((100% - var(--box-size)) / 2 );
+    left: calc((100% - var(--box-size)) / 2 );
+}
+
+.animation-box > span{
+    text-align: center;
+    color: white;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0%;
+    left: 0%;
+}
+
+.animation-circle{
+    padding: 16px;
+    width:var(--box-size);
+    height: var(--box-size);
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    border: var(--boarder-thickness) solid transparent;
+    border-right: 0px solid var(--circle-color);
+    border-bottom: var(--boarder-thickness) solid var(--circle-color);
+    animation: rotate var(--animtion-duration) ease-out infinite;
+}
+
+@keyframes rotate {
+    from{
+        border-radius: 50%;
+        border-bottom: var(--boarder-thickness) solid var(--circle-color);
+        transform: rotate(-50deg);
+    }
+    to{
+        border-right: 0px solid transparent;
+        transform: rotate(310deg);
+    }
 }

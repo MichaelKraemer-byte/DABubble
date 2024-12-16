@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { addDoc } from '@angular/fire/firestore';
 import { AuthenticationService } from '../authentication/authentication.service';
-import { arrayRemove, arrayUnion, deleteDoc, getDoc, getDocs, onSnapshot, setDoc, updateDoc } from '@firebase/firestore';
+import { arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, setDoc, updateDoc } from '@firebase/firestore';
 import { firstValueFrom, Subject } from 'rxjs';
 import { ReferencesService } from '../references/references.service';
 import { StorageService } from '../storage/storage.service';
+import { Message } from '../../interface/message';
 
 @Injectable({
   providedIn: 'root'
@@ -196,5 +197,16 @@ async checkOrCreateDirectMessageChannel(targetMemberId: string): Promise<void> {
         ? arrayRemove(reactionEntry)
         : arrayUnion(reactionEntry),
     });
+  }
+
+  async loadInitialDirectMessagesByDirectChannelId(channelId: string) {
+    const channelRef = doc(this.authenticationService.getReference(), "directMessagesChannels", channelId);
+    const messagesCollection = collection(channelRef, "messages");
+    const querySnapshot = await getDocs(messagesCollection);
+    this.allDirectMessages = querySnapshot.docs
+      .map(doc => doc.data() as Message) 
+      .sort((a, b) => Number(a.timestamp) - Number(b.timestamp));
+    this.messagesUpdated.next();
+    return this.allDirectMessages;
   }
 }

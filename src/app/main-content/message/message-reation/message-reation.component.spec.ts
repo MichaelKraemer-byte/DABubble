@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MessageReactionComponent } from './message-reaction.component';
+import { MessageReationComponent } from './message-reation.component';
 
-describe('MessageReactionComponent', () => {
-  let component: MessageReactionComponent;
-  let fixture: ComponentFixture<MessageReactionComponent>;
+describe('MessageReationComponent', () => {
+  let component: MessageReationComponent;
+  let fixture: ComponentFixture<MessageReationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MessageReactionComponent]
+      imports: [MessageReationComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MessageReactionComponent);
+    fixture = TestBed.createComponent(MessageReationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

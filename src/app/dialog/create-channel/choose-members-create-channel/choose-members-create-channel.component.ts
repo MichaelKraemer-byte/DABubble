@@ -22,6 +22,7 @@ import { AuthenticationService } from '../../../../services/authentication/authe
 import { MessagesService } from '../../../../services/messages/messages.service';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { MainContentService } from '../../../../services/main-content/main-content.service';
+import { DirectMessageService } from '../../../../services/directMessage/direct-message.service';
 
 
 @Component({
@@ -69,7 +70,8 @@ export class ChooseMembersCreateChannelComponent implements OnInit {
     private channelService: ChannelService,
     private authenticationService: AuthenticationService,
     private messageService: MessagesService,
-    private mainContentService: MainContentService
+    private mainContentService: MainContentService,
+    private directMessageService: DirectMessageService
   ) {
     this.channel = data; 
   }
@@ -155,28 +157,49 @@ export class ChooseMembersCreateChannelComponent implements OnInit {
   };
 
 
-  async createChannel() {
-    this.processCreatingChannel = true;
-    if (this.selectAllPeople) {
-      this.selectedMembers = [];
-      this.channel.isPublic = true;
-    } else if (!this.selectAllPeople) {
-      this.addSelectedMembers();
-      this.channel.isPublic = false;
-      this.channel.membersId.push(this.authenticationService.getCurrentUserUid());
-      await this.channelService.addChannelIdToMembers(this.channel.membersId, this.channel.id);
-    }
+  private initializeChannelForPublic() {
+    this.selectedMembers = [];
+    this.channel.isPublic = true;
+  }
+
+  private async initializeChannelForPrivate() {
+    this.addSelectedMembers();
+    this.channel.isPublic = false;
+    this.channel.membersId.push(this.authenticationService.getCurrentUserUid());
+    await this.channelService.addChannelIdToMembers(this.channel.membersId, this.channel.id);
+  }
+
+  private async addChannelToFirebaseAndCurrentUser() {
     await this.channelService.addChannelToFirebase(this.channel);
-    if(!this.selectAllPeople){
+    if (!this.selectAllPeople) {
       await this.channelService.addChannelIdToCurrentUser(this.channel.id);
     }
+  }
+
+  private async finalizeChannelCreation() {
     this.channelService.currentChannelId = this.channel.id;
     this.mainContentService.hideThread();
-    this.mainContentService.makeChatAsTopLayer();    
+    this.mainContentService.makeChatAsTopLayer();
+    this.messageService.isWriteAMessage = false;
+    this.directMessageService.isDirectMessage = false;
     await this.messageService.readChannel();
     this.dialogRef.close();
     this.processCreatingChannel = false;
   }
+
+  async createChannel() {
+    this.processCreatingChannel = true;
+
+    if (this.selectAllPeople) {
+      this.initializeChannelForPublic();
+    } else {
+      await this.initializeChannelForPrivate();
+    }
+
+    await this.addChannelToFirebaseAndCurrentUser();
+    await this.finalizeChannelCreation();
+  }
+
   
 
   isFormValid(): boolean {

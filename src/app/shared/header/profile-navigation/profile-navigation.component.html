@@ -8,13 +8,7 @@
         </div> 
     </div>
      
-    <div class="profileButton" mat-button>
-        @if(switchMobilOn){
-            <mat-icon>keyboard_arrow_down</mat-icon>
-        } @else {
-            <img src="./img/profile-pic/006.svg">
-        }
-    </div>
+
     <mat-menu #profilMenu="matMenu">
         <div class="mobilDekor"></div>
         <div class="matMenu-item"><mat-icon class="outline">account_circle</mat-icon><button (click)="openDialog()" mat-menu-item>Profile</button></div>

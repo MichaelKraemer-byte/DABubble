@@ -64,9 +64,10 @@ export class MainContentComponent {
 
   onWindowResize() {
     const currentWidth = window.innerWidth;
-
     if (currentWidth < 1285 && this.isWidthAbove1285px && !this.alreadyResized) {
       this.alreadyResized = true;
+      // window.location.reload();
+      // window.location.href = '/start';
       this.mainContentService.reloadCurrentRoute();
     } else if (currentWidth >= 1285) {
       this.isWidthAbove1285px = true;

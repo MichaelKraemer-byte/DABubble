@@ -1,7 +1,7 @@
 
 <div class="main-wrapper">
     <div class="content-wrapper">
-    <app-main-header (backToDevSpaceEvent)="mainContentService.makeDevSpaceAsTopLayer(); this.mainContentService.openNavBar()"></app-main-header>
+    <app-main-header (backToDevSpaceEvent)="mainContentService.backToDevSpace(); this.mainContentService.openNavBar()"></app-main-header>
     <div class="main-content">
         <app-devspace 
             #devSpace

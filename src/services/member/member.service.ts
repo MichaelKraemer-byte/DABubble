@@ -25,8 +25,9 @@ export class MemberService {
   }
 
   openDialog(): void {
+    const buttonElement = document.activeElement as HTMLElement;
+    buttonElement.blur(); 
     const dialogRef = this.dialog.open(CurrentProfileComponent);
-
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
       }
@@ -43,17 +44,37 @@ export class MemberService {
 
   async addChannelIdToIgnoreList(memberId: string, channelId: string) {
     const memberRef = doc(this.authenticationService.getReference(), 'member', memberId);
-    await updateDoc(memberRef, {
-      ignoreList: arrayUnion(channelId),
-    });
+    const memberSnap = await getDoc(memberRef);
+    
+    if (memberSnap.exists()) {
+      await updateDoc(memberRef, {
+        ignoreList: arrayUnion(channelId || ''),
+      });
+    } else {
+      console.error('Member document does not exist:', memberId);
+    }
   }
 
   async removeChannelIdFromMember(memberId: string, channelId: string) {
     const memberRef = doc(this.authenticationService.getReference(), 'member', memberId);
-    await updateDoc(memberRef, {
-      channelIds: arrayRemove(channelId),
-    });
+    const memberSnap = await getDoc(memberRef);
+    
+    if (memberSnap.exists()) {
+      const channelRef = doc(this.authenticationService.getReference(), 'channels', channelId);
+      const channelSnap = await getDoc(channelRef);
+      
+      if (!channelSnap.exists()) {
+        console.warn(`Channel ${channelId} does not exist. Removing stale reference.`);
+      } else {
+        await updateDoc(memberRef, {
+          channelIds: arrayRemove(channelId),
+        });
+      }
+    } else {
+      console.error('Member document does not exist:', memberId);
+    }
   }
+  
 
 
   getAllMembersFromFirestore(onMembersUpdated: (members: Member[]) => void): void {
@@ -170,14 +191,22 @@ export class MemberService {
     const user = this.authenticationService.auth.currentUser; 
     if (user) {
       try {
+        // Aktualisiere Firebase Authentication
         await updateProfile(user, { photoURL: newImageUrl });
+  
+        // Aktualisiere Firestore
         const memberDoc = doc(this.authenticationService.getReference(), 'member', user.uid);
         await updateDoc(memberDoc, { imageUrl: newImageUrl });
         } catch (error) {
-        console.error('Error while updating profile picture:', error);
+        console.error('Fehler beim Aktualisieren des Profilbildes:', error);
       }
+    } else {
+      console.error('Kein authentifizierter Benutzer gefunden.');
     }
   }
+  
+  
+  
 
   async allMembersName() {
     this.allMembersNames = [];

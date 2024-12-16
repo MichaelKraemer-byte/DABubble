@@ -11,10 +11,10 @@
 
   <app-images-preview 
   *ngIf="imagePreviews.length > 0" 
-   ></app-images-preview>
+  ></app-images-preview>
 
   <div class="message-field-container">
-    <textarea  [attr.placeholder]="getPlaceholder()" [(ngModel)]="messageField" (input)="onInput($event)" (keydown)="checkEnterKey($event)"></textarea>
+    <textarea #messageInput [attr.placeholder]="getPlaceholder()" [(ngModel)]="messageField" (input)="onInput($event)" (keydown)="checkEnterKey($event)"></textarea>
 
     <div class="message-options-container">
 
@@ -23,8 +23,6 @@
           <mat-icon class="open-file">add</mat-icon>
         </label>
         <input id="file-upload" type="file" (change)="onFileSelected($event)" multiple>
-
-
         <div class="between-line"></div>
         <button (click)="toggleEmojis($event)"><mat-icon>sentiment_satisfied</mat-icon></button>
         <button (click)="addTag()"><mat-icon>alternate_email</mat-icon></button>

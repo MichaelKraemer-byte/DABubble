@@ -14,7 +14,7 @@
     .answer-date-time-container {
         position: absolute;
         top: -18px;
-        left: 50%; 
+        left: 50%;
         transform: translate(-50%);
         border-radius: 20px;
         border: 1px solid var(--border-light-purple);
@@ -22,14 +22,13 @@
         padding: 5px 10px;
         background-color: var(--secundary-bg);
 
-
         p {
             @include nunito($fw: 400, $fs: 18px, $c: var(--text-black));
         }
 
         @media(max-width: 450px) {
-        width: 80%;
-        text-align: center;
+            width: 80%;
+            text-align: center;
         }
     }
 
@@ -45,7 +44,7 @@
     border-top: none;
 
     @media(max-width: 660px) {
-    padding: 20px 0;
+        padding: 20px 0;
     }
 }
 
@@ -54,23 +53,28 @@
     width: 100%;
     box-sizing: border-box;
     padding: 5px 30px;
-    padding-left: 72px;
+
     &:hover {
         background-color: var(--primary-bg);
     }
+
+    @media(max-width: 1285px) {
+        padding-left: 50px;
+    }
+
+    @media(max-width: 900px) {
+        padding-left: 70px;
+    }
+
     @media(max-width: 660px) {
         padding: 5px 15px;
         flex-direction: column;
         align-items: end;
+        padding-left: 70px;
     }
-    @include respond-to-maxWidth('smallMedium'){
-        padding-left: 64px;
-    }
-    @include respond-to-minWidth('smallMedium'){
-        padding-left: 72px;
-    }
-    @include respond-to-maxWidth(small){
-        padding-left: 30px;
+
+    @media(max-width: 450px) {
+        padding-left: 15px;
     }
 }
 
@@ -84,7 +88,7 @@
 
 .align-start {
     @media (max-width: 660px) {
-      align-items: start;
+        align-items: start;
     }
 }
 

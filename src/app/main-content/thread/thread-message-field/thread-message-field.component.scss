@@ -8,6 +8,7 @@ section {
 }
 
 .message-field-container {
+    scrollbar-width: none;
     @include heightWidth($w: 100%, $h: 100%);
     @include dFlex($ai: space-between, $jc: space-between);
     flex-direction: column;
@@ -19,6 +20,7 @@ section {
     position: relative;
 
     textarea {
+        scrollbar-width: none;
         @include heightWidth($w: 99%);
         border: none;
         outline: none;

@@ -1,6 +1,9 @@
 <div class="searchbar" [ngClass]="addClass">
     <div class="inputFrame" [ngClass]="{'align-reverse' : !align_reverse}">
         <input 
+        #searchInput
+        (focus)="onFocus()"
+        tabindex="-1"
         [placeholder]="placeholder" 
         [(ngModel)]="searchQuery" 
         (input)="onSearchInput(searchQuery)" 
@@ -8,10 +11,9 @@
         (keydown.arrowUp)="navigateDropdown(-1)" 
         (keydown.arrowDown)="navigateDropdown(1)" 
         (keydown.enter)="onSearchInput(searchQuery); dropdownComponent.selectDropdownItem(); closeDevSpaceAndOpenChatForMobile();" 
-        (focus)="showHints()" 
         (blur)="hideDropdown()"
         >
-        <mat-icon (click)="onSearchInput(searchQuery); closeDevSpaceAndOpenChatForMobile()"
+        <mat-icon (click)="onSearchInput(searchQuery); closeDevSpaceAndOpenChatForMobile();"
         >{{icon}}</mat-icon>
     </div>
 
@@ -19,12 +21,14 @@
     [searchQuery]="searchQuery"
     [searchbarMember]="searchbarMember"
     [searchbarChannel]="searchbarChannel"
+    [nothingFound]="nothingFound"
     [messages]="messages"
     [allHints]="allHints"
     [showDropdown]="showDropdown"
     [displayHints]="displayHints"
     [activeDropdownIndex]="activeDropdownIndex"
     (itemSelected)="handleItemSelected($event)"
+    (emptyInputEvent)="emptyInput()"
     >
     </app-dropdown-searchbar>
 </div>

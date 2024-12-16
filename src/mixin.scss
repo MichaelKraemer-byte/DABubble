@@ -79,7 +79,7 @@ $breakpoints: (
 
 @mixin image($br: 0) {
     border-radius: $br;
-    object-fit: contain;
+    object-fit: cover;
     object-position: center;
     position: relative;
 }
@@ -118,4 +118,35 @@ $breakpoints: (
     font-family: 'Material Symbols Outlined';
     color: $c;
     font-size: $fs;
+}
+
+@mixin step-back-button(){
+    height: clamp(18px, 4vw, 24px);
+    width: clamp(18px, 4vw, 24px);
+    @include materialSymbols;
+    font-size: 24px;
+    color: var(--text-black);
+    text-align: center;
+    @include dFlex;
+    border-radius: 50%;
+    padding: 13px 13px;
+    border: 1px solid transparent;
+    position: absolute;
+    top: calc((100% - 26px - 24px) / 2);
+    left: 0px;
+
+    mat-icon{
+        overflow: visible;
+        font-size: 24px;
+    }
+
+    &:hover{
+        color: var(--text-blue);
+        border-color: var( --purple-3);
+        cursor: pointer;
+    }
+
+    @include respond-to-maxWidth(smallMedium) {
+        top: 4px;
+     }
 }

@@ -15,14 +15,18 @@
         type="submit"
         [disabled]="channelForm.invalid"
         *ngIf="authenticationService.getCurrentUserId() === previousChannel.admin" 
-        class="editButton" 
-        (click)="editIsOpen ? saveNewChannel() : openEditChannel()">
+        class="editButton"
+        (click)="editIsOpen ? checkChannelAndSaveOrDeny() : openEditChannel()">
         {{ editIsOpen ? 'Save' : 'Edit' }}
       </button>
     </div>  
     <h3 *ngIf="!editIsOpen" class="channelTitle"><mat-icon class="tagIcon">tag</mat-icon>{{previousChannel.title}}</h3>
     <input *ngIf="editIsOpen" [(ngModel)]="newChannel.title" class="channelInput" name="channelTitle" required  #titleInput="ngModel" />
   </form>
+
+  <div *ngIf="channelNameAlreadyExists" class="error">
+    This title already exists.
+  </div>
 
   <div [ngClass]="{'box': !editIsOpen, 'box-edit': editIsOpen}" class="width100">
     <div class="titleContainer">

@@ -9,6 +9,7 @@ import { AuthenticationService } from '../../../../services/authentication/authe
 import { ThreadService } from '../../../../services/thread/thread.service';
 import { MemberService } from '../../../../services/member/member.service';
 import { StorageService } from '../../../../services/storage/storage.service';
+import { MessagesService } from '../../../../services/messages/messages.service';
 
 @Component({
   selector: 'app-thread-message-field',
@@ -40,11 +41,15 @@ export class ThreadMessageFieldComponent  implements OnInit{
   @Output() messageSent = new EventEmitter<void>();
   @Output() messagesUpdated = new EventEmitter<void>();
 
+  currentChannelTitle: string | null = null;
+
+
   constructor(
     public auth: AuthenticationService,
     private memberService: MemberService,
     public threadService: ThreadService,
-    public storageService: StorageService
+    public storageService: StorageService,
+    public messageService: MessagesService
   ) {
     this.allUsers()
   }
@@ -55,6 +60,11 @@ export class ThreadMessageFieldComponent  implements OnInit{
  
   ngOnInit(): void {
     this.memberService.setCurrentMemberData();
+    this.auth.currentChannelData$.subscribe(data => {
+      if (data) {
+        this.currentChannelTitle = data.title;
+      }
+    });
   }
 
   async sendMessage() {
@@ -100,27 +110,54 @@ export class ThreadMessageFieldComponent  implements OnInit{
     this.openEmojis = false;
   }
 
-  onInput(event: any) {
+  async onInput(event: any) {
     const lastAtSignIndex = this.messageField.lastIndexOf('@');
-    if (lastAtSignIndex > -1) {
-      const searchQuery = this.messageField.substring(lastAtSignIndex + 1).trim();
-      if (searchQuery && !searchQuery.includes(' ')) {
-        this.filteredUsers = this.users.filter(user =>
-          user.toLowerCase().startsWith(searchQuery.toLowerCase())
-        );
-        this.showUserList = this.filteredUsers.length > 0;
-        this.selectedIndex = 0;
-      } else {
-        this.showUserList = false;
-      }
+    const lastAtHashIndex = this.messageField.lastIndexOf('#');
+  
+    if (lastAtSignIndex > lastAtHashIndex && lastAtSignIndex > -1) {
+      this.handleUserMention(lastAtSignIndex);
+    } else if (lastAtHashIndex > lastAtSignIndex && lastAtHashIndex > -1) {
+      await this.handleChannelMention(lastAtHashIndex);
     } else {
-      this.showUserList = false; 
+      this.showUserList = false;
     }
   }
+  
+  private handleUserMention(lastAtSignIndex: number) {
+    const searchQuery = this.messageField.substring(lastAtSignIndex + 1).trim();
+    if (!searchQuery.includes(' ')) {
+      this.users = this.memberService.allMembersNames;
+      this.filteredUsers = this.users.filter(user =>
+        user.toLowerCase().startsWith(searchQuery.toLowerCase())
+      );
+      this.showUserList = true;
+      this.selectedIndex = 0;
+    } else {
+      this.showUserList = false;
+    }
+  }
+  
+  private async handleChannelMention(lastAtHashIndex: number) {
+    const searchQuery = this.messageField.substring(lastAtHashIndex + 1).trim();
+    if (searchQuery.includes(' ')) {
+      this.showUserList = false;
+      return;
+    }
+    this.showUserList = true;
+    let allChannels = await this.messageService.hashChannels(); 
+    this.filteredUsers = allChannels;
+  }
 
-  selectUser(user: any) {
+  selectUser(user: string) {
     const lastAtSignIndex = this.messageField.lastIndexOf('@');
-    this.messageField = this.messageField.substring(0, lastAtSignIndex + 1) + user + ' ';
+    const lastAtHashIndex = this.messageField.lastIndexOf('#');
+  
+    if (lastAtSignIndex > lastAtHashIndex) {
+      this.messageField = this.messageField.substring(0, lastAtSignIndex + 1) + user + ' ';
+    } else if (lastAtHashIndex > -1) {
+      this.messageField = this.messageField.substring(0, lastAtHashIndex) + '#' + user + ' ';
+    }
+  
     this.showUserList = false;
     this.selectedIndex = -1;
   }
@@ -148,7 +185,7 @@ export class ThreadMessageFieldComponent  implements OnInit{
     } else if (event.key === 'Enter' && this.selectedIndex >= 0) {
       this.selectUser(this.filteredUsers[this.selectedIndex]);
       event.preventDefault();
-    } else if (event.key === ' ') {  // Leerzeichen schließt die Liste
+    } else if (event.key === ' ') {
       this.showUserList = false;
     }
   }
@@ -163,10 +200,22 @@ export class ThreadMessageFieldComponent  implements OnInit{
   }
 
   checkEnterKey(event: KeyboardEvent): void {
+    if (this.showUserList && this.selectedIndex >= 0 && event.key === 'Enter') {
+      event.preventDefault();
+      this.selectUser(this.filteredUsers[this.selectedIndex]);
+      return;
+    }
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
       this.sendMessage();
     }
   }
+
+  getPlaceholder(): string {
+    return this.messageService.isWriteAMessage
+      ? ''
+      : `Message to #${this.currentChannelTitle || this.auth.currentChannelData?.title}`;
+  }
+
 }
 

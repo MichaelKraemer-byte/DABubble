@@ -63,7 +63,7 @@ h3 {
 .dropwDownTopRow {
     display: flex;
     align-items: center;
-    margin-bottom: 25px;
+    margin-bottom: 24px;
     justify-content: space-between;
 
     &:hover {
@@ -104,13 +104,6 @@ h3 {
     align-items: center;
 }
 
-.addChannelButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 25px;
-    margin-top: 16px;
-}
 
 .channel {
     margin-bottom: 8px;
@@ -178,24 +171,6 @@ h3 {
   }  
 
 
-.addChannelButton {
-    color: var(--text-black);
-    display: flex;
-    gap: 10px;
-    transition: transform 0.125s ease-in-out, color 0.125s ease-in-out;
-    .material-icons {
-        transition: transform 0.125s ease-in-out, color 0.125s ease-in-out;
-    }
-    &:hover {
-        color: var(--purple-1);
-        cursor: pointer;
-        .material-icons {
-            transform: scale(1.1);
-            color: var(--purple-1);
-
-        }
-    }
-}
 
 .rotateArrow {
     transform: rotate(0deg);
@@ -264,8 +239,11 @@ h3 {
 
 .dropDownChannelSection {
     overflow-y: auto;
-    max-height: 40%;
+    max-height: 100%;
+    min-height: 50%;
     transition: max-height 0.3s ease; 
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 1px inset, rgba(0, 0, 0, 0.02) 0px 1px 2px inset, rgba(0, 0, 0, 0.04) 0px 1px 1px, rgba(0, 0, 0, 0.04) 0px 1px 1px inset, rgba(0, 0, 0, 0.07) 0px 1px 2px inset;
+    border-radius: 10px;
     @include respond-to-minWidth(small){
         padding-left: 16px;
     }

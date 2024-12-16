@@ -25,7 +25,8 @@ app-thread-header {
 }
 
 app-thread-message-field {
-    @include heightWidth($h: 20%);
+    max-height: 240px;
+    @include heightWidth($h: 25%);
     border-radius: 0 0 20px 20px;
 }
 
@@ -35,6 +36,15 @@ width: 100%;
 box-sizing: border-box;
 padding: 0 15px;
 margin-bottom: 10px;
+@include respond-to-minWidth(small){
+    padding-left: 64px;
+}
+@include respond-to-minWidth('smallMedium'){
+    padding-left: 80px;
+}
+@include respond-to-minWidth(medium){
+    padding-left: 64px;
+}
     p {
         @include nunito($fw: 400, $fs: 16px, $c: var(--border-light-purple));
         left: 0;

@@ -104,7 +104,6 @@ export class DevspaceComponent implements OnInit {
   initializeMembers(): void {
     const members$ = this.memberService.getAllMembersFromFirestoreObservable();
     const currentMember$ = this.authenticationService.currentMember$;
-  
     combineLatest([members$, currentMember$]).subscribe(([updatedMembers, currentMember]) => {
       this.currentMember = currentMember;
       this.members = this.memberService.prioritizeCurrentMember(updatedMembers, this.currentMember);
@@ -156,6 +155,8 @@ export class DevspaceComponent implements OnInit {
 
   openCreateChannelDialog() {
     this.memberService.setCurrentMemberData();
+    const buttonElement = document.activeElement as HTMLElement; 
+    buttonElement.blur(); 
     if (window.innerWidth <= 600) {
       const dialogRef = this.dialog.open(CreateChannelComponent, {
         width: '100vw',   
@@ -168,13 +169,17 @@ export class DevspaceComponent implements OnInit {
       });
         dialogRef.afterClosed().subscribe();
     } else {
+      const buttonElement = document.activeElement as HTMLElement; 
+      buttonElement.blur(); 
       const dialogRef = this.dialog.open(CreateChannelComponent);
       dialogRef.afterClosed().subscribe();
     }
   }
 
   openDirectMessage(memberId: any) {
-    this.channelService.currentChannelId = '';
+    if (window.innerWidth < 450) {
+      this.channelService.currentChannelId = '';
+    }
     this.messageService.isWriteAMessage = false;
     this.directMessageService.isDirectMessage = true;
     this.memberService.setCurrentMemberData();
@@ -183,10 +188,12 @@ export class DevspaceComponent implements OnInit {
       this.mainContentService.closeNavBar();
       this.mainContentService.makeChatAsTopLayer();
     }
+    this.messageService.triggerFocus();
   }
 
   openWriteAMessage() {
     this.messageService.isWriteAMessage = true;
+    this.messageService.triggerFocus();
     if (window.innerWidth < 450) {
       this.mainContentService.closeNavBar();
       this.mainContentService.makeChatAsTopLayer()

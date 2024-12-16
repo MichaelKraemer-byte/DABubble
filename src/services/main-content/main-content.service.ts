@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Channel } from '../../classes/channel.class';
 import { Member } from '../../interface/message';
 import { Router } from '@angular/router';
+import { MessagesService } from '../messages/messages.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,15 +27,18 @@ export class MainContentService {
     threadIsOpen = this.threadIsOpen$.asObservable();
 
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private injector: Injector // Verwende Injector anstelle direkter Abhängigkeit
+  ) {
   }
 
   reloadCurrentRoute() {
     const currentUrl = this.router.url;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-        this.router.navigate([currentUrl]);
+      this.router.navigate([currentUrl]);
     });
-}
+  }
 
   toggleNavBar() {
     const currentState = this.navBarIsClosedSubject.value; // aktuellen Zustand abrufen
@@ -67,6 +71,12 @@ export class MainContentService {
 
   openThreadForMobile(){
     this.makeThreadAsTopLayer();
+  }
+
+  backToDevSpace(){
+    const messageService = this.injector.get(MessagesService); // Dynamisch auflösen
+    messageService.searchQuery = ''; // Variable zurücksetzen
+    this.makeDevSpaceAsTopLayer();
   }
 
   // Methods to update each layer’s state

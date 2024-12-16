@@ -68,6 +68,8 @@ export class ShowMembersOfChannelComponent {
   }
   
   openAddMembersToChannelDialog(): void {
+    const buttonElement = document.activeElement as HTMLElement;
+    buttonElement.blur(); 
     this.dialogRef.close();
     if (window.innerWidth <= 450) {
       const dialogRef = this.dialog.open(AddMembersChannelComponent, {

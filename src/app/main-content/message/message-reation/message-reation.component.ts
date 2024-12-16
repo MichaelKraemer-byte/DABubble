@@ -5,20 +5,18 @@ import { MessagesService } from '../../../../services/messages/messages.service'
 import { AuthenticationService } from '../../../../services/authentication/authentication.service';
 import { DirectMessageService } from '../../../../services/directMessage/direct-message.service';
 import { ThreadService } from '../../../../services/thread/thread.service';
-import { MainContentService } from '../../../../services/main-content/main-content.service';
 
 @Component({
-  selector: 'app-message-reaction',
+  selector: 'app-message-reation',
   standalone: true,
   imports: [
     CommonModule,
     FormsModule,
-
   ],
-  templateUrl: './message-reaction.component.html',
-  styleUrl: './message-reaction.component.scss'
+  templateUrl: './message-reation.component.html',
+  styleUrl: './message-reation.component.scss'
 })
-export class MessageReactionComponent {
+export class MessageReationComponent {
   @Input() message: any;
   @Input() isThread: boolean = false;
   cachedReactions: { name: string; count: number }[] = [];
@@ -27,12 +25,11 @@ export class MessageReactionComponent {
     public messageService: MessagesService,
     public auth: AuthenticationService,
     public directMessage: DirectMessageService,
-    private threadService: ThreadService,
-    private mainContentService: MainContentService) { }
+    private threadService: ThreadService) { }
 
-  ngOnInit() {
-    this.updateReactions(); 
-  }
+    ngOnInit() {
+      this.updateReactions();
+    }
 
   reactionMessage(reaction: string) {
     if (this.isThread) {
@@ -40,8 +37,7 @@ export class MessageReactionComponent {
     } else if (this.directMessage.isDirectMessage) {
       this.directMessage.reaction(reaction, this.message.messageId)
     } else {
-      this.messageService.reaction(reaction, this.message.messageId);
-      this.mainContentService.hideThread();
+      this.messageService.reaction(reaction, this.message.messageId)
     }
   }
 

@@ -23,9 +23,11 @@
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
     "@ctrl/ngx-emoji-mart": "^9.2.0",
-    "firebase": "^10.14.1",
+    "cross-spawn": "^6.0.6",
+    "mem": "^4.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "yargs-parser": "^13.1.2",
     "zone.js": "~0.14.10"
   },
   "devDependencies": {

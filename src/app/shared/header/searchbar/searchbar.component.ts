@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Renderer2, Input} from '@angular/core';
+import { Component, ElementRef, HostListener, Renderer2, Input, ViewChild} from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MemberService } from '../../../../services/member/member.service';
@@ -23,6 +23,9 @@ import { DirectMessageService } from '../../../../services/directMessage/direct-
   styleUrl: './searchbar.component.scss'
 })
 export class SearchbarComponent {
+  @ViewChild('searchInput') searchInputElement!: ElementRef<HTMLInputElement>;
+
+  nothingFound: boolean = false;
   searchQuery = ''; 
   members: Member[] = [];
   channels: Channel[] = [];
@@ -49,7 +52,6 @@ export class SearchbarComponent {
     private channelService: ChannelService,
     private messageService: MessagesService,
     private directMessageService: DirectMessageService
-
   ) {
     this.currentMember$ = this.authenticationService.currentMember$;
   }
@@ -71,7 +73,12 @@ export class SearchbarComponent {
     this.renderer.removeClass(parent, 'active');
   }
 
-  ngOnInit() {
+  // ngOnInit() {
+  //   this.initializeSearchListeners();
+  // }
+
+  onFocus(){
+    this.showHints();
     this.initializeSearchListeners();
   }
 
@@ -84,11 +91,8 @@ export class SearchbarComponent {
     document.addEventListener('click', (event: MouseEvent) => {
       const inputElement = this.elRef.nativeElement.querySelector('input');
       const dropdownElement = this.elRef.nativeElement.querySelector('.dropdown');
-      
       const clickedInsideInput = inputElement?.contains(event.target as Node);
       const clickedInsideDropdown = dropdownElement?.contains(event.target as Node);
-  
-      // Wenn weder auf das Eingabefeld noch auf das Dropdown geklickt wurde, Dropdown schließen
       if (!clickedInsideInput && !clickedInsideDropdown) {
         this.hideDropdown();
       }
@@ -129,13 +133,13 @@ export class SearchbarComponent {
     this.searchChanges$.next(this.searchQuery);
     this.displayHints = !this.searchQuery.trim(); 
     this.toggleHintsBasedOnInput(query);
+    this.checkIfSomethingFound();
   }
   
 
   toggleHintsBasedOnInput(query: string) {
     if (query === '') {
       this.messageService.readChannel();
-      this.messageService.isSearchForMessages = false;
       this.displayHints = true;
     } else {
       this.displayHints = false;
@@ -158,16 +162,22 @@ export class SearchbarComponent {
       this.channels = await this.searchChannels(query, channels$);
     } 
     else {
-      await this.processMessagesForCurrentChannel(query);
+      if (!this.directMessageService.isDirectMessage) {
+        await this.processMessagesForCurrentChannel(query);
+      } else {
+        await this.processDirectMessagesForCurrentDirectMessagesChannel(query);
+      }
     }
     await this.processMessagesForChannel(query);
+    this.checkIfSomethingFound();
   }
+
 
   async processMessagesForCurrentChannel(query: string): Promise<void> {
     try {
       const currentChannelId = this.channelService.currentChannelId;
       if (!currentChannelId) {
-        console.warn('Kein aktueller Channel verfügbar.');
+        console.warn('No current channel accessable.');
         return;
       }
       const allMessages = await this.messageService.loadInitialMessagesByChannelId(currentChannelId);
@@ -175,7 +185,6 @@ export class SearchbarComponent {
       this.messages = allMessages.filter((message: Message) =>
         message.message.toLowerCase().includes(searchQuery)
       );
-      this.messageService.isSearchForMessages = true;
       this.messageService.messages = this.messages;
       this.messageService.searchQuery = searchQuery;
       this.messageService.messagesUpdated.next();
@@ -183,6 +192,27 @@ export class SearchbarComponent {
       console.error('Error while searching for messages in the current channel:', error);
     }
   }
+
+  async processDirectMessagesForCurrentDirectMessagesChannel(query: string): Promise<void> {
+    try {
+      const currentChannelId = this.directMessageService.directMessageChannelId;
+      if (!currentChannelId) {
+        console.warn('No current channel accessable.');
+        return;
+      }
+      const allMessages = await this.directMessageService.loadInitialDirectMessagesByDirectChannelId(currentChannelId);
+      const searchQuery = query.toLowerCase().trim();
+      this.messages = allMessages.filter((message: Message) =>
+        message.message.toLowerCase().includes(searchQuery)
+      );
+      this.directMessageService.allDirectMessages = this.messages;
+      this.messageService.searchQuery = searchQuery;
+      this.directMessageService.messagesUpdated.next();
+    } catch (error) {
+      console.error('Error while searching for messages in the current channel:', error);
+    }
+  }
+
 
   async processMessagesForChannel(query: string): Promise<void> {
     if (this.previousSearchChannel && query.includes(' ')) {
@@ -192,13 +222,13 @@ export class SearchbarComponent {
       this.messages = allMessages.filter((message: Message) =>
         message.message.toLowerCase().includes(searchQuery)
       );
-      this.messageService.isSearchForMessages = true;
       this.messageService.messages = this.messages;
       this.messageService.searchQuery = searchQuery;
       this.messageService.messagesUpdated.next();
     }
   }
   
+
   async searchChannels(query: string, channels$: Observable<Channel[]>): Promise<Channel[]> {
     const channels = await firstValueFrom(channels$);
     return channels.filter(channel =>
@@ -206,6 +236,7 @@ export class SearchbarComponent {
       (!this.previousSearchChannel || channel.id !== this.previousSearchChannel.id) 
     );
   }
+
 
   async searchMembers(query: string, members$: Observable<Member[]>): Promise<Member[]> {
     const members = await firstValueFrom(members$);
@@ -352,5 +383,26 @@ export class SearchbarComponent {
   }
   
   
+  checkIfSomethingFound() {
+    const isNothingFound = this.members.length === 0 
+                          && this.channels.length === 0 
+                          && this.messages.length === 0
+                          && !(this.searchQuery === '');
+    if (isNothingFound) {
+      this.nothingFound = true;
+      this.messageService.nothingFound = true;
+      return;
+    } else {
+      this.nothingFound = false;
+      this.messageService.nothingFound = false;
+    }
+  }
 
+  emptyInput(){
+    this.searchInputElement.nativeElement.focus();
+    this.nothingFound = false;
+    this.showDropdown= false;
+    this.displayHints = false;
+    this.searchQuery = '';
+  }
 }

@@ -26,9 +26,9 @@ mat-icon{
 .titleContainer{
     @include dFlex(space-between, center);
     width: 100%;
-    @include respond-to-maxWidth('smallMedium'){
-    display: none;
-    }
+    // @include respond-to-maxWidth('smallMedium'){
+    // display: none;
+    // }
 }
 
 .box {
@@ -231,4 +231,8 @@ app-show-members-of-channel{
 
 :host ::ng-deep app-show-members-of-channel input, :host ::ng-deep app-show-members-of-channel form  {
     width: 100%;
+}
+
+.error{
+    @include nunito(400, 16px, rgb(255, 67, 56));
 }

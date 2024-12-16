@@ -159,19 +159,18 @@ export class ChatHeaderComponent implements OnInit {
     );
   }
   
-  
-  getSelectedMemberIds(): string[] {
+  private getSelectedMemberIds(): string[] {
     return this.messageService.selectedObjects
       .filter(obj => obj.type === 'member' || obj.type === 'email')
       .map(obj => (obj.value as Member).id);
   }
 
-
-  getSelectedChannelIds(): string[] {
+  private getSelectedChannelIds(): string[] {
     return this.messageService.selectedObjects
       .filter(obj => obj.type === 'channel')
       .map(obj => (obj.value as Channel).id);
-  }  
+  }
+  
 
 
   hideDropdown() {
@@ -246,10 +245,11 @@ export class ChatHeaderComponent implements OnInit {
     this.messageService.selectedObjects.splice(index, 1);
   }
   
-
   /////////////////
 
   openEditChannel(): void {
+    const buttonElement = document.activeElement as HTMLElement; 
+    buttonElement.blur();
     if (window.innerWidth <= 600) {
       const dialogRef = this.dialog.open(EditChannelComponent, {
         width: '100vw',   
@@ -268,6 +268,8 @@ export class ChatHeaderComponent implements OnInit {
   }
 
   addMembersToChannel(): void {
+    const buttonElement = document.activeElement as HTMLElement;
+    buttonElement.blur(); 
     if (window.innerWidth <= 450) {
       const dialogRef = this.dialog.open(AddMembersChannelComponent, {
         width: '294px',
@@ -290,6 +292,8 @@ export class ChatHeaderComponent implements OnInit {
   }
 
   showMembersOfChannel(): void {
+    const buttonElement = document.activeElement as HTMLElement;
+    buttonElement.blur(); 
     if (window.innerWidth <= 450) {
       const dialogRef = this.dialog.open(ShowMembersOfChannelComponent, {
         width: '260px',
@@ -309,7 +313,6 @@ export class ChatHeaderComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe();      
     }
-
   }
 
   handleClickToShowOrAddMembers(): void {

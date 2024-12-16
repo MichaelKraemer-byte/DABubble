@@ -61,6 +61,5 @@ export class ReferencesService {
     }
     return doc(this.getReference, "member", id);
   }
-  
 
 }

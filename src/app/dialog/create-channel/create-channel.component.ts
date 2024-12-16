@@ -37,7 +37,7 @@ export class CreateChannelComponent {
   channel = new Channel();
   currentMember$: Observable<Member | null>;
   channelAlreadyExists: boolean = false;
-
+  
   constructor(
     private authenticationService: AuthenticationService,
     private channelService: ChannelService
@@ -45,6 +45,7 @@ export class CreateChannelComponent {
     this.currentMember$ = this.authenticationService.currentMember$;
   }
   
+
   async validateChannelBeforeSubmit() {
     const currentMember = await firstValueFrom(this.currentMember$);
     if (currentMember) {
@@ -62,13 +63,13 @@ export class CreateChannelComponent {
   }
   
 
-  
   onNoClick(): void {
     this.dialogRef.close();
   }
 
+
   openChooseMembers() {
-    (document.activeElement as HTMLElement)?.blur();  // Fokus aufheben
+    (document.activeElement as HTMLElement)?.blur(); 
     if (window.innerWidth <= 600) {
       const dialogRef = this.dialog.open(ChooseMembersCreateChannelComponent, {
         data: this.channel,
@@ -90,13 +91,17 @@ export class CreateChannelComponent {
     this.dialogRef.close();
   }
 
+  
   async handleButtonClick() {
     this.showError = true;
     await this.validateChannelBeforeSubmit();
     if (this.channelForm.valid && !this.channelAlreadyExists) {
+      const buttonElement = document.activeElement as HTMLElement; 
+      buttonElement.blur(); 
       this.openChooseMembers();
     } else {
       return;
     }
   }
+  
 }

@@ -16,6 +16,7 @@
 }
 
 .dropdown {
+    overflow-x: hidden;
     position: absolute;
     background: var(--primary-bg);
     border: 1px solid #ccc;
@@ -155,4 +156,10 @@
     position: absolute;
     right: 0px;
     bottom: 0px;
+}
+
+.nothingFoundItem{
+    &:hover{
+        cursor: unset !important;
+    }
 }

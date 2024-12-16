@@ -9,6 +9,8 @@ import { AuthenticationService } from '../../../services/authentication/authenti
 import { MatIcon } from '@angular/material/icon';
 import { DirectMessageService } from '../../../services/directMessage/direct-message.service';
 import { InfoBannerComponent } from "../../shared/info-banner/info-banner.component";
+import { Subscription } from 'rxjs';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 
@@ -21,7 +23,8 @@ import { InfoBannerComponent } from "../../shared/info-banner/info-banner.compon
     CommonModule,
     MessageComponent,
     MatIcon,
-    InfoBannerComponent
+    InfoBannerComponent,
+    MatProgressSpinnerModule
 ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss'
@@ -33,6 +36,9 @@ export class ChatComponent {
   private shouldScroll: boolean = true;
   public isLoading: boolean = true;
   private userScrolledUp = false;
+
+  nothingFound: boolean = false;
+  private subscription: Subscription | null = null;
 
   constructor(
     public object: MessagesService, 
@@ -63,6 +69,12 @@ export class ChatComponent {
     } else {
       this.shouldScroll = false; 
       this.userScrolledUp = true; 
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 

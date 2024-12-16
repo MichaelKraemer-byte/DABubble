@@ -8,6 +8,7 @@ section {
 }
 
 .message-field-container {
+    scrollbar-width: none !important;
     @include heightWidth($w: 100%, $h: 100%);
     @include dFlex($ai: space-between, $jc: space-between);
     flex-direction: column;
@@ -19,6 +20,7 @@ section {
     position: relative;
 
     textarea {
+        scrollbar-width: none;
         @include heightWidth($w: 99%);
         border: none;
         outline: none;
@@ -106,6 +108,17 @@ input[type="file"] {
     border-radius: 20px;
     overflow-y: scroll;
     scrollbar-width: none;
+
+    @media(max-width: 1285px) {
+    left: 40px;
+    }
+    @media(max-width: 900px) {
+    left: 70px;
+    }
+    @media(max-width: 600px) {
+    left: 20px;
+    width: calc(100% - 40px);
+    }
 }
 
 .user-list ul {

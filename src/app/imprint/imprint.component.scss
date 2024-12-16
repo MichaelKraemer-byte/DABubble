@@ -64,6 +64,7 @@
     @include respond-to-maxWidth(medium) {
         @include heightWidth($w: 100%, $h: 100%);
         justify-content: start;
+        max-height: 500px;
     }
 
 }
@@ -81,7 +82,7 @@
     border: 1px solid transparent;
 
     mat-icon{
-        font-size: clamp(18px, 4vw, 24px);
+        font-size:24px;
     }
 
     &:hover{

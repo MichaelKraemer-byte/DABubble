@@ -5,7 +5,6 @@ import { AuthenticationService } from '../authentication/authentication.service'
 import { Member } from '../../interface/message';
 import { combineLatest, map, Observable } from 'rxjs';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -13,11 +12,11 @@ export class ChannelService {
 
   currentChannelId: string = 'uZaX2y9zpsBqyaOddLWh';
 
+
   constructor(
     private authenticationService: AuthenticationService,
   ){
   }
-
 
   getAllAccessableChannelsFromFirestoreObservable(currentMember: Member): Observable<Channel[]> {
     const publicChannels$ = new Observable<Channel[]>((observer) => {
@@ -36,35 +35,20 @@ export class ChannelService {
       map(([publicChannels, privateChannels]) => [...publicChannels, ...privateChannels])
     );
   }
-
   
-  getAllChannelsFromFirestore(): void {
-    const channelsCollection = collection(this.authenticationService.getReference(), 'channels');
-    onSnapshot(channelsCollection, (snapshot: QuerySnapshot<DocumentData>) => {
-      const channels: Channel[] = snapshot.docs
-        .map((doc) => {
-          const data = doc.data();
-          return {
-            id: data['id'],
-            title: data['title'],
-            messages: data['messages'],
-            membersId: data['membersId'],
-            admin: data['admin'],
-            description: data['description'],
-            isPublic: data['isPublic'],
-            createdAt: data['createdAt'] || '',
-          };
-        })
-      })
-  }
   
-
-  async removeMemberIdFromChannel(channelId: string, memberId: string) {
+  async removeMemberIdFromChannel(memberId: string, channelId: string) {
     const channelRef = doc(this.authenticationService.getReference(), 'channels', channelId);
-    await updateDoc(channelRef, {
-      membersId: arrayRemove(memberId),
-    });
+    const channelSnap = await getDoc(channelRef);
+    if (channelSnap.exists()) {
+      await updateDoc(channelRef, {
+        membersId: arrayRemove(memberId),
+      });
+    } else {
+      console.error('Channel document does not exist:', channelId);
+    }
   }
+  
   
 
   async updateChannelDetails(channelId: string, updates: Partial<Channel>) {
@@ -89,6 +73,7 @@ export class ChannelService {
     });
   }
   
+
   private getTimestampAsDate(timestamp: any): Date {
     if (timestamp && typeof timestamp.toDate === 'function') {
       return timestamp.toDate(); 
@@ -173,6 +158,27 @@ export class ChannelService {
     }, (error) => {
       console.error('Fehler beim Abrufen der Channels: ', error);
     });
+  }
+
+
+  getAllChannelsFromFirestore(): void {
+    const channelsCollection = collection(this.authenticationService.getReference(), 'channels');
+    onSnapshot(channelsCollection, (snapshot: QuerySnapshot<DocumentData>) => {
+      const channels: Channel[] = snapshot.docs
+        .map((doc) => {
+          const data = doc.data();
+          return {
+            id: data['id'],
+            title: data['title'],
+            messages: data['messages'],
+            membersId: data['membersId'],
+            admin: data['admin'],
+            description: data['description'],
+            isPublic: data['isPublic'],
+            createdAt: data['createdAt'] || '',
+          };
+        })
+      })
   }
   
 

@@ -20,6 +20,7 @@ export class DropdownSearchbarComponent {
   currentMember$;
   
   @Input() searchQuery: string = '';
+  @Input() nothingFound: boolean = false;
   @Input() searchbarMember: Member[] = [];
   @Input() searchbarChannel: Channel[] = [];
   @Input() messages: Message[] = [];
@@ -29,6 +30,8 @@ export class DropdownSearchbarComponent {
   @Input() activeDropdownIndex: number = -1;
 
   @Output() itemSelected = new EventEmitter<{ item: Member | Channel | Message | string, type: string }>();
+  @Output() emptyInputEvent = new EventEmitter();
+
 
   constructor(private elRef: ElementRef,
     private authenticationService:  AuthenticationService
@@ -47,32 +50,6 @@ export class DropdownSearchbarComponent {
     }
   }
 
-  // onDropdownItemClick(index: number) {
-  //   const totalMembers = this.searchbarMember.length;
-  //   const totalChannels = this.searchbarChannel.length;
-
-  //   let selectedItem: Member | Channel | Message | null = null;
-  //   let itemType: string = '';
-
-  //   if (this.displayHints && index < this.allHints.length) {
-  //       return;
-  //   } else {
-  //       if (index < totalMembers) {
-  //           selectedItem = this.searchbarMember[index];
-  //           itemType = 'member';
-  //       } else if (index < totalMembers + totalChannels) {
-  //           selectedItem = this.searchbarChannel[index - totalMembers];
-  //           itemType = 'channel';
-  //       } else {
-  //           selectedItem = this.messages[index - totalMembers - totalChannels];
-  //           itemType = 'message';
-  //       }
-  //   }
-
-  //   if (selectedItem) {
-  //       this.itemSelected.emit({ item: selectedItem, type: itemType });
-  //   }
-  // }
 
   selectDropdownItem() {
     const totalHints = this.allHints.length;
@@ -103,5 +80,9 @@ export class DropdownSearchbarComponent {
     if (selectedItem) {
       this.itemSelected.emit({ item: selectedItem, type: itemType });
     }
+  }
+
+  emptyInput(){
+    this.emptyInputEvent.emit();
   }
 }

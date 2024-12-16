@@ -1,4 +1,11 @@
-  <div class="dropdown" *ngIf="showDropdown || displayHints" >
+  <div class="dropdown" *ngIf="nothingFound && !displayHints">
+    <div class="dropDownItem" (click)="emptyInput()">
+      <span class="basicSearchSpan"><mat-icon>frame_inspect</mat-icon> Nothing found   <mat-icon>sentiment_neutral</mat-icon></span>
+    </div>
+  </div>
+  
+  <div class="dropdown" *ngIf="showDropdown || displayHints">
+
     <div *ngIf="displayHints">
       <div class="dropDownItem" *ngFor="let hint of allHints; let i = index" 
            [class.active]="i === activeDropdownIndex" 

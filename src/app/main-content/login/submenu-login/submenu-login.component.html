@@ -1,16 +1,19 @@
 <nav class="submenu">
     <ul class="nonMobil">
-        <li><a (click)="sendTo('legal-notice')">Imprint</a></li>
-        <li><a (click)="sendTo('privacy-policy')">Privacy Policy</a></li>
+        <li><a (click)="sendTo('legal-notice'); navigation.checkScrollStatus()">Imprint</a></li>
+        <li><a (click)="sendTo('privacy-policy'); navigation.checkScrollStatus()">Privacy Policy</a></li>
     </ul>
+
     <div class="mobil"> 
         <ul>
             <li>New at DABubble?</li>
-            <li><a (click)="navigation.navToPage(1)">Create Account</a></li>
+            <li><a (click)="navigation.navToPage(1); navigation.checkScrollStatus()">Create Account</a></li>
         </ul>
         <ul class="flex">
             <li><a (click)="sendTo('legal-notice')">Imprint</a></li>
             <li><a (click)="sendTo('privacy-policy')">Privacy Policy</a></li>
         </ul>
     </div>
+   
+
 </nav>

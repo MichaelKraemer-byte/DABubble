@@ -14,7 +14,7 @@
     <app-thread-images-preview></app-thread-images-preview>
   
     <div class="message-field-container">
-      <textarea placeholder="Message to #{{auth.currentChannelData.title}}" [(ngModel)]="messageField" (input)="onInput($event)" (keydown)="checkEnterKey($event)"></textarea>
+      <textarea [attr.placeholder]="getPlaceholder()" [(ngModel)]="messageField" (input)="onInput($event)" (keydown)="checkEnterKey($event)"></textarea>
   
       <div class="message-options-container">
   

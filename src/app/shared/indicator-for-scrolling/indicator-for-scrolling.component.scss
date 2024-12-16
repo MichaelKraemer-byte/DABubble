@@ -1,0 +1,137 @@
+.indicator-wrapper{
+
+
+    //////////  Settings  ///////////
+    --arrow-thickness: 5px;
+    --arrow-color: var(--purple-2);
+    --animation-time: 1.5s;
+    --animation-height: 25vh;
+    --animation-counter: 1;
+    ////////////////////////////////
+
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: calc((100% - var(--animation-height) - 20px) / 2);
+    right: 12px;
+    height: calc(var(--animation-height) + 20px);
+    width: 42px;
+    background-color: transparent;
+    border-radius: 24px;
+    border: 2px solid var(--purple-2);
+    backdrop-filter: blur(4px);
+    height: 0px;
+    opacity: 0;
+    animation: fade-display calc(var(--animation-time) * var(--animation-counter)) ease-in-out 1;
+}
+
+.arrow-content{
+    position: relative;
+    width: 100%;
+    height: calc(var(--animation-height) + 20px);
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation: fading var(--animation-time) ease-in-out  var(--animation-counter);
+}
+
+.arrow-head{
+    position: absolute;
+    top: -21px;
+    border: solid var(--arrow-color);
+    border-width: 0 calc(var(--arrow-thickness) - 1px ) calc(var(--arrow-thickness) - 1px) 0;
+    padding: 6px;
+    display: block;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg) ;
+    animation: moving-arrow-head var(--animation-time) ease-in-out  var(--animation-counter);
+}
+
+.arrow-body{
+    margin-left: 0px;
+    position: absolute;
+    top: 0px;
+    height: calc(var(--animation-height) + 5px);
+    width: var(--arrow-thickness);
+    background-color: var(--arrow-color);
+    animation: moving-arrow-body var(--animation-time) ease-in-out infinite;
+    border-radius: 6px;
+}
+
+@keyframes moving-arrow-body{
+    0%{
+        top:0px;
+        height: 0px;
+    }
+    1%{
+        top:0px;
+        height: 0px;
+    }
+
+    75%{
+        top:90px;
+        height: calc( var(--animation-height) - 90px - var(--arrow-thickness) - 1px );
+    }
+    100%{
+        top:90px;
+        height:calc( var(--animation-height) - 90px - var(--arrow-thickness) - 1px);
+    }
+ }
+
+
+@keyframes moving-arrow-head{
+   0%{
+        transform: translateY(0px) rotate(45deg);
+    }
+    30%{
+
+    }
+    75%{
+        transform: translateY(var(--animation-height)) rotate(45deg);
+    }
+
+    100%{
+        transform: translateY(var(--animation-height)) rotate(45deg);
+    }
+}
+
+@keyframes fading {
+    0%{
+        opacity: 0;
+    }
+    8%{
+        opacity: 0;
+    }
+    55%{
+        opacity: 1;
+    }
+    65%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+}
+
+@keyframes fade-display{
+    0%{
+        opacity: 0;
+        height: calc(var(--animation-height) + 20px);
+    }
+    15%{
+        opacity: 1;
+    }
+
+    85%{
+        opacity: 1;
+    }
+    100%{
+        height: calc(var(--animation-height) + 20px); 
+        opacity: 0;
+    }
+}

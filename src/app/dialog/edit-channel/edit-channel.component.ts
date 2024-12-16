@@ -14,6 +14,9 @@ import { AuthenticationService } from '../../../services/authentication/authenti
 import { Member } from '../../../interface/message';
 import { MessagesService } from '../../../services/messages/messages.service';
 import { ShowMembersOfChannelComponent } from '../show-members-of-channel/show-members-of-channel.component';
+import { firstValueFrom, lastValueFrom, take } from 'rxjs';
+import { doc, getDoc } from '@firebase/firestore';
+import { ReferencesService } from '../../../services/references/references.service';
 
 @Component({
   selector: 'app-edit-channel',
@@ -37,15 +40,18 @@ export class EditChannelComponent {
   channelCreator!: string | null;
   currentMember!: Member[] | null;
   editIsOpen: boolean = false;
+  channelNameAlreadyExists: boolean = false;
   previousChannel: Channel = new Channel();
-
+  currentMember$;
 
   constructor(
     private channelService: ChannelService,
     private memberService: MemberService,
     public authenticationService: AuthenticationService,
-    private messageService: MessagesService
+    private messageService: MessagesService,
+    private referencesService: ReferencesService
   ) {
+    this.currentMember$ = this.authenticationService.currentMember$;
   }
 
   async ngOnInit(){
@@ -71,6 +77,35 @@ export class EditChannelComponent {
     this.editIsOpen = !this.editIsOpen;
   }
 
+  checkChannelAndSaveOrDeny() {
+    firstValueFrom(this.currentMember$).then(currentMember => {
+      if (!currentMember) throw new Error('No current member found');
+      const channels$ = this.channelService.getAllAccessableChannelsFromFirestoreObservable(currentMember);
+      channels$.pipe(
+        take(1) 
+      ).subscribe({
+        next: channels => {
+          const channelNameExists = channels.some(channel => channel.title === this.newChannel.title);
+          if (channelNameExists) {
+            this.channelNameAlreadyExists = true;
+            console.warn('Channel name already exists!');
+            return;
+          } else {
+            this.channelNameAlreadyExists = false;
+            this.saveNewChannel();
+          }
+        },
+        error: error => {
+          console.error('Error fetching channels:', error);
+        }
+      });
+    }).catch(error => {
+      console.error('Error in currentMember$ subscription:', error);
+    });
+  }
+  
+  
+
   async saveNewChannel() {
     try {
       await this.channelService.updateChannelDetails(this.channelService.currentChannelId, {
@@ -80,23 +115,24 @@ export class EditChannelComponent {
       this.previousChannel.title = this.newChannel.title;
       this.previousChannel.description = this.newChannel.description;
       this.editIsOpen = false;
+
+      const channel = await getDoc(this.referencesService.getChannelDocRef());
+      const channelData = channel.data();
+      this.authenticationService.currentChannelData$.next(channelData);
+
     } catch (error) {
       console.error('Failed to update channel:', error);
     }
   }
 
   async leaveChannel() {
-    this.authenticationService.currentMember$.subscribe(async (currentMember) => {
-      if (!currentMember || !this.previousChannel) {
-        return;
-      }
-      if (!this.previousChannel.isPublic) {
-        await this.memberService.removeChannelIdFromMember(currentMember.id, this.previousChannel.id);
-        await this.channelService.removeMemberIdFromChannel(currentMember.id, this.previousChannel.id);
-      } else {
-        await this.memberService.addChannelIdToIgnoreList(currentMember.id, this.previousChannel.id);
-      }
-    });
+    const currentMember = await firstValueFrom(this.authenticationService.currentMember$);
+    if (!this.previousChannel.isPublic && currentMember) {
+      await this.memberService.removeChannelIdFromMember(currentMember.id, this.previousChannel.id);
+      await this.channelService.removeMemberIdFromChannel(currentMember.id, this.previousChannel.id);
+    } else if (currentMember) {
+      await this.memberService.addChannelIdToIgnoreList(currentMember.id, this.previousChannel.id);
+    } 
     this.channelService.currentChannelId = 'uZaX2y9zpsBqyaOddLWh';
     await this.messageService.readChannel();
     this.dialogRef.close();

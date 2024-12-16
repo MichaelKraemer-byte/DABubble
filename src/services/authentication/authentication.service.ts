@@ -1,11 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, verifyPasswordResetCode, confirmPasswordReset, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateEmail, updateProfile, sendPasswordResetEmail, updatePassword, User } from '@angular/fire/auth';
+import { Auth, verifyPasswordResetCode, confirmPasswordReset, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile, sendPasswordResetEmail, Unsubscribe } from '@angular/fire/auth';
 import { doc, getFirestore, setDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Member } from '../../interface/message';
 import { getStorage } from '@angular/fire/storage';
 import { getDoc, onSnapshot, updateDoc } from '@firebase/firestore';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
+import { NavigationServiceService } from '../NavigationService/navigation-service.service';
 
 
 @Injectable({
@@ -22,13 +23,19 @@ export class AuthenticationService {
   infoBannerIcon: string = '';
   currentMember!: Member;
   currentChannelData: any = {};
+  currentChannelData$ = new BehaviorSubject<any | null>(null); 
   auth = inject(Auth);
   private currentMemberSubject = new BehaviorSubject<Member | null>(null);
   currentMember$ = this.currentMemberSubject.asObservable();
   loginFailed = false;
+  private authSubscription?: Unsubscribe;
+  private memberDocSubscription?: Unsubscribe;
+
+
 
   constructor(
     private router: Router,
+    private navigation: NavigationServiceService
   ) {
     this.provider = new GoogleAuthProvider();
     this.storage = getStorage();
@@ -44,18 +51,19 @@ export class AuthenticationService {
     }, 1750)
   }
 
-  signInUser(email: string, password: string) {
+  signInUser(email: string, password: string, showText:boolean = true) {
+    let countDown = showText? 1750 : 0;
     signInWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
         this.loginFailed = false;
-        this.enableInfoBanner('Sign-In Succesfully');
+        if(showText)this.enableInfoBanner('Sign-In Succesfully');
         this.initializeCurrentMember(); 
       })
       .then(() => {
         setTimeout(() => {
           this.router.navigate(['start']);
           this.updateLoginStatus(true);
-        }, 1750);
+        }, countDown);
       })
       .catch((error) => {
         this.loginFailed = true;
@@ -72,8 +80,6 @@ export class AuthenticationService {
     return member;
   }
   
-  
-
   async updateLoginStatus(boolean: boolean) {
     const washingtonRef = doc(this.getReference(), "member", this.getCurrentUserUid());
     await updateDoc(washingtonRef, {
@@ -110,7 +116,8 @@ export class AuthenticationService {
 
 
   observerUser(): void {
-    onAuthStateChanged(this.auth, async (user) => {
+    this.authSubscription?.();
+    this.authSubscription = onAuthStateChanged(this.auth, async (user) => {
       if (user) {
         this.memberId = user.uid;
         const memberDoc = doc(this.getReference(), 'member', user.uid);
@@ -119,7 +126,8 @@ export class AuthenticationService {
           this.initializeCurrentMember();
           return;
         }
-        onSnapshot(memberDoc, (docSnap) => {
+        this.memberDocSubscription?.(); 
+        this.memberDocSubscription = onSnapshot(memberDoc, (docSnap) => {
           if (docSnap.exists()) {
             const data = docSnap.data();
             const member: Member = {
@@ -132,13 +140,12 @@ export class AuthenticationService {
               ignoreList: data['ignoreList'] || [],
             };
             this.currentMemberSubject.next(member);
-          } 
+          }
         });
-      } 
+      }
     });
   }
   
-
   async updateAuthProfileData(currentMember: Member): Promise<void> {
     try {
       const user = this.auth.currentUser;
@@ -156,8 +163,9 @@ export class AuthenticationService {
 
  async signOutUser() {
    await this.updateLoginStatus(false);
-    signOut(this.auth).then(() => {
+   await signOut(this.auth).then(() => {
       this.router.navigate(['login']);
+      this.navigation.navToPage(0);
     }).catch((error) => {
       console.log('log out error:', error)
     });
@@ -194,7 +202,6 @@ export class AuthenticationService {
     });
   }
 
-
   // Lost Password
   async resetPassword(email: string) {
     sendPasswordResetEmail(this.auth, email)
@@ -210,5 +217,4 @@ export class AuthenticationService {
     await confirmPasswordReset(this.auth, this.oobCode, newPassword);
     this.oobCode = '';
   }
-
 }

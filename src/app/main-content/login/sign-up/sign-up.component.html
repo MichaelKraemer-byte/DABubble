@@ -1,7 +1,7 @@
 <div class="content-inside-wrapper">
 
     <div class="flow">
-        <div (click)="navigation.navToPage(0)" class="step-back-button"><mat-icon>arrow_back</mat-icon></div>
+        <div (click)="navigation.navToPage(0); navigation.checkScrollStatus()" class="step-back-button"><mat-icon>arrow_back</mat-icon></div>
         <h1>Create Account</h1>
     </div>
 
@@ -34,7 +34,7 @@
                     </div>
             </div>
             </div>
-            <div class="set-right"> <button [disabled]="areAllInputsTouched() || areAllInputsFilled() || !myForm.valid || myForm.pristine" (click)="onSubmit()" >Go On</button> </div>
+            <div class="set-right"> <button [disabled]="areAllInputsTouched() || areAllInputsFilled() || !myForm.valid || myForm.pristine" (click)="onSubmit();  navigation.checkScrollStatus()" >Go On</button> </div>
         </form>
 
 </div>

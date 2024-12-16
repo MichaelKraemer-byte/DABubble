@@ -48,6 +48,10 @@ export class ProfileComponent {
     this.currentMember = this.authenticationService.currentMember || {} as Member;
   }
 
+  cancelEdit(){
+    this.editDialog = false;
+  }
+
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -73,7 +77,6 @@ export class ProfileComponent {
     }
     this.editDialog = false;
 }
-
 
 
   openFileDialog() {

@@ -32,7 +32,7 @@ import { MainContentService } from '../../../../services/main-content/main-conte
   templateUrl: './chat-message-field.component.html',
   styleUrl: './chat-message-field.component.scss'
 })
-export class ChatMessageFieldComponent{
+export class ChatMessageFieldComponent {
   openEmojis: boolean = false;
   messageField: string = ''
   openData: boolean = false;
@@ -46,6 +46,10 @@ export class ChatMessageFieldComponent{
   selectedIndex = -1;
   @ViewChild('userListContainer') userListContainer!: ElementRef;
   @Output() messageSent = new EventEmitter<void>();
+  @ViewChild('messageInput') messageInput!: ElementRef;
+
+  currentChannelTitle: string | null = null;
+
 
   constructor(
     public auth: AuthenticationService,
@@ -57,6 +61,23 @@ export class ChatMessageFieldComponent{
     public mainContentService: MainContentService
   ) {
     this.allUsers()
+  }
+
+  setFocus(): void {
+    if (this.messageInput) {
+      this.messageInput.nativeElement.focus();
+    }
+  }
+
+  ngOnInit() {
+    this.auth.currentChannelData$.subscribe(data => {
+      if (data) {
+        this.currentChannelTitle = data.title;
+      }
+    });
+    this.messageService.getFocusEvent().subscribe(() => {
+      this.setFocus();
+    });
   }
 
   async sendMessage() {
@@ -81,32 +102,31 @@ export class ChatMessageFieldComponent{
       await this.handleFallbackSendMessage();
     }
   }
-  
+
 
   async handleWriteAMessage(): Promise<void> {
     const members = await firstValueFrom(this.memberService.getAllMembersFromFirestoreObservable());
     const currentMember = await this.auth.getCurrentMemberSafe();
-    
+
     if (!currentMember) {
-      console.log('No current member in handleWriteAMessage');
       return;
     }
-  
+
     const channels = await firstValueFrom(this.channelService.getAllAccessableChannelsFromFirestoreObservable(currentMember));
-  
+
     for (const selectedObject of this.messageService.selectedObjects) {
       await this.processSelectedObject(selectedObject, members, channels, currentMember);
     }
-  
+
     this.resetMessageField();
     this.auth.enableInfoBanner('Message(s) have been sent.');
   }
-  
+
 
   async processSelectedObject(
-    selectedObject: any, 
-    members: Member[], 
-    channels: Channel[], 
+    selectedObject: any,
+    members: Member[],
+    channels: Channel[],
     currentMember: Member
   ): Promise<void> {
     if (selectedObject.type === 'email' || selectedObject.type === 'member') {
@@ -115,7 +135,7 @@ export class ChatMessageFieldComponent{
       await this.handleSelectedChannel(selectedObject, channels, currentMember);
     }
   }
-  
+
 
   async handleSelectedMember(selectedObject: any, members: Member[]): Promise<void> {
     const member = selectedObject.value as Member;
@@ -123,11 +143,11 @@ export class ChatMessageFieldComponent{
       await this.handleSendDirectMessageForChatHeader(member.id, this.messageField);
     }
   }
-  
+
 
   async handleSelectedChannel(
-    selectedObject: any, 
-    channels: Channel[], 
+    selectedObject: any,
+    channels: Channel[],
     currentMember: Member
   ): Promise<void> {
     const channel = selectedObject.value as Channel;
@@ -135,7 +155,7 @@ export class ChatMessageFieldComponent{
       await this.messageService.sendMessageToChannel(channel.id, this.messageField, currentMember);
     }
   }
-  
+
 
   async handleFallbackSendMessage(): Promise<void> {
     if (this.messageField.trim() || this.storageService.messageImages.length > 0) {
@@ -147,12 +167,12 @@ export class ChatMessageFieldComponent{
       }
     }
   }
-  
+
 
   resetMessageField(): void {
     this.messageField = '';
   }
-  
+
 
   async handleSendDirectMessageForChatHeader(targetMemberId: string, message: string) {
     try {
@@ -181,7 +201,7 @@ export class ChatMessageFieldComponent{
     if (input && input.files) {
       Array.from(input.files).forEach(file => {
         this.storageService.uploadImageMessage(file)
-        
+
         const reader = new FileReader();
         reader.onload = () => {
           this.imagePreviews.push(reader.result);
@@ -196,24 +216,48 @@ export class ChatMessageFieldComponent{
     this.openEmojis = false;
   }
 
-  onInput(event: any) {
+  async onInput(event: any) {
     const lastAtSignIndex = this.messageField.lastIndexOf('@');
-    if (lastAtSignIndex > -1) {
-      const searchQuery = this.messageField.substring(lastAtSignIndex + 1).trim();
-      if (!searchQuery.includes(' ')) {
-        this.filteredUsers = this.users.filter(user =>
-          user.toLowerCase().startsWith(searchQuery.toLowerCase())
-        );
-        this.users = this.memberService.allMembersNames;
-        this.filteredUsers = this.users;
-        this.showUserList = true;
-        this.selectedIndex = 0;
-      } else {
-        this.showUserList = false;
-      }
+    const lastAtHashIndex = this.messageField.lastIndexOf('#');
+  
+    if (this.messageField.trim() === '') {
+      this.showUserList = false;
+      return;
+    }
+  
+    // Behandlung für @ und #
+    if (lastAtSignIndex > lastAtHashIndex && lastAtSignIndex > -1) {
+      this.handleUserMention(lastAtSignIndex);
+    } else if (lastAtHashIndex > lastAtSignIndex && lastAtHashIndex > -1) {
+      await this.handleChannelMention(lastAtHashIndex);
     } else {
       this.showUserList = false;
     }
+  }
+  
+  private handleUserMention(lastAtSignIndex: number) {
+    const searchQuery = this.messageField.substring(lastAtSignIndex + 1).trim();
+    if (!searchQuery.includes(' ')) {
+      this.users = this.memberService.allMembersNames; 
+      this.filteredUsers = this.users.filter(user =>
+        user.toLowerCase().startsWith(searchQuery.toLowerCase())
+      );
+      this.showUserList = true;
+      this.selectedIndex = 0;
+    } else {
+      this.showUserList = false;
+    }
+  }
+  
+  private async handleChannelMention(lastAtHashIndex: number) {
+    const searchQuery = this.messageField.substring(lastAtHashIndex + 1).trim();
+    if (searchQuery.includes(' ')) {
+      this.showUserList = false;
+      return;
+    }
+    this.showUserList = true;
+    let allChannels = await this.messageService.hashChannels(); 
+    this.filteredUsers = allChannels;
   }
 
   allUsers() {
@@ -222,7 +266,13 @@ export class ChatMessageFieldComponent{
 
   selectUser(user: any) {
     const lastAtSignIndex = this.messageField.lastIndexOf('@');
-    this.messageField = this.messageField.substring(0, lastAtSignIndex + 1) + user + ' ';
+    const lastAtHashIndex = this.messageField.lastIndexOf('#');
+    if (lastAtSignIndex > lastAtHashIndex) {
+      this.messageField = this.messageField.substring(0, lastAtSignIndex + 1) + user + ' ';
+    } else if (lastAtHashIndex > -1) {
+      this.messageField = this.messageField.substring(0, lastAtHashIndex + 1) + user + ' ';
+    }
+
     this.showUserList = false;
     this.selectedIndex = -1;
   }
@@ -250,7 +300,7 @@ export class ChatMessageFieldComponent{
     } else if (event.key === 'Enter' && this.selectedIndex >= 0) {
       this.selectUser(this.filteredUsers[this.selectedIndex]);
       event.preventDefault();
-    } else if (event.key === ' ') {  // Leerzeichen schließt die Liste
+    } else if (event.key === ' ') {
       this.showUserList = false;
     }
   }
@@ -265,15 +315,22 @@ export class ChatMessageFieldComponent{
   }
 
   checkEnterKey(event: KeyboardEvent): void {
-  if (event.key === 'Enter' && !event.shiftKey) {
-    event.preventDefault();
-    this.handleSendMessage();
+    if (this.showUserList && this.selectedIndex >= 0 && event.key === 'Enter') {
+      event.preventDefault();
+      this.selectUser(this.filteredUsers[this.selectedIndex]);
+      return;
+    }
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      this.handleSendMessage();
+    }
   }
+
+  getPlaceholder(): string {
+    return this.messageService.isWriteAMessage
+      ? ''
+      : `Message to #${this.currentChannelTitle || this.auth.currentChannelData?.title}`;
+  }
+  
 }
 
-getPlaceholder(): string {
-  return this.messageService.isWriteAMessage 
-    ? '' 
-    : `Message to #${this.auth.currentChannelData?.title || ''}`;
-}
-}

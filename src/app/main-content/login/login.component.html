@@ -1,3 +1,5 @@
+
+
 @if(lightbox.lightboxIsOpen){<app-lightbox></app-lightbox>}
 <app-headmenu-login></app-headmenu-login>
 @if(auth.enableAnimation){<app-login-animation></app-login-animation>}
@@ -12,8 +14,8 @@
 
 <section class="MainWrapper">
 
-    <div class='whiteBox'> 
-
+    <div class='whiteBox' id="whiteBox"> 
+        @if(!auth.enableAnimation){<scrolling-indicator></scrolling-indicator>}
         <app-sign-in [ngClass]='setNavigationAnimationClass(0)'></app-sign-in>
         <app-sign-up [ngClass]='setNavigationAnimationClass(1)'></app-sign-up>
         <app-choose-avatar [ngClass]='setNavigationAnimationClass(2)' ></app-choose-avatar>

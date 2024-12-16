@@ -17,6 +17,7 @@
             margin-block-end: 0px;
             padding-inline-start: 0px;
             text-align: center;
+
             ul{
                 margin-top: 12px;
                 display: flex;
@@ -27,18 +28,21 @@
                 padding-inline-start: 0px;
                 text-align: center;
             }
+
             .flex{
                 margin-top: 8px;
                 position: relative;
                 display: flex;
                 justify-content: center;
                 flex-direction: row;
+
                 li{
                     margin: 8px;
                     flex-direction: row;
                     display: flex;
                     justify-content: center;
                 }
+
                 &::before{
                     position: absolute;
                     top: -8px;
@@ -50,6 +54,7 @@
                     border-top: 1px solid var(--primary-bg-dark);
                 }
             }
+
             li{
                 @include figtree($fw: 400, $fs: clamp(16px,4vw,18px), $c: var(--text-light-black));
                 margin-bottom: 16px;
@@ -68,7 +73,6 @@
                     color: var(--text-blue);
                 }
             }
-            
         }
         display: none
 

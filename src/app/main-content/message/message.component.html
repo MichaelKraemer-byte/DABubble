@@ -1,5 +1,6 @@
 <div class="new-message-container" [ngClass]="thread ? 'border-none' : 'border-top'" >
-    <div class="hover" (mouseover)="showMenu()" (mouseleave)="resetHoverAndMenu()"
+    <div class="hover"  (mouseover)="showMenu()"
+    (mouseleave)="resetHoverAndMenu()"
     [ngClass]="{
         'row-reverse': messageService.checkUser(message),
         'align-start': !messageService.checkUser(message)
@@ -13,7 +14,7 @@
             <app-message-text [isMessageHover]="isMessageHover" [isThread]="thread" [message]="message" [isEdit]="isEdit" [editMessageText]="editMessageText" (cancelEdit)="cancelEdit()" (saveText)="saveText()"></app-message-text>
             <app-message-images [isThread]="thread" [message]="message" [isEdit]="isEdit"></app-message-images>
             <app-message-answer *ngIf="thread == false && directMessageService.isDirectMessage == false" [message]="message"></app-message-answer>
-            <app-message-reaction [isThread]="thread" *ngIf="threadFirstMessage == false" [message]="message"></app-message-reaction>
+            <app-message-reation [isThread]="thread" *ngIf="threadFirstMessage == false" [message]="message"></app-message-reation>
         </div>
 
         <div *ngIf="thread == false" class="answer-date-time-container">

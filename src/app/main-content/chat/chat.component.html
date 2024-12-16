@@ -4,36 +4,36 @@
 
     <div class="main-message-container" #messageContainer (scroll)="onScroll()">
 
-        @if (!messageService.isWriteAMessage && !messageService.isSearchForMessages) {
+        @if (!messageService.isWriteAMessage) {
         <div *ngIf="!directMessageService.isDirectMessage" class="mesage-container">
-            <ng-container *ngIf="isLoading; else messageList">
-                <div class="loader">Load ...</div>
-            </ng-container>
+            <div class="spinnerContainer" *ngIf="isLoading; else messageList">
+                <div class="spinner"></div>
+            </div>
 
             <ng-template #messageList>
                 <app-message *ngFor="let msg of message; index as i" [message]="msg" [index]="i">
                 </app-message>
             </ng-template>
 
-            <div class="welcome-message" *ngIf="!isLoading && messageService.messages.length == 0">
+            <div class="welcome-message" *ngIf="!isLoading && messageService.messages.length == 0 && !this.messageService.nothingFound">
                 <div>
                     <mat-icon class="hashtag">tag</mat-icon>
-                    <h2>{{auth.currentChannelData.title}}</h2>
+                    <h2>{{(this.auth.currentChannelData$ | async)?.title || auth.currentChannelData.title}}</h2>
                 </div>
                 <p>{{ checkUserAdmin(auth.currentChannelData.admin)
                     ? 'You created this channel  ' + parseTime(auth.currentChannelData.createdAt) + '.'
                     : auth.currentChannelData.adminName + ' created this channel ' +
-                    parseTime(auth.currentChannelData.createdAt) + '.' }} This is the beginning of the channel.
-                    <span># {{auth.currentChannelData.title}}</span>
+                    parseTime(auth.currentChannelData.createdAt) + '.' }} This is the beginning of the channel. 
+                    <span># {{(this.auth.currentChannelData$ | async)?.title || auth.currentChannelData.title}}</span>
                 </p>
             </div>
 
         </div>
 
         <div *ngIf="directMessageService.isDirectMessage" class="direct-message-container">
-            <ng-container *ngIf="isLoading; else messageList">
-                <div class="loader">Load...</div>
-            </ng-container>
+            <div class="spinnerContainer" *ngIf="isLoading; else messageList">
+                <div class="spinner"></div>
+            </div>
 
             <ng-template #messageList>
                 <app-message *ngFor="let msg of directMessageService.allDirectMessages; index as i" [message]="msg"
@@ -42,7 +42,7 @@
             </ng-template>
 
             <div class="welcome-direct-message"
-                *ngIf="!isLoading && directMessageService.allDirectMessages.length == 0">
+                *ngIf="!isLoading && directMessageService.allDirectMessages.length == 0 && !this.messageService.nothingFound">
                 <div>
                     <img src="{{directMessageService.directMessageUserData.imageUrl}}">
                     <h2>{{directMessageService.directMessageUserData.name}}</h2>
@@ -60,32 +60,11 @@
             </div>
 
         </div>
-        } @else if (messageService.isWriteAMessage && !messageService.isSearchForMessages){
+        } @else if (messageService.isWriteAMessage){
         @if(auth.infoBannerIsSubmit){
         <app-info-banner class="info-banner" [text]=auth.infoBannertext [icon]=auth.infoBannerIcon></app-info-banner>
         }
-        } @else if (messageService.isSearchForMessages){
-        <div *ngIf="!directMessageService.isDirectMessage" class="mesage-container">
-            <ng-container *ngIf="isLoading; else messageList">
-                <div class="loader">Load...</div>
-            </ng-container>
-            <ng-template #messageList>
-                <app-message *ngFor="let msg of message; index as i" [message]="msg" [index]="i">
-                </app-message>
-            </ng-template>
-        </div>
-
-        <div *ngIf="directMessageService.isDirectMessage" class="direct-message-container">
-            <ng-container *ngIf="isLoading; else messageList">
-                <div class="loader">Load ...</div>
-            </ng-container>
-            <ng-template #messageList>
-                <app-message *ngFor="let msg of directMessageService.allDirectMessages; index as i" [message]="msg"
-                    [index]="i">
-                </app-message>
-            </ng-template>
-        </div>
-        }
+        } 
     </div>
 
 

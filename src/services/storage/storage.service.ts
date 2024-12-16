@@ -35,6 +35,7 @@ export class StorageService {
         return getDownloadURL(fileRef);
       })
       .catch(error => {
+        console.error('Error uploading file:', error);
         throw error; 
       });
   }
@@ -49,6 +50,7 @@ export class StorageService {
         return url;
       })
       .catch((error) => {
+        console.error('Error uploading file:', error);
         throw error;
       });
   }
@@ -63,6 +65,7 @@ export class StorageService {
         return url; 
       })
       .catch((error) => {
+        console.error('Error uploading file:', error);
         throw error;
       });
   }
@@ -76,12 +79,12 @@ export class StorageService {
       return uploadBytes(imageRef, image)
         .then(() => getDownloadURL(imageRef))
         .catch(error => {
+          console.error(`Fehler beim Hochladen von ${image.name}:`, error);
           throw error;
         });
     });
     return Promise.all(uploadPromises);
   }
-
 
   async deleteMessageImages(downloadUrl: string) {
     try {
@@ -94,9 +97,11 @@ export class StorageService {
         const storageRef =  this.auth.storage;
         const desertRef = ref(storageRef, decodedPath);
         await deleteObject(desertRef);
-      } 
+      } else {
+        console.error('Speicherpfad konnte nicht aus der URL extrahiert werden.');
+      }
     } catch (error) {
-      console.error('Error while deleting image:', error);
+      console.error('Fehler beim Löschen des Bildes:', error);
     }
   }
 

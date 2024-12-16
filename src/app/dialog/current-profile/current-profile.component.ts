@@ -9,7 +9,9 @@ import { MatIcon } from '@angular/material/icon';
 import { MemberService } from '../../../services/member/member.service';
 import { CommonModule } from '@angular/common';
 import { DirectMessageService } from '../../../services/directMessage/direct-message.service';
+import { MessagesService } from '../../../services/messages/messages.service';
 import { ChannelService } from '../../../services/channel/channel.service';
+import { MainContentService } from '../../../services/main-content/main-content.service';
 
 @Component({
   selector: 'app-current-profile',
@@ -33,7 +35,9 @@ export class CurrentProfileComponent {
   constructor(
     public memberService: MemberService,
     public directMessageService: DirectMessageService,
-    private channelService: ChannelService
+    private messageService: MessagesService,
+    private channelService: ChannelService,
+    private mainContentService: MainContentService
   ) {
     this.currentMemberProfile = this.memberService.currentProfileMember
   }
@@ -43,10 +47,17 @@ export class CurrentProfileComponent {
   }
 
   openDirectMessage(memberId: any) {
-    this.channelService.currentChannelId = '';
+    if (window.innerWidth < 450) {
+      this.channelService.currentChannelId = '';
+    }
+    this.messageService.isWriteAMessage = false;
     this.directMessageService.isDirectMessage = true;
     this.memberService.setCurrentMemberData();
     this.directMessageService.readDirectUserData(memberId);
+    if (window.innerWidth < 450) {
+      this.mainContentService.closeNavBar();
+      this.mainContentService.makeChatAsTopLayer();
+    }
     this.dialogRef.close();
   }
 }

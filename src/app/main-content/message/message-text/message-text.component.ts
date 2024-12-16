@@ -70,10 +70,12 @@ export class MessageTextComponent {
 
   highlightAtTags(text: string): SafeHtml {
     if (!text) return '';
-    const validNames = this.memberService.allMembersNames;
+  
+    const validNames = this.memberService.allMembersNames || [];
     const color = this.messageService.checkUser(this.message) ? 'blue' : 'var(--text-blue)';
-    const regexAtTags = /@([a-zA-Z]+(?:\s[a-zA-Z]+)?)/g;
-    // Highlight @tags
+    
+    // Match @tags
+    const regexAtTags = /@([\w\däöüÄÖÜß]+(?:\s[\w\däöüÄÖÜß]+)?)/g;
     let highlightedText = text.replace(regexAtTags, (match, name) => {
       const plainName = name.trim();
       if (validNames.includes(plainName)) {
@@ -81,27 +83,17 @@ export class MessageTextComponent {
       }
       return match;
     });
-    // Highlight searchQuery
-    const searchQuery = this.messageService.searchQuery; // Zugriff auf searchQuery aus dem messageService
+  
+    // Highlight search query
+    const searchQuery = this.messageService.searchQuery || '';
     if (searchQuery) {
-      const regexSearchQuery = new RegExp(`(${searchQuery})`, 'gi'); // Case-insensitive Suche
+      const regexSearchQuery = new RegExp(`(${searchQuery})`, 'gi');
       highlightedText = highlightedText.replace(regexSearchQuery, '<span class="highlight">$1</span>');
     }
+  
+    // Sanitize and return
     return this.sanitizer.bypassSecurityTrustHtml(highlightedText);
   }
   
-  // highlightAtTags(text: string): SafeHtml {
-  //   if (!text) return '';
-  //   const validNames = this.memberService.allMembersNames;
-  //   const color = this.messageService.checkUser(this.message) ? 'blue' : 'var(--text-blue)';
-  //   const regex = /@([a-zA-Z]+(?:\s[a-zA-Z]+)?)/g;
-  //   const highlightedText = text.replace(regex, (match, name) => {
-  //     const plainName = name.trim();
-  //     if (validNames.includes(plainName)) {
-  //       return `<span style="color: ${color};">${match}</span>`;
-  //     }
-  //     return match;
-  //   });
-  //   return this.sanitizer.bypassSecurityTrustHtml(highlightedText);
-  // }
+
 }

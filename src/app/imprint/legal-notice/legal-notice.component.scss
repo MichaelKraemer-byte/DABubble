@@ -4,32 +4,17 @@
     width: 100%;
     @include figtree($fw: 500, $fs: 18px, $c: var(--text-black));
     @include respond-to-maxWidth(medium) {
-        padding: 48px 0px 48px 0px;
-    }
-    @include respond-to-maxWidth(small) {
-        padding: 0px 0px 48px 0px;
-    }
-    @include dFlex(center,center);
-    flex-direction: column;
-    gap: 16px;
-    overflow: visible;
-    text-align: center;
-}
-
-.lawText{
-    text-align: justify;
-    padding: 8px;
-    box-sizing: border-box;
-    .subTitle{
         text-align: center;
-        @include figtree($fw:400, $fs: 24px, $c: var(--text-blue));
+        padding: 0px 0px 48px 0px;
     }
 }
 
 h1{
     @include figtree($fw: 500, $fs: clamp(46px, 4vw, 62px), $c: var(--text-blue));
     padding-bottom: 12px;
-    text-align: center;
+    @include respond-to-maxWidth(medium) {
+        text-align: center;
+    }
 }
 
 a{
@@ -133,13 +118,15 @@ strong{
     }
 
     @include respond-to-maxWidth(medium) {
-        width: 75%;
-        height: 75%;
-        min-height: 120px;
-        min-width: 120px;
         aspect-ratio: 1/1;
         padding-top: 24px;
         padding-bottom: 24px;
+
+        img{
+            width: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
     }
 
     @include respond-to-maxWidth(semiMedium) {

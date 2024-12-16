@@ -42,6 +42,8 @@ export class ProfileNavigationComponent {
 
 
   openDialog(): void {
+    const buttonElement = document.activeElement as HTMLElement; 
+    buttonElement.blur(); 
     if (window.innerWidth <= 450) {
       const dialogRef = this.dialog.open(ProfileComponent, {
         width: '300px',
@@ -55,7 +57,7 @@ export class ProfileNavigationComponent {
       const dialogRef = this.dialog.open(ProfileComponent, {
         width: '360px',
         height: 'auto',
-        position: { top: '482px', right: '64px' },
+        position: { top: '382px', right: '64px' },
         autoFocus: false,
         panelClass: 'custom-dialog'
       });
@@ -83,7 +85,7 @@ export class ProfileNavigationComponent {
     this.switchMobilOn = windowWidth < this.sizeThreshold ? false : true;
   }
 
-  signOutUser() {
-    this.auth.signOutUser()
+  async signOutUser() {
+    await this.auth.signOutUser()
   }
 }

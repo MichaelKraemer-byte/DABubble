@@ -26,7 +26,7 @@
 
 .thread-active {
     left: 50px;
-    top: 25px;
+    top: 10px;
 
     @media(max-width: 660px) {
         left: 15px;
@@ -94,9 +94,6 @@
         left: -130px;
     }
 }
-
-
-
 
 .option-btn-container {
     @include dFlex();

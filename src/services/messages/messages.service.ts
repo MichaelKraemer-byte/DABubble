@@ -3,7 +3,7 @@ import { AuthenticationService } from '../authentication/authentication.service'
 import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, updateDoc } from '@firebase/firestore';
 import { MemberService } from '../member/member.service';
 import { ChannelService } from '../channel/channel.service';
-import { firstValueFrom, Subject } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Subject } from 'rxjs';
 import { ReferencesService } from '../references/references.service';
 import { StorageService } from '../storage/storage.service';
 import { Channel } from '../../classes/channel.class';
@@ -19,11 +19,14 @@ export class MessagesService {
   messagesUpdated = new Subject<void>();
   editMessageText: string = '';
   isWriteAMessage: boolean = false;
-  isSearchForMessages: boolean = false;
   searchQuery: string = '';
+  nothingFound: boolean = false;
+  private focusEvent = new Subject<void>();
+  // private nothingFoundSubject = new BehaviorSubject<boolean>(false);
+  // nothingFound$ = this.nothingFoundSubject.asObservable();
+
   // selectedObject?: Member | Channel;
   selectedObjects: Array<{ label: string, type: string, value: Member | Channel }> = [];
-
 
 
   constructor(
@@ -36,29 +39,38 @@ export class MessagesService {
     private directMessageService: DirectMessageService
   ) { }
 
+  getFocusEvent() {
+    return this.focusEvent.asObservable();
+  }
+
+  triggerFocus() {
+    this.focusEvent.next();
+  }
 
   async readChannel() {
     const channel = await getDoc(this.referencesService.getChannelDocRef());
     if (channel.exists()) {
       await this.loadInitialMessages(this.channelService.currentChannelId);
       this.listenToMessages(this.channelService.currentChannelId);
-      this.authenticationService.currentChannelData = channel.data();
+      const channelData = channel.data();
+      this.authenticationService.currentChannelData = channelData;
       await this.memberService.allMembersInChannel();
     }
-    // this.mainContentService.closeNavBar();
   }
 
-  async getCurrentChannelData(){
+
+  async getCurrentChannelData() {
     const channel = await getDoc(this.referencesService.getChannelDocRef());
     return channel.data();
   }
 
   async checkWindowAndOpenChannel(channel: Channel) {
+    this.triggerFocus();
     this.isWriteAMessage = false;
     this.mainContentService.hideThread();
     this.directMessageService.isDirectMessage = false;
     this.channelService.currentChannelId = channel.id;
-    if (window.innerWidth <= 1285 ) {
+    if (window.innerWidth <= 1285) {
       this.mainContentService.openChannelForMobile()
     };
     await this.readChannel();
@@ -69,12 +81,12 @@ export class MessagesService {
     const messagesCollection = collection(channelRef, "messages");
     const querySnapshot = await getDocs(messagesCollection);
     this.messages = querySnapshot.docs
-      .map(doc => doc.data() as Message) // Typkonvertierung
+      .map(doc => doc.data() as Message) 
       .sort((a, b) => Number(a.timestamp) - Number(b.timestamp));
     this.messagesUpdated.next();
     return this.messages;
   }
-  
+
 
   async loadInitialMessages(channelId: string) {
     const querySnapshot = await getDocs(this.referencesService.getCollectionMessage());
@@ -101,7 +113,7 @@ export class MessagesService {
     const now = new Date();
     const formatter = new Intl.DateTimeFormat('en-US', { weekday: 'long' });
     const weekday = formatter.format(now);
-    const day = now.getDate(); 
+    const day = now.getDate();
     const month = now.toLocaleString('en-US', { month: 'long' });
     const createdAt = `${weekday}, ${day}. ${month}`;
 
@@ -204,7 +216,7 @@ export class MessagesService {
     const now = new Date();
     const formatter = new Intl.DateTimeFormat('en-US', { weekday: 'long' });
     const weekday = formatter.format(now);
-    const day = now.getDate(); 
+    const day = now.getDate();
     const month = now.toLocaleString('en-US', { month: 'long' });
     const createdAt = `${weekday}, ${day} ${month}`;
     // Nachrichtendaten erstellen
@@ -240,8 +252,25 @@ export class MessagesService {
     }
   }
 
-  clearSelectedObjects(){
+  clearSelectedObjects() {
     this.selectedObjects = [];
   }
+
+  async hashChannels() {
+    let allMyChannels = ['Welcome Channel', 'Frontend'];
+    const querySnapshot = await getDocs(collection(this.authenticationService.getReference(), "channels"));
+    querySnapshot.forEach((doc) => {
+      this.authenticationService.currentMember$.subscribe((myChannels) => {
+        const channelIds = myChannels!['channelIds'];
+        channelIds.forEach(ids => {
+          if (ids == doc.id) {
+            allMyChannels.push(doc.data()['title']);
+          }
+        });
+      });
+    });
+   return allMyChannels;
+  }
+
 
 }

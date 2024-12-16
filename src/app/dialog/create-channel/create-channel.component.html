@@ -9,19 +9,21 @@
         <span class="hash-symbol">#</span>
         <input [(ngModel)]="channel.title" 
                name="title" 
-               #channelTitle="ngModel" 
                required 
                placeholder="Office-Team" 
                type="text" 
-               class="input-field">
+               class="input-field"
+               #channelTitle="ngModel" 
+               >
     </div>
     <!-- Validation Message -->
     <div *ngIf="channelTitle.invalid && showError" class="validation-error">
-        Channel Name is required.
+        Channel title is required.
     </div>
     <div *ngIf="channelAlreadyExists" class="validation-error">
         This channel title already exists.
     </div>
+
 
     <h3>Description <span> (optional)</span></h3>
     <textarea placeholder="Your description here" type="text" class="text-field" [(ngModel)]="channel.description" name="description"></textarea>

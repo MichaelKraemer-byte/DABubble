@@ -194,3 +194,52 @@ app-contact-list{
     max-height: 100%;
     overflow: hidden;
 }
+
+.min-height-160px{
+    min-height: 160px;
+}
+
+.stretch{
+    max-height: 100%;
+}
+
+.writeMessageButton{
+    @include dFlex(center, center);
+    transition: background-color 0.125s ease-in-out;
+    mat-icon{
+        color: var(--text-black);
+    }
+    &:hover{
+        background-color: var(--primary-bg);
+    }
+}
+
+.addChannelButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+    margin-top: 16px;
+}
+
+
+.addChannelButton {
+    color: var(--text-black);
+    display: flex;
+    gap: 10px;
+    transition: transform 0.125s ease-in-out, color 0.125s ease-in-out;
+    .material-icons {
+        transition: transform 0.125s ease-in-out, color 0.125s ease-in-out;
+    }
+    &:hover {
+        color: var(--purple-1);
+        cursor: pointer;
+        .material-icons {
+            transform: scale(1.1);
+            color: var(--purple-1);
+
+        }
+    }
+}
+
+

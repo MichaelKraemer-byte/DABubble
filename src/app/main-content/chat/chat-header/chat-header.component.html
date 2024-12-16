@@ -3,7 +3,7 @@
     <div class="channel-header" *ngIf="directMessageService.isDirectMessage == false">
         <button class="creator-team-btn" (click)="openEditChannel()">
             <mat-icon class="hashtag">tag</mat-icon>
-            <p class="chatTitle">{{auth.currentChannelData.title}}</p>
+            <p class="chatTitle">{{(this.auth.currentChannelData$ | async)?.title || auth.currentChannelData.title}}</p>
             <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
 

@@ -4,7 +4,7 @@
         <mat-icon (click)="dialogRef.close()" class="closeIcon">close</mat-icon>
     </div>
     <h3># {{ channel.title }}</h3>
-  <mat-form-field>
+  <mat-form-field style="width: 100% !important;">
     <mat-chip-grid #chipGrid>
         <mat-chip-row
             *ngFor="let member of selectedMembers; let i = index"
@@ -19,7 +19,7 @@
                 </button>
             </div>
         </mat-chip-row>
-        <input
+        <input style="padding-top: 16px !important"
             placeholder="New Member..."
             [matChipInputFor]="chipGrid"
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"

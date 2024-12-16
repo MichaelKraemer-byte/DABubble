@@ -104,6 +104,8 @@ h2{
     background-color: #444DF2 !important;
     @include padding(12px, 25px, 12px, 25px,);
 }
+  
+
 
 .mdc-text-field--filled, .mdc-text-field, .mat-mdc-form-field-focus-overlay, .mdc-line-ripple::before, .mdc-line-ripple::after{
     background-color: transparent !important;

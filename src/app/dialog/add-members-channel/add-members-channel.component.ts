@@ -16,6 +16,7 @@ import { MemberService } from '../../../services/member/member.service';
 import { ChannelService } from '../../../services/channel/channel.service';
 import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { MessagesService } from '../../../services/messages/messages.service';
 
 @Component({
   selector: 'app-add-members-channel',
@@ -59,6 +60,7 @@ export class AddMembersChannelComponent {
   constructor(
     private memberService: MemberService,
     private channelService: ChannelService,
+    private messageService: MessagesService
   ) {
   }
 
@@ -147,6 +149,7 @@ export class AddMembersChannelComponent {
     await this.channelService.addChannelIdToMembers(this.channel.membersId, this.channel.id);
     await this.channelService.updateMemberIdsToChannel(this.channel.id, this.channel.membersId);
     this.dialogRef.close();
+    this.messageService.readChannel();
   }
 
 

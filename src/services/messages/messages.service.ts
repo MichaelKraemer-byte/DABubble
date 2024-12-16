@@ -244,7 +244,6 @@ export class MessagesService {
       // Message-ID aktualisieren
       await this.updateMessageId(messageDocRef);
       // Nachricht wurde erfolgreich gesendet
-      console.log(`Message sent to channel with ID ${channelId}`);
       this.messagesUpdated.next(); // Aktualisiere die Nachrichtenliste
       this.storageService.messageImages = []; // Angehängte Bilder zurücksetzen
     } catch (error) {

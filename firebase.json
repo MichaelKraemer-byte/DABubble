@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "https://dabubble-380.developerakademie.net/",
+    "public": "https://kraemer-michael.net/dabubble/",
     "rewrites": [
       {
         "source": "**",

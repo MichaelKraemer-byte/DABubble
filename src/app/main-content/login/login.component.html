@@ -21,7 +21,7 @@
         <app-choose-avatar [ngClass]='setNavigationAnimationClass(2)' ></app-choose-avatar>
         <app-lost-password [ngClass]='setNavigationAnimationClass(3)'></app-lost-password>
 
-        @if(auth.infoBannerIsSubmit){<app-info-banner [text]=auth.infoBannertext [icon]=auth.infoBannerIcon></app-info-banner>}
+        @if(auth.infoBannerIsSubmit){<app-info-banner showItem='screen' [text]=auth.infoBannertext [icon]=auth.infoBannerIcon></app-info-banner>}
     </div>
 
     <app-submenu-login></app-submenu-login>

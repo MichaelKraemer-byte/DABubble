@@ -11,4 +11,5 @@ import { MatIcon } from '@angular/material/icon';
 export class InfoBannerComponent {
 @Input() text:string = '';
 @Input() icon:string = '';
+@Input() showItem:string = '';
 }

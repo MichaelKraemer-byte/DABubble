@@ -1,12 +1,16 @@
-<div class="lockscreen">
-    <div class='animation-box'>
-        <span [innerHTML]="text"></span>
-        <div class="animation-circle"></div>
+@if(showItem == 'screen'){
+    <div class="lockscreen">
+        <div class='animation-box'>
+            <span>{{text}}</span>
+            <div class="animation-circle"></div>
+        </div>
     </div>
-</div>
-<div class="banner">
-    <div class="content">
-        @if(icon){<mat-icon [innerHTML]="icon"></mat-icon>}
-        <p [innerHTML]="text"></p>
+}
+@if(!showItem || showItem == 'banner'){
+    <div class="banner">
+        <div class="content">
+            @if(icon){<mat-icon [innerHTML]="icon"></mat-icon>}
+            <p>{{text}}</p>
+        </div>
     </div>
-</div>
+}
